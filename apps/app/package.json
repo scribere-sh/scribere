@@ -15,6 +15,10 @@
 
         "deploy": "wrangler deploy"
 	},
+    "packageManager": "pnpm@10.5.0",
+    "engines": {
+        "node": "23.8.0"
+    },
 	"dependencies": {
 		"@scribere/ui": "workspace:*",
 		"@kitql/helpers": "^0.8",
