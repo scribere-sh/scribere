@@ -1,0 +1,51 @@
+{
+	"name": "@scribere/app",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync || echo ''",
+		"sync": "svelte-kit sync",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"fmt": "prettier --write .",
+		"lint": "prettier --check . && eslint .",
+
+        "deploy": "wrangler deploy"
+	},
+	"dependencies": {
+		"@scribere/ui": "workspace:*",
+		"@kitql/helpers": "^0.8",
+		"@tanstack/svelte-query": "^5",
+		"@tanstack/svelte-query-devtools": "^5",
+		"@trpc/client": "^10",
+		"devalue": "^5",
+		"superjson": "^2",
+		"trpc-sveltekit": "^3",
+		"trpc-svelte-query-adapter": "^2",
+		"zod": "^3"
+	},
+	"devDependencies": {
+		"@scribere/eslint-config": "workspace:*",
+		"@scribere/prettier-config": "workspace:*",
+		"@scribere/typescript-config": "workspace:*",
+		"@sveltejs/adapter-cloudflare": "^5",
+		"@sveltejs/kit": "^2",
+		"@sveltejs/vite-plugin-svelte": "^5",
+		"@trpc/server": "^10",
+		"autoprefixer": "^10",
+		"eslint": "^9",
+		"prettier": "^3",
+		"prettier-plugin-svelte": "^3",
+		"prettier-plugin-tailwindcss": "^0.6",
+		"svelte": "^5",
+		"svelte-check": "^4",
+		"tailwindcss": "^3",
+		"typescript": "^5",
+		"vite": "^6",
+		"vite-plugin-kit-routes": "^0.8",
+        "wrangler": "^3"
+	}
+}

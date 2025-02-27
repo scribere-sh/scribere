@@ -1,0 +1,23 @@
+{
+    "editor.semanticTokenColorCustomizations": {
+        "enabled": true
+    },
+
+    "[svelte]": {
+        "editor.defaultFormatter": "svelte.svelte-vscode",
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+
+    "svelte.enable-ts-plugin": true,
+
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+
+    "tailwindCSS.includeLanguages": {
+        "svelte": "html"
+    },
+    "tailwindCSS.emmetCompletions": true,
+    "tailwindCSS.experimental.configFile": "./packages/ui/tailwind.config.ts"
+}

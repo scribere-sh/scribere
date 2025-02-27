@@ -1,0 +1,21 @@
+{
+    "name": "@scribere/prettier-config",
+    "private": true,
+    "type": "module",
+    "publishConfig": {
+        "access": "public"
+    },
+    "exports": {
+        ".": {
+            "import": "./index.mjs",
+            "default": "./index.mjs"
+        }
+    },
+    "peerDependencies": {
+        "prettier": "^3"
+    },
+    "devDependencies": {
+        "prettier-plugin-svelte": "^3",
+        "prettier-plugin-tailwindcss": "0.6"
+    }
+}

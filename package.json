@@ -1,0 +1,41 @@
+{
+    "name": "@scribere/repo",
+    "private": true,
+    "description": "Knowledge Sharing, Simplified",
+    "contributors": [
+        {
+            "name": "Hudson Curren",
+            "email": "info@d3rpp.dev",
+            "url": "https://d3rpp.dev"
+        },
+        {
+            "name": "Jackson Spring",
+            "email": "springthing0303@gmail.com"
+        },
+        {
+            "name": "Ben Du Toit",
+            "email": "bendt03@outlook.co.nz"
+        }
+    ],
+    "scripts": {
+        "turbo": "turbo"
+    },
+    "engines": {
+        "node": "23.8.0"
+    },
+    "packageManager": "pnpm@10.5.0",
+    "devDependencies": {
+        "turbo": "^2.4.4",
+        "typescript": "^5"
+    },
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "esbuild",
+            "sharp",
+            "workerd"
+        ],
+        "overrides": {
+            "jiti": "2"
+        }
+    }
+}

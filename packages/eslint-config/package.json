@@ -1,0 +1,24 @@
+{
+    "name": "@scribere/eslint-config",
+    "private": true,
+    "type": "module",
+    "publishConfig": {
+        "access": "public"
+    },
+    "exports": {
+        ".": {
+            "import": "./index.mjs",
+            "default": "./index.mjs"
+        }
+    },
+    "devDependencies": {
+        "@eslint/compat": "^1",
+        "@eslint/eslintrc": "^3",
+        "@eslint/js": "^9",
+        "eslint-config-prettier": "^10",
+        "eslint-config-turbo": "^2",
+        "eslint-plugin-svelte": "^2",
+        "globals": "^15",
+        "typescript-eslint": "^8"
+    }
+}

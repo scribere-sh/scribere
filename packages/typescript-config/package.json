@@ -1,0 +1,13 @@
+{
+    "name": "@scribere/typescript-config",
+    "private": true,
+    "type": "module",
+    "publishConfig": {
+        "access": "public"
+    },
+    "exports": {
+        "./svelte": {
+            "default": "./svelte.json"
+        }
+    }
+}
