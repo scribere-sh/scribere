@@ -5,8 +5,9 @@
 	"compatibility_flags": ["nodejs_compat"],
 	"pages_build_output_dir": ".svelte-kit/cloudflare",
 	"vars": {
-		// API Key - Private Secret - Managed in CF UI
-		"RESEND_API_KEY": true,
+		// Private Secrets - Managed in CF UI
+		// - "RESEND_API_KEY"
+
 		// Sender email and name
 		"SENDER_EMAIL": "noreply@scribere.sh",
 		"SENDER_NAME": "Scribere"
