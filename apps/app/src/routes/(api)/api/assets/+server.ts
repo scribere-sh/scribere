@@ -1,5 +1,5 @@
 import type { RequestHandler } from './$types';
-import { type R2Error, Headers as CFHeaders } from '@cloudflare/workers-types';
+import { type R2Error } from '@cloudflare/workers-types';
 
 import z from 'zod';
 
@@ -144,15 +144,10 @@ const MPU_GET_ACTIONS: Record<string, RequestHandler> = {
 		}
 
 		// ah yes cloudflare
-
-		const cfHeaders = new CFHeaders();
-		object.writeHttpMetadata(cfHeaders);
-		cfHeaders.set('etag', object.httpEtag);
-
 		const headers = new Headers();
-		cfHeaders.forEach((val, key) => {
-			headers.set(key, val);
-		});
+        // @ts-expect-error todo: ensure this *actually* works becuase these have 2 seperate header types
+		object.writeHttpMetadata(headers);
+        headers.set('etag', object.httpEtag);
 
 		mpuLog.success(`got asset "${key}"`);
 		return new Response(await object.arrayBuffer(), { headers });
