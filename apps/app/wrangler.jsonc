@@ -4,9 +4,6 @@
 	"compatibility_date": "2025-02-27",
 	"compatibility_flags": ["nodejs_compat"],
 	"pages_build_output_dir": ".svelte-kit/cloudflare",
-	"assets": {
-		"directory": "static"
-	},
 	"vars": {
 		// API Key - Private Secret - Managed in CF UI
 		"RESEND_API_KEY": true,
