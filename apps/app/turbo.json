@@ -4,6 +4,15 @@
 	"tasks": {
 		"build": {
 			"outputs": [".svelte-kit", "build"]
+		},
+		"db:generate": {
+			"cache": true,
+			"inputs": ["src/lib/server/drizzle.ts"],
+			"outputs": ["drizzle"]
+		},
+		"db:migrate": {
+			"dependsOn": ["db:generate"],
+			"cache": false
 		}
 	}
 }

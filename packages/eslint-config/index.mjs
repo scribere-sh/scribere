@@ -30,6 +30,11 @@ export const config = ts.config(
         }
     },
     {
+        rules: {
+            "@typescript-eslint/no-unused-vars": "warn"
+        }
+    },
+    {
         ignores: [
             "**/.svelte-kit/**/*",
             "**/dist/**/*",

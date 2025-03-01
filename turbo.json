@@ -24,6 +24,13 @@
         },
         "sync": {
             "cache": false
+        },
+        "typegen": {
+            "cache": false
+        },
+        "db:migrate": {
+            "cache": false,
+            "dependsOn": ["@scribere/app#db:migrate"]
         }
     }
 }

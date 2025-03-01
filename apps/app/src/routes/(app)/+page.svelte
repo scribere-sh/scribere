@@ -4,11 +4,18 @@
 
 	import { cn, debounce } from '@scribere/ui/utils';
 
-	import { buttonVariants } from '@scribere/ui/button';
+	import { buttonVariants, Button } from '@scribere/ui/button';
 	import { Input } from '@scribere/ui/input';
 	import { Label } from '@scribere/ui/label';
 	import * as Tooltip from '@scribere/ui/tooltip';
 
+	/**
+	 * Unique ID for this instance of this component that
+	 * is consistent on in CSR and SSR.
+	 *
+	 * Good for ensuring that an `id` & `for` field is unqiue across
+	 * the application.
+	 */
 	const uid = $props.id();
 
 	const toggleDark = () => {
@@ -17,7 +24,8 @@
 
 	const { data }: PageProps = $props();
 
-	const { name, nameQuery } = data;
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const { name, nameQuery, rpc } = data;
 
 	let nameStore = writable({ name });
 	let nameQueryCl = nameQuery(nameStore);
@@ -87,3 +95,4 @@
 		</div>
 	</div>
 </Tooltip.Provider>
+<Button variant></Button>

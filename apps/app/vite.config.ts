@@ -11,9 +11,5 @@ export default defineConfig({
 			exportObjects: true,
 			post_update_run: 'prettier ./src/lib/ROUTES.ts -w'
 		})
-	],
-
-	server: {
-		allowedHosts: ['localhost', '.trycloudflare.com']
-	}
+	]
 });

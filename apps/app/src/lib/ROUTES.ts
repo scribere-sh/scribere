@@ -10,13 +10,29 @@
  */
 export const PAGES = {
 	'/': `/`,
-	'/auth': `/auth`
+	'/auth': `/auth`,
+	'/debug': `/debug`
 };
 
 /**
  * SERVERS
  */
-export const SERVERS = {};
+export const SERVERS = {
+	'POST /api/assets': `/api/assets`,
+	'PUT /api/assets': `/api/assets`,
+	'GET /api/assets': `/api/assets`,
+	'DELETE /api/assets': `/api/assets`,
+	'GET /oauth/[provider=oauth_provider]': (params: {
+		provider: ExtractParamType<typeof import('../params/oauth_provider.ts').match>;
+	}) => {
+		return `/oauth/${params['provider']}`;
+	},
+	'GET /oauth/[provider=oauth_provider]/callback': (params: {
+		provider: ExtractParamType<typeof import('../params/oauth_provider.ts').match>;
+	}) => {
+		return `/oauth/${params['provider']}/callback`;
+	}
+};
 
 /**
  * ACTIONS
@@ -122,6 +138,11 @@ export function route<T extends keyof AllTypes>(key: T, ...params: any[]): strin
 	}
 }
 
+/* type helpers param & predicate */
+type ExtractFnPredicate<T> = T extends (param: any) => param is infer U ? U : never;
+type ExtractParamType<T extends (param: any) => any> =
+	ExtractFnPredicate<T> extends never ? Parameters<T>[0] : ExtractFnPredicate<T>;
+
 /**
  * Add this type as a generic of the vite plugin `kitRoutes<KIT_ROUTES>`.
  *
@@ -138,9 +159,16 @@ export function route<T extends keyof AllTypes>(key: T, ...params: any[]): strin
  * ```
  */
 export type KIT_ROUTES = {
-	PAGES: { '/': never; '/auth': never };
-	SERVERS: Record<string, never>;
+	PAGES: { '/': never; '/auth': never; '/debug': never };
+	SERVERS: {
+		'POST /api/assets': never;
+		'PUT /api/assets': never;
+		'GET /api/assets': never;
+		'DELETE /api/assets': never;
+		'GET /oauth/[provider=oauth_provider]': 'provider';
+		'GET /oauth/[provider=oauth_provider]/callback': 'provider';
+	};
 	ACTIONS: Record<string, never>;
 	LINKS: Record<string, never>;
-	Params: Record<string, never>;
+	Params: { provider: never };
 };

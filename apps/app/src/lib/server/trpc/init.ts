@@ -16,6 +16,8 @@ export const t = initTRPC.context<Context>().create({
 	transformer,
 	errorFormatter: dev
 		? ({ shape, error }) => {
+				console.error(error);
+
 				return {
 					...shape,
 					data: {

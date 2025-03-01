@@ -1,5 +1,33 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-    "name": "scribere",
-    "pages_build_output_dir": ".svelte-kit/cloudflare"
+	"name": "scribere",
+	"compatibility_date": "2025-02-27",
+	"compatibility_flags": ["nodejs_compat"],
+	"pages_build_output_dir": ".svelte-kit/cloudflare",
+	"assets": {
+		"directory": "static"
+	},
+	"vars": {
+		// API Key - Private Secret - Managed in CF UI
+		"RESEND_API_KEY": true,
+		// Sender email and name
+		"SENDER_EMAIL": "noreply@scribere.sh",
+		"SENDER_NAME": "Scribere"
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "scribere",
+			"database_id": "f8aef0a2-cc9b-4054-98ba-f6f6135c9223",
+			"preview_database_id": "276b7788-7e49-476d-b347-160630e1da81",
+			"migrations_dir": "./drizzle"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "R2",
+			"bucket_name": "cdn-scribere-sh",
+			"preview_bucket_name": "cdn-scribere-sh-dev"
+		}
+	]
 }

@@ -9,6 +9,7 @@
 		"fmt": "prettier --write .",
 		"lint": "prettier --check . && eslint ."
 	},
+	"type": "module",
 	"files": [
 		"dist",
 		"tailwind.config.ts",
@@ -18,7 +19,6 @@
 	"sideEffects": [
 		"**/*.css"
 	],
-	"type": "module",
 	"exports": {
 		"./*": {
 			"types": "./dist/components/ui/*/index.d.ts",
@@ -56,7 +56,6 @@
 		"prettier": "^3",
 		"prettier-plugin-svelte": "^3",
 		"prettier-plugin-tailwindcss": "^0.6",
-		"publint": "^0.3",
 		"svelte-check": "^4",
 		"tailwind-merge": "^2",
 		"tailwind-variants": "^0.3",
