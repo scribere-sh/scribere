@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { EditorState, NodeSelection } from 'prosemirror-state';
+	import { EditorState, NodeSelection, type Command } from 'prosemirror-state';
 	import { EditorView } from 'prosemirror-view';
 	import { undo, redo, history } from 'prosemirror-history';
 	import { keymap } from 'prosemirror-keymap';
@@ -21,19 +21,22 @@
 	const toggleBold = toggleMark(schema.marks.strong);
 	const toggleItalic = toggleMark(schema.marks.em);
 
-	const markActive = (state: EditorState, type: MarkType) => {
+	const isMarkActive = (state: EditorState, type: MarkType) => {
 		let { from, $from: _from, to, empty } = state.selection;
 		if (empty) return !!type.isInSet(state.storedMarks || _from.marks());
 		else return state.doc.rangeHasMark(from, to, type);
 	};
 
 	let isBoldOnSelection = $state(false);
+	let isItalicOnSelection = $state(false);
 
-	const makeBold = () => {
-		const { state, dispatch } = view;
-		if (toggleBold(state, dispatch)) {
-			view.focus();
-		}
+	const dispatchCommand: (command: Command) => () => void = (command) => {
+		return () => {
+			const { state, dispatch } = view;
+			if (command(state, dispatch)) {
+				view.focus();
+			}
+		};
 	};
 
 	interface Props {
@@ -64,7 +67,8 @@
 				const new_state = view.state.apply(tr);
 				view.updateState(new_state);
 
-				isBoldOnSelection = markActive(new_state, schema.marks.strong);
+				isBoldOnSelection = isMarkActive(new_state, schema.marks.strong);
+				isItalicOnSelection = isMarkActive(new_state, schema.marks.em);
 
 				if (onupdate) onupdate(new_state);
 			}
@@ -77,10 +81,15 @@
 </script>
 
 <div class={cn('h-full', className)}>
-	<div class="flex h-16">
+	<div class="flex h-16 flex-row gap-4">
 		<button
 			class={buttonVariants({ variant: isBoldOnSelection ? 'destructive' : 'outline' })}
-			onclick={makeBold}>bold</button
+			onclick={dispatchCommand(toggleBold)}>bold</button
+		>
+
+		<button
+			class={buttonVariants({ variant: isItalicOnSelection ? 'destructive' : 'outline' })}
+			onclick={dispatchCommand(toggleItalic)}>italic</button
 		>
 	</div>
 
