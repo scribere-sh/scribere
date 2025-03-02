@@ -39,6 +39,7 @@
 		"@scribere/eslint-config": "workspace:*",
 		"@scribere/prettier-config": "workspace:*",
 		"@scribere/typescript-config": "workspace:*",
+		"@scribere/editor": "workspace:*",
 		"@scribere/email": "workspace:*",
 		"@sveltejs/adapter-cloudflare": "^5",
 		"@sveltejs/kit": "^2",

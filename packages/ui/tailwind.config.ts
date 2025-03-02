@@ -8,7 +8,7 @@ const config: Config = {
 		'./src/**/*.{html,js,svelte,ts}',
 		// i hate this as much as you do
 		// but it works perfectly
-		'node_modules/@scribere/ui/dist/**/*.{html,js,svelte,ts}'
+		'node_modules/@scribere/*/dist/**/*.{html,js,svelte,ts}'
 	],
 	safelist: ['dark'],
 	theme: {

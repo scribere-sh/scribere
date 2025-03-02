@@ -11,7 +11,8 @@
 export const PAGES = {
 	'/': `/`,
 	'/auth': `/auth`,
-	'/debug': `/debug`
+	'/debug': `/debug`,
+	'/debug/editor': `/debug/editor`
 };
 
 /**
@@ -159,7 +160,7 @@ type ExtractParamType<T extends (param: any) => any> =
  * ```
  */
 export type KIT_ROUTES = {
-	PAGES: { '/': never; '/auth': never; '/debug': never };
+	PAGES: { '/': never; '/auth': never; '/debug': never; '/debug/editor': never };
 	SERVERS: {
 		'POST /api/assets': never;
 		'PUT /api/assets': never;
