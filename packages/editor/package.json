@@ -35,6 +35,7 @@
 		"@sveltejs/package": "^2",
 		"@sveltejs/vite-plugin-svelte": "^5",
 		"eslint": "^9",
+		"lucide-svelte": "^0",
 		"prettier": "^3",
 		"prettier-plugin-svelte": "^3",
 		"prettier-plugin-tailwindcss": "^0.6",
@@ -43,12 +44,12 @@
 		"vite": "^6"
 	},
 	"dependencies": {
-		"prosemirror-schema-basic": "^1",
 		"prosemirror-model": "^1",
 		"prosemirror-state": "^1",
 		"prosemirror-view": "^1",
 		"prosemirror-history": "^1",
 		"prosemirror-keymap": "^1",
-		"prosemirror-commands": "^1"
+		"prosemirror-commands": "^1",
+        "prosemirror-inputrules": "^1"
 	}
 }

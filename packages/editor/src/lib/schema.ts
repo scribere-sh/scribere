@@ -50,14 +50,15 @@ const schemaSpec: SchemaSpec = {
 			toDOM: (node) => ['h' + node.attrs.level, 0]
 		} as NodeSpec,
 
-		code_block: {
+		codeBlock: {
+            attrs: { lang: { default: "plaintext", validate: "string" } },
 			content: 'text*',
 			marks: '',
 			group: 'block',
 			code: true,
 			defining: true,
 			parseDOM: [{ tag: 'pre', preserveWhitespace: 'full' }],
-			toDOM: () => ['pre', ['code', 0]]
+			toDOM: () => ['pre', {class: "codeBlock"},  ['code', 0]]
 		} as NodeSpec,
 
 		/**

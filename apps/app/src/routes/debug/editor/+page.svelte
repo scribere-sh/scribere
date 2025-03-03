@@ -8,7 +8,6 @@
 	<Editor
 		class="h-full w-1/2"
 		onupdate={(new_state) => {
-			console.log(new_state.storedMarks);
 			json = JSON.stringify(new_state.doc.toJSON(), null, 2);
 		}}
 	/>

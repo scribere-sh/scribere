@@ -48,6 +48,7 @@
 		"autoprefixer": "^10",
 		"drizzle-kit": "^0.30",
 		"eslint": "^9",
+		"lucide-svelte": "^0.476.0",
 		"prettier": "^3",
 		"prettier-plugin-svelte": "^3",
 		"prettier-plugin-tailwindcss": "^0.6",
