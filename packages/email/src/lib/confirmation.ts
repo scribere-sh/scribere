@@ -1,7 +1,7 @@
 import type { CreateEmailResponse } from 'resend';
 
-import EmailConfirmationTemplate from './templates/emailConfirmation.handlebars?raw';
 import Handlebars from 'handlebars';
+import EmailConfirmationTemplate from './templates/emailConfirmation.handlebars?raw';
 
 import { Resend } from 'resend';
 

@@ -1,5 +1,5 @@
-import type { RequestHandler } from './$types';
 import { type R2Error } from '@cloudflare/workers-types';
+import type { RequestHandler } from './$types';
 
 import z from 'zod';
 
@@ -145,9 +145,9 @@ const MPU_GET_ACTIONS: Record<string, RequestHandler> = {
 
 		// ah yes cloudflare
 		const headers = new Headers();
-        // @ts-expect-error todo: ensure this *actually* works becuase these have 2 seperate header types
+		// @ts-expect-error todo: ensure this *actually* works becuase these have 2 seperate header types
 		object.writeHttpMetadata(headers);
-        headers.set('etag', object.httpEtag);
+		headers.set('etag', object.httpEtag);
 
 		mpuLog.success(`got asset "${key}"`);
 		return new Response(await object.arrayBuffer(), { headers });

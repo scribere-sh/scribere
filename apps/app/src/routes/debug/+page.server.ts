@@ -1,5 +1,5 @@
-import type { PageServerLoad } from './$types';
 import { renderConfirmationEmail } from '@scribere/email/confirmation';
+import type { PageServerLoad } from './$types';
 
 export const load = (() => {
 	return {

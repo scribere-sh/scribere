@@ -12,6 +12,7 @@
 		},
 		"db:migrate": {
 			"dependsOn": ["db:generate"],
+            "interactive": true,
 			"cache": false
 		}
 	}

@@ -1,6 +1,6 @@
-import { fontFamily } from 'tailwindcss/defaultTheme';
 import type { Config } from 'tailwindcss';
 import tailwindcssAnimate from 'tailwindcss-animate';
+import { fontFamily } from 'tailwindcss/defaultTheme';
 
 const config: Config = {
 	darkMode: ['class'],
@@ -8,7 +8,7 @@ const config: Config = {
 		'./src/**/*.{html,js,svelte,ts}',
 		// i hate this as much as you do
 		// but it works perfectly
-		'node_modules/@scribere/ui/dist/**/*.{html,js,svelte,ts}'
+		'node_modules/@scribere/*/dist/**/*.{html,js,svelte,ts}'
 	],
 	safelist: ['dark'],
 	theme: {
