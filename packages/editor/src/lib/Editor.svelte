@@ -6,13 +6,13 @@
 	import { baseKeymap, toggleMark } from 'prosemirror-commands';
 
 	import { schema } from './schema';
-    import { inputRulesPlugin } from "./markdownRules";
+	import { exitCodeBlockKeymap, inputRulesPlugin } from './rules';
 
 	import { cn } from '@scribere/ui/utils';
 
-    import { Toggle } from "@scribere/ui/toggle";
-    import Bold from "lucide-svelte/icons/bold";
-    import Italic from "lucide-svelte/icons/italic";
+	import { Toggle } from '@scribere/ui/toggle';
+	import Bold from 'lucide-svelte/icons/bold';
+	import Italic from 'lucide-svelte/icons/italic';
 
 	import { onMount } from 'svelte';
 	import type { MarkType } from 'prosemirror-model';
@@ -61,8 +61,9 @@
 					'Mod-b': toggleBold,
 					'Mod-i': toggleItalic
 				}),
+				exitCodeBlockKeymap(),
 				keymap(baseKeymap),
-                inputRulesPlugin
+				inputRulesPlugin
 			]
 		});
 
@@ -87,15 +88,25 @@
 
 <div class={cn('h-full', className)}>
 	<div class="flex h-16 flex-row gap-4">
-        <Toggle variant="outline" aria-label="Toggle Bold" bind:pressed={isBoldOnSelection} onclick={dispatchCommand(toggleBold)}>
-            <Bold />
-            Bold
-        </Toggle>
+		<Toggle
+			variant="outline"
+			aria-label="Toggle Bold"
+			bind:pressed={isBoldOnSelection}
+			onclick={dispatchCommand(toggleBold)}
+		>
+			<Bold />
+			Bold
+		</Toggle>
 
-        <Toggle variant="outline" aria-label="Toggle Italic" bind:pressed={isItalicOnSelection} onclick={dispatchCommand(toggleItalic)}>
-            <Italic />
-            Italic
-        </Toggle>
+		<Toggle
+			variant="outline"
+			aria-label="Toggle Italic"
+			bind:pressed={isItalicOnSelection}
+			onclick={dispatchCommand(toggleItalic)}
+		>
+			<Italic />
+			Italic
+		</Toggle>
 	</div>
 
 	<div class="h-full" bind:this={ref}></div>
@@ -107,20 +118,15 @@
 		height: 100%;
 	}
 
-    :global(div.ProseMirror h1) {
-        font-size: x-large;
-    }
+	:global(div.ProseMirror h1) {
+		font-size: x-large;
+	}
 
-    :global(div.ProseMirror pre.codeBlock) {
-        margin: 0 1rem;
-        width: calc(100% - 2rem);
-        min-height: 1rem;
+	:global(div.ProseMirror pre.codeBlock) {
+		/* margin: 0 1rem; */
+		width: calc(100% - 2rem);
+		min-height: 1rem;
 
-        border: 1px solid red;
-    }
-
-    :global(div.ProseMirror pre.codeBlock code) {
-        font-family: "Comic Mono", monospace !important;
-        font-weight: 400;
-    }
+		border: 1px solid red;
+	}
 </style>

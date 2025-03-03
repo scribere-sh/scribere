@@ -51,14 +51,19 @@ const schemaSpec: SchemaSpec = {
 		} as NodeSpec,
 
 		codeBlock: {
-            attrs: { lang: { default: "plaintext", validate: "string" } },
+			attrs: { lang: { default: 'plaintext', validate: 'string' } },
 			content: 'text*',
 			marks: '',
 			group: 'block',
 			code: true,
 			defining: true,
+			isolating: true,
 			parseDOM: [{ tag: 'pre', preserveWhitespace: 'full' }],
-			toDOM: () => ['pre', {class: "codeBlock"},  ['code', 0]]
+			toDOM: () => [
+				'pre',
+				{ class: 'codeBlock font-mono mx-4 border bg-gray-100' },
+				['code', 0]
+			]
 		} as NodeSpec,
 
 		/**

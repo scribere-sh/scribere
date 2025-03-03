@@ -50,6 +50,6 @@
 		"prosemirror-history": "^1",
 		"prosemirror-keymap": "^1",
 		"prosemirror-commands": "^1",
-        "prosemirror-inputrules": "^1"
+		"prosemirror-inputrules": "^1"
 	}
 }
