@@ -1,7 +1,7 @@
 import type { RequestEvent } from '@sveltejs/kit';
 
-import { t, TRPCLog } from './init';
 import { createContext } from './context';
+import { t, TRPCLog } from './init';
 
 import { usersTable } from '$lib/server/drizzle';
 

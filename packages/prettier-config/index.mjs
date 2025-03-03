@@ -7,7 +7,8 @@ const config = {
     singleQuote: true,
     trailingComma: "none",
     printWidth: 100,
-    plugins: [ "prettier-plugin-svelte", "prettier-plugin-tailwindcss" ],
+    plugins: [ "prettier-plugin-svelte", "prettier-plugin-organize-imports", "prettier-plugin-tailwindcss" ],
+    tailwindFunctions: ["cn"],
     overrides: [
         {
             files: ["*.svelte"],

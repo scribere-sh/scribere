@@ -1,7 +1,7 @@
-import { keymap } from 'prosemirror-keymap';
-import { schema } from './schema';
 import { ellipsis, InputRule, inputRules } from 'prosemirror-inputrules';
+import { keymap } from 'prosemirror-keymap';
 import { TextSelection } from 'prosemirror-state';
+import { schema } from './schema';
 
 const headingRule = new InputRule(/^#{1,6} $/, (state, _match, start, end) => {
 	return state.tr
@@ -61,7 +61,7 @@ export const exitCodeBlockKeymap = () => {
 			if (node.type === schema.nodes.codeBlock) {
 				enterPressed = false;
 				if (dispatch) dispatch(state.tr.insertText('\n'));
-                return true;
+				return true;
 			}
 
 			return false;

@@ -43,8 +43,8 @@ export type ButtonProps = WithElementRef<HTMLButtonAttributes> &
 	};
 
 export {
-	Root,
-	type ButtonProps as Props,
 	//
-	Root as Button
+	Root as Button,
+	Root,
+	type ButtonProps as Props
 };

@@ -1,5 +1,5 @@
-import type { RequestHandler } from './$types';
 import { type R2Error } from '@cloudflare/workers-types';
+import type { RequestHandler } from './$types';
 
 import z from 'zod';
 

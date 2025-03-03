@@ -5,14 +5,14 @@ import type { page } from '$app/state';
 import type { Router } from '$lib/server/trpc/router';
 
 import type { QueryClient } from '@tanstack/svelte-query';
-import { createTRPCClient, type TRPCClientInit } from 'trpc-sveltekit';
 import { svelteQueryWrapper } from 'trpc-svelte-query-adapter';
+import { createTRPCClient, type TRPCClientInit } from 'trpc-sveltekit';
 
 import * as Devalue from 'devalue';
 import SuperJSON from 'superjson';
 
-import { httpLink } from '@trpc/client';
 import { browser } from '$app/environment';
+import { httpLink } from '@trpc/client';
 
 export const TRPC_PATH = `/__trpc`;
 
