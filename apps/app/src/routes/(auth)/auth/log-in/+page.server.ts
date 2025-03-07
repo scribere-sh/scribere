@@ -53,7 +53,7 @@ export const actions: Actions = {
 			});
 		}
 
-		if (!(await verifyArgon2id(authProvider.hash, form.data.password))) {
+		if (!(await verifyArgon2id(event, authProvider.hash, form.data.password))) {
 			return setError(form, 'password', 'Password Incorrect');
 		}
 

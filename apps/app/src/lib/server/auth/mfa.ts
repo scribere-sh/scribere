@@ -13,18 +13,18 @@ const MFA_PERIOD_SECONDS = 30;
 const MFA_DIGITS = 6;
 const MFA_GRACE_PERIOD_SECONDS = 10;
 
-export const generateRecoveryCode = async (userId: string): Promise<string> => {
-	const recoveryKey = generateTokenString(10);
-	const hashedRecoveryKey = await createArgon2id(recoveryKey);
+// export const generateRecoveryCode = async (userId: string): Promise<string> => {
+// 	const recoveryKey = generateTokenString(10);
+// 	const hashedRecoveryKey = await createArgon2id(recoveryKey);
 
-	await DB.insert(twoFactorAuthenticationProviderTable).values({
-		userId,
-		type: TOTP_RECOVERY_TYPE,
-		challenge: hashedRecoveryKey
-	});
+// 	await DB.insert(twoFactorAuthenticationProviderTable).values({
+// 		userId,
+// 		type: TOTP_RECOVERY_TYPE,
+// 		challenge: hashedRecoveryKey
+// 	});
 
-	return recoveryKey;
-};
+// 	return recoveryKey;
+// };
 
 export const generateTOTPKey = generateTokenString;
 

@@ -19,6 +19,12 @@
 		"SENDER_EMAIL": "noreply@scribere.sh",
 		"SENDER_NAME": "Scribere"
 	},
+	"services": [
+		{
+			"binding": "ARGON2",
+			"service": "scribere-argon2"
+		}
+	],
 	"r2_buckets": [
 		{
 			"binding": "R2",
