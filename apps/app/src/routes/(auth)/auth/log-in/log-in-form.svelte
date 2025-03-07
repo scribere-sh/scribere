@@ -1,0 +1,57 @@
+<script lang="ts">
+	import type { PageData } from './$types';
+	import type { PropsObj } from '$lib/server/util';
+
+	import * as Form from '@scribere/ui/form';
+	import { Input } from '@scribere/ui/input';
+
+	import { logInFormSchema } from '$lib/client/forms';
+
+	import { superForm } from 'sveltekit-superforms';
+	import { zodClient } from 'sveltekit-superforms/adapters';
+
+	const {
+		form: _form
+	}: {
+		form: PageData['form'];
+	} = $props();
+
+	const form = superForm(_form, {
+		validators: zodClient(logInFormSchema)
+	});
+
+	const { form: formData, enhance } = form;
+</script>
+
+<form method="POST" use:enhance class="w-full">
+	<Form.Field {form} name="emailAddress">
+		<Form.Control>
+			{#snippet children({ props }: PropsObj)}
+				<Form.Label>Email Address</Form.Label>
+				<Input
+					{...props}
+					placeholder="example@contoso.com"
+					bind:value={$formData.emailAddress}
+				/>
+			{/snippet}
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
+
+	<Form.Field {form} name="password">
+		<Form.Control>
+			{#snippet children({ props }: PropsObj)}
+				<Form.Label>Password</Form.Label>
+				<Input
+					{...props}
+					placeholder="********"
+					type="password"
+					bind:value={$formData.password}
+				/>
+			{/snippet}
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
+
+	<Form.Button class="mt-4 w-full">Log In</Form.Button>
+</form>

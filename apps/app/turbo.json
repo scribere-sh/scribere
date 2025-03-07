@@ -6,13 +6,15 @@
 			"outputs": [".svelte-kit", "build"]
 		},
 		"db:generate": {
-			"cache": true,
 			"inputs": ["src/lib/server/drizzle.ts"],
-			"outputs": ["drizzle"]
+			"outputs": ["drizzle"],
+			"interactive": true,
+			"cache": false
 		},
 		"db:migrate": {
 			"dependsOn": ["db:generate"],
-            "interactive": true,
+			"env": ["TURSO_URL", "TURSO_API_TOKEN"],
+			"interactive": true,
 			"cache": false
 		}
 	}

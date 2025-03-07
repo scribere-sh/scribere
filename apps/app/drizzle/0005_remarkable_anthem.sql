@@ -1,0 +1,1 @@
+ALTER TABLE `email_verification_requests` ADD `emailRef` text;

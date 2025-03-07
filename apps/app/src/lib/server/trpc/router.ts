@@ -3,8 +3,6 @@ import type { RequestEvent } from '@sveltejs/kit';
 import { createContext } from './context';
 import { t, TRPCLog } from './init';
 
-import { usersTable } from '$lib/server/drizzle';
-
 import z from 'zod';
 
 export const router = t.router({
@@ -16,12 +14,8 @@ export const router = t.router({
 				})
 				.strict()
 		)
-		.query(async ({ input, ctx }) => {
+		.query(async ({ input }) => {
 			const name = input.name?.trim();
-
-			await ctx.locals.DB.insert(usersTable).values({
-				id: 69
-			});
 
 			const message = name !== undefined ? `Hello, ${name}!` : `Hello, World!`;
 

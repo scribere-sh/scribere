@@ -10,35 +10,42 @@
  */
 export const PAGES = {
 	'/': `/`,
-	'/auth': `/auth`,
 	'/debug': `/debug`,
-	'/debug/editor': `/debug/editor`
+	'/debug/editor': `/debug/editor`,
+	'/auth/log-in': `/auth/log-in`,
+	'/auth/mfa': `/auth/mfa`,
+	'/auth/mfa/enrol': `/auth/mfa/enrol`,
+	'/auth/recovery-code': `/auth/recovery-code`,
+	'/auth/reset-password': `/auth/reset-password`,
+	'/auth/sign-up': `/auth/sign-up`
 };
 
 /**
  * SERVERS
  */
 export const SERVERS = {
-	'POST /api/assets': `/api/assets`,
-	'PUT /api/assets': `/api/assets`,
-	'GET /api/assets': `/api/assets`,
-	'DELETE /api/assets': `/api/assets`,
-	'GET /oauth/[provider=oauth_provider]': (params: {
-		provider: ExtractParamType<typeof import('../params/oauth_provider.ts').match>;
-	}) => {
+	'GET /robots.txt': `/robots.txt`,
+	'GET /auth/verify-email': `/auth/verify-email`,
+	'GET /oauth/[provider]': (params: { provider: string | number }) => {
 		return `/oauth/${params['provider']}`;
 	},
-	'GET /oauth/[provider=oauth_provider]/callback': (params: {
-		provider: ExtractParamType<typeof import('../params/oauth_provider.ts').match>;
-	}) => {
+	'GET /oauth/[provider]/callback': (params: { provider: string | number }) => {
 		return `/oauth/${params['provider']}/callback`;
+	},
+	'GET /oauth/[provider]/link': (params: { provider: string | number }) => {
+		return `/oauth/${params['provider']}/link`;
 	}
 };
 
 /**
  * ACTIONS
  */
-export const ACTIONS = {};
+export const ACTIONS = {
+	'default /auth/log-in': `/auth/log-in`,
+	'default /auth/mfa': `/auth/mfa`,
+	'default /auth/mfa/enrol': `/auth/mfa/enrol`,
+	'default /auth/sign-up': `/auth/sign-up`
+};
 
 /**
  * LINKS
@@ -139,11 +146,6 @@ export function route<T extends keyof AllTypes>(key: T, ...params: any[]): strin
 	}
 }
 
-/* type helpers param & predicate */
-type ExtractFnPredicate<T> = T extends (param: any) => param is infer U ? U : never;
-type ExtractParamType<T extends (param: any) => any> =
-	ExtractFnPredicate<T> extends never ? Parameters<T>[0] : ExtractFnPredicate<T>;
-
 /**
  * Add this type as a generic of the vite plugin `kitRoutes<KIT_ROUTES>`.
  *
@@ -160,16 +162,30 @@ type ExtractParamType<T extends (param: any) => any> =
  * ```
  */
 export type KIT_ROUTES = {
-	PAGES: { '/': never; '/auth': never; '/debug': never; '/debug/editor': never };
-	SERVERS: {
-		'POST /api/assets': never;
-		'PUT /api/assets': never;
-		'GET /api/assets': never;
-		'DELETE /api/assets': never;
-		'GET /oauth/[provider=oauth_provider]': 'provider';
-		'GET /oauth/[provider=oauth_provider]/callback': 'provider';
+	PAGES: {
+		'/': never;
+		'/debug': never;
+		'/debug/editor': never;
+		'/auth/log-in': never;
+		'/auth/mfa': never;
+		'/auth/mfa/enrol': never;
+		'/auth/recovery-code': never;
+		'/auth/reset-password': never;
+		'/auth/sign-up': never;
 	};
-	ACTIONS: Record<string, never>;
+	SERVERS: {
+		'GET /robots.txt': never;
+		'GET /auth/verify-email': never;
+		'GET /oauth/[provider]': 'provider';
+		'GET /oauth/[provider]/callback': 'provider';
+		'GET /oauth/[provider]/link': 'provider';
+	};
+	ACTIONS: {
+		'default /auth/log-in': never;
+		'default /auth/mfa': never;
+		'default /auth/mfa/enrol': never;
+		'default /auth/sign-up': never;
+	};
 	LINKS: Record<string, never>;
 	Params: { provider: never };
 };

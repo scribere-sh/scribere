@@ -1,5 +1,7 @@
-import { D1Database, R2Bucket } from '@cloudflare/workers-types';
-import { DrizzleD1Database } from 'drizzle-orm/d1';
+import type { Session } from '$lib/server/auth/session';
+import type { User } from '$lib/server/auth/user';
+
+import type { R2Bucket, RateLimit } from '@cloudflare/workers-types';
 
 // See https://svelte.dev/docs/kit/types#app.d.ts
 // for information about these interfaces
@@ -7,8 +9,9 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			DB: DrizzleD1Database;
 			R2: R2Bucket;
+			session: Session | null;
+			user: User | null;
 		}
 		// interface PageData {}
 		// interface PageState {}
@@ -18,8 +21,8 @@ declare global {
 				SENDER_EMAIL: string;
 				SENDER_NAME: string;
 
-				DB: D1Database;
 				R2: R2Bucket;
+				RATE_LIMITER: RateLimit;
 			};
 		}
 	}

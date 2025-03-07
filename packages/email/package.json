@@ -16,9 +16,9 @@
 		"!dist/**/*.spec.*"
 	],
 	"exports": {
-		"./confirmation": {
-			"types": "./dist/confirmation.d.ts",
-			"default": "./dist/confirmation.js"
+		"./validateEmail": {
+			"types": "./dist/validateEmail.d.ts",
+			"default": "./dist/validateEmail.js"
 		},
 		"./templates/*": {
 			"types": "./dist/templates/*.d.ts",

@@ -1,14 +1,13 @@
 import type { PageLoad, PageParentData } from './$types';
 
-import { trpc } from '$lib/trpc';
-
-const DEFAULT_NAME = 'Huddy Buddy'.trim();
+import { trpc } from '$lib/client/trpc';
 
 export const load = (async (event) => {
 	const { queryClient } = (await event.parent()) as PageParentData;
+
 	const rpc = trpc(event, queryClient);
 
-	const name = event.url.searchParams.get('name') ?? DEFAULT_NAME;
+	const name = event.data.nameForQuery;
 
 	return {
 		name,

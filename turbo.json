@@ -3,6 +3,10 @@
     "ui": "tui",
     "globalDependencies": [
         ".env", "pnpm-lock.yaml"
+    ],    
+    "globalEnv": [
+        "TURSO_URL",
+        "TURSO_AUTH_TOKEN"
     ],
     "tasks": {
         "dev": {
