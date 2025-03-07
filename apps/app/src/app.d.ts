@@ -1,7 +1,7 @@
 import type { Session } from '$lib/server/auth/session';
 import type { User } from '$lib/server/auth/user';
 
-import type { R2Bucket, Fetcher } from '@cloudflare/workers-types';
+import type { Fetcher, R2Bucket } from '@cloudflare/workers-types';
 
 // See https://svelte.dev/docs/kit/types#app.d.ts
 // for information about these interfaces
@@ -22,7 +22,7 @@ declare global {
 				SENDER_NAME: string;
 
 				R2: R2Bucket;
-                ARGON2: Fetcher;
+				ARGON2: Fetcher;
 			};
 		}
 	}

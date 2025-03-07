@@ -5,9 +5,9 @@ import { eq } from 'drizzle-orm';
 
 import { createArgon2id, verifyArgon2id } from './cryptography';
 
+import type { RequestEvent } from '@sveltejs/kit';
 import { DB } from '../db';
 import { authProviderTable } from '../db/tables';
-import type { RequestEvent } from '@sveltejs/kit';
 
 /**
  * FOR THE LOVE OF ALL THAT IS HOLY DONT USE THIS TO STORE PASSWORDS
@@ -40,7 +40,11 @@ export const verifyPasswordStrength = async (
 	return found === undefined;
 };
 
-export const assignPasswordToUser = async (event: RequestEvent, userId: string, password: string) => {
+export const assignPasswordToUser = async (
+	event: RequestEvent,
+	userId: string,
+	password: string
+) => {
 	const passwordHash = await createPasswordHash(event, password);
 
 	await DB.insert(authProviderTable).values({
@@ -50,7 +54,11 @@ export const assignPasswordToUser = async (event: RequestEvent, userId: string, 
 	});
 };
 
-export const verifyPasswordOfUser = async (event: RequestEvent, userId: string, provided_password: string) => {
+export const verifyPasswordOfUser = async (
+	event: RequestEvent,
+	userId: string,
+	provided_password: string
+) => {
 	const [password] = await DB.select({ hash: authProviderTable.hash })
 		.from(authProviderTable)
 		.where(eq(authProviderTable.userId, userId));
@@ -66,6 +74,10 @@ export const createPasswordHash = async (event: RequestEvent, password: string) 
 	return await createArgon2id(event, password);
 };
 
-export const validatePassword = async (event: RequestEvent, stored_hash: string, password: string) => {
+export const validatePassword = async (
+	event: RequestEvent,
+	stored_hash: string,
+	password: string
+) => {
 	return await verifyArgon2id(event, stored_hash, password);
 };

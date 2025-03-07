@@ -9,6 +9,8 @@
 	import { Label } from '@scribere/ui/label';
 	import * as Tooltip from '@scribere/ui/tooltip';
 
+	import { toggleMode } from 'mode-watcher';
+
 	/**
 	 * Unique ID for this instance of this component that
 	 * is consistent on in CSR and SSR.
@@ -19,7 +21,7 @@
 	const uid = $props.id();
 
 	const toggleDark = () => {
-		document.body.classList.toggle('dark');
+		toggleMode();
 	};
 
 	const { data }: PageProps = $props();

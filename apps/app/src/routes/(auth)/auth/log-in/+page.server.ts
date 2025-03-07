@@ -4,7 +4,9 @@ import { OAuth2Providers } from '$lib/server/auth/oauth';
 
 import { logInFormSchema } from '$lib/client/forms';
 
+import { route } from '$lib/ROUTES';
 import { verifyArgon2id } from '$lib/server/auth/cryptography';
+import { userHasTOTP } from '$lib/server/auth/mfa';
 import {
 	createSession,
 	generateSessionToken,
@@ -16,10 +18,8 @@ import { DB } from '$lib/server/db';
 import { authProviderTable, emailAddressTable } from '$lib/server/db/tables';
 import { redirect } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
-import { setError, superValidate, fail } from 'sveltekit-superforms';
+import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { route } from '$lib/ROUTES';
-import { userHasTOTP } from '$lib/server/auth/mfa';
 
 export const actions: Actions = {
 	default: async (event) => {
@@ -65,13 +65,12 @@ export const actions: Actions = {
 		const session = await createSession(sessionToken, user.id, sessionFlags);
 		setSessionToken(event, sessionToken, session.expiresAt);
 
-        if (await userHasTOTP(user.id)) {
-            redirect(302, route('/auth/mfa'));
-        } else {
-            setSessionAsMFAVerified(session.id);
-            redirect(302, route('/'));
-        }
-
+		if (await userHasTOTP(user.id)) {
+			redirect(302, route('/auth/mfa'));
+		} else {
+			setSessionAsMFAVerified(session.id);
+			redirect(302, route('/'));
+		}
 	}
 };
 

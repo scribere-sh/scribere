@@ -25,14 +25,14 @@ export const signupFormSchema = z.object({
 });
 
 export const mfaFormSchema = z.object({
-    mfa: z.string().length(6)
+	mfa: z.string().length(6)
 });
 
 export const mfaEnrollmentFormSchema = z.object({
-    challenge: z.string().nonempty(),
-    mfa: z.string().length(6)
+	challenge: z.string().nonempty(),
+	mfa: z.string().length(6)
 });
 
 export type LoginFormSchema = typeof logInFormSchema;
 export type SignupFormSchema = typeof signupFormSchema;
-export type MFAFormSchema = typeof mfaFormSchema;;
+export type MFAFormSchema = typeof mfaFormSchema;

@@ -59,6 +59,9 @@ importers:
       drizzle-orm:
         specifier: ^0.40
         version: 0.40.0(@cloudflare/workers-types@4.20250224.0)(@libsql/client@0.14.0)(gel@2.0.0)
+      mode-watcher:
+        specifier: ^0.5
+        version: 0.5.1(svelte@5.20.4)
       superjson:
         specifier: ^2
         version: 2.2.2

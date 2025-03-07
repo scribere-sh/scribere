@@ -1,6 +1,6 @@
 import type { Action, Actions, PageServerLoad } from './$types';
 
-import { setError, superValidate, fail } from 'sveltekit-superforms';
+import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import { signupFormSchema } from '$lib/client/forms';
@@ -45,7 +45,7 @@ export const actions: Actions = {
 		});
 
 		await insertEmailAddress(form.data.emailAddress, user.id);
-        await assignPasswordToUser(event, user.id, form.data.password);
+		await assignPasswordToUser(event, user.id, form.data.password);
 
 		const challenge = await generateEmailValidation(event, form.data.emailAddress);
 		await sendEmailValidationChallenge(
@@ -55,9 +55,9 @@ export const actions: Actions = {
 			challenge
 		);
 
-        // user won't have mfa
-        //
-        // it'd be set to true off the get to anyway
+		// user won't have mfa
+		//
+		// it'd be set to true off the get to anyway
 		const sessionFlags: SessionFlags = {
 			mfaVerified: true
 		};
@@ -66,7 +66,7 @@ export const actions: Actions = {
 		const session = await createSession(sessionToken, user.id, sessionFlags);
 		setSessionToken(event, sessionToken, session.expiresAt);
 
-        redirect(302, route('/'));
+		redirect(302, route('/'));
 	}) satisfies Action
 };
 

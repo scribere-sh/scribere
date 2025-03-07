@@ -32,13 +32,14 @@
 		"arctic": "^3",
 		"devalue": "^5",
 		"drizzle-orm": "^0.40",
+		"mode-watcher": "^0.5",
 		"superjson": "^2",
 		"sveltekit-superforms": "^2.23.1",
 		"svelte-sonner": "^0.3.28",
 		"trpc-svelte-query-adapter": "^2",
 		"trpc-sveltekit": "^3",
 		"ulid": "^2",
-        "uqr": "^0.1",
+		"uqr": "^0.1",
 		"zod": "^3"
 	},
 	"devDependencies": {

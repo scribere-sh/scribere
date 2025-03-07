@@ -25,7 +25,7 @@ export interface EmailAddressChallenge {
  * @param emailAddress The email address to verify and challenge
  */
 export const generateEmailValidation = async (
-    event: RequestEvent,
+	event: RequestEvent,
 	emailAddress: string
 ): Promise<EmailAddressChallenge> => {
 	const challengeRef = generateChallengeRef(emailAddress);
