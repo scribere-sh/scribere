@@ -20,6 +20,7 @@
 	},
 	"dependencies": {
 		"@kitql/helpers": "^0.8",
+        "@node-rs/argon2": "^2",
 		"@oslojs/binary": "^1",
 		"@oslojs/crypto": "^1",
 		"@oslojs/encoding": "^1",
@@ -30,7 +31,6 @@
 		"@tanstack/svelte-query-devtools": "^5",
 		"@trpc/client": "^10",
 		"arctic": "^3",
-		"argon2": "^0.41",
 		"devalue": "^5",
 		"drizzle-orm": "^0.40",
 		"superjson": "^2",

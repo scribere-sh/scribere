@@ -1,6 +1,6 @@
 import { decodeBase32IgnorePadding, encodeBase32LowerCaseNoPadding } from '@oslojs/encoding';
 
-import * as Argon2 from 'argon2';
+import { hash, verify } from '@node-rs/argon2';
 
 export const generateTokenBytes = (length: number = 32) => {
 	const bytes = new Uint8Array(length);
@@ -18,14 +18,14 @@ export const decodeTokenStringToBytes = (token: string): Uint8Array => {
 }
 
 export const createArgon2id = async (data: string | Buffer): Promise<string> => {
-	return await Argon2.hash(data, {
+	return await hash(data, {
 		memoryCost: 19456,
 		timeCost: 2,
-		hashLength: 32,
+		outputLen: 32,
 		parallelism: 1
 	});
 };
 
 export const verifyArgon2id = async (saved: string, data: string): Promise<boolean> => {
-	return await Argon2.verify(saved, data);
+	return await verify(saved, data);
 };
