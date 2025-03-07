@@ -47,7 +47,7 @@ export const actions: Actions = {
 		await insertEmailAddress(form.data.emailAddress, user.id);
         await assignPasswordToUser(event, user.id, form.data.password);
 
-		const challenge = await generateEmailValidation(form.data.emailAddress);
+		const challenge = await generateEmailValidation(event, form.data.emailAddress);
 		await sendEmailValidationChallenge(
 			user.givenName,
 			form.data.emailAddress,

@@ -25,12 +25,13 @@ export interface EmailAddressChallenge {
  * @param emailAddress The email address to verify and challenge
  */
 export const generateEmailValidation = async (
+    event: RequestEvent,
 	emailAddress: string
 ): Promise<EmailAddressChallenge> => {
 	const challengeRef = generateChallengeRef(emailAddress);
 	const challengeToken = generateChallengeToken();
 
-	const challengeTokenArgon2id = await createArgon2id(challengeToken);
+	const challengeTokenArgon2id = await createArgon2id(event, challengeToken);
 
 	await DB.insert(emailValidationChallengeTable).values({
 		challengeRef,
@@ -103,7 +104,7 @@ export const verifyEmailValidationRequest = async (event: RequestEvent) => {
 		.from(emailValidationChallengeTable)
 		.where(eq(emailValidationChallengeTable.challengeRef, challengeRef));
 
-	if (await verifyArgon2id(challenge.challengeToken, challengeToken)) {
+	if (await verifyArgon2id(event, challenge.challengeToken, challengeToken)) {
 		await DB.batch([
 			DB.delete(emailValidationChallengeTable).where(
 				eq(emailValidationChallengeTable.challengeRef, challengeRef)

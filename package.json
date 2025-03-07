@@ -30,7 +30,6 @@
     },
     "pnpm": {
         "onlyBuiltDependencies": [
-            "argon2",
             "esbuild",
             "sharp",
             "workerd"

@@ -5,7 +5,6 @@ import {
 	setSessionToken,
 	validateSessionToken
 } from '$lib/server/auth/session';
-import { applyRateLimiting } from '$lib/server/rate-limit';
 import { createContext } from '$lib/server/trpc/context';
 import { router } from '$lib/server/trpc/router';
 
@@ -48,6 +47,5 @@ export const handle: Handle = sequence(
 		return resolve(event);
 	},
 	validateSessionHandle,
-	applyRateLimiting,
 	createTRPCHandle({ router, createContext, url: TRPC_PATH })
 );
