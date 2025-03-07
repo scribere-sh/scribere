@@ -35,7 +35,7 @@ export const actions: Actions = {
 			return setError(form, 'emailAddress', 'Email Address already in use!');
 		}
 
-		if (!(await verifyPasswordStrength(form.data.password, event.request.signal))) {
+		if (!(await verifyPasswordStrength(form.data.password, event))) {
 			return setError(form, 'password', 'Password is not strong enough!');
 		}
 

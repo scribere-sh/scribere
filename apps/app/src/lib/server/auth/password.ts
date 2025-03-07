@@ -21,14 +21,14 @@ const sha1Password = (pw: string) => encodeHexLowerCase(sha1(new TextEncoder().e
 
 export const verifyPasswordStrength = async (
 	password: string,
-	signal?: AbortSignal
+	{ fetch }: RequestEvent
 ): Promise<boolean> => {
 	// todo: check string length?
 	// it's done already in the form
 
 	const hash = sha1Password(password);
 	const hashPrefix = hash.slice(0, 5);
-	const response = await fetch(`https://api.pwnedpasswords.com/range/${hashPrefix}`, { signal });
+	const response = await fetch(`https://api.pwnedpasswords.com/range/${hashPrefix}`);
 	const data = await response.text();
 	const items = data.split('\n');
 
