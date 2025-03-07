@@ -1,7 +1,7 @@
 import type { CreateEmailResponse } from 'resend';
 
 import Handlebars from 'handlebars';
-import EmailConfirmationTemplate from './templates/emailValidateTemplate.handlebars?raw';
+import EmailValidationTemplate from './templates/emailValidateTemplate.handlebars?raw';
 
 import { Resend } from 'resend';
 
@@ -20,7 +20,7 @@ export interface ValidateEmailProps {
 	};
 }
 
-const template = Handlebars.compile(EmailConfirmationTemplate);
+const template = Handlebars.compile(EmailValidationTemplate);
 
 export const renderValidationEmail = (
 	props: Pick<ValidateEmailProps, 'to' | 'validationUrl'>

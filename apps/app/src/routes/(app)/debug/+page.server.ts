@@ -1,14 +1,14 @@
-import { renderConfirmationEmail } from '@scribere/email/confirmation';
+import { renderValidationEmail } from '@scribere/email/validateEmail';
 import type { PageServerLoad } from './$types';
 
 export const load = (() => {
 	return {
-		rendered: renderConfirmationEmail({
+		rendered: renderValidationEmail({
 			to: {
 				email: 'ha',
 				name: 'fda'
 			},
-			verification_url: 'https://google.com'
+			validationUrl: 'https://google.com'
 		})
 	};
 }) satisfies PageServerLoad;
