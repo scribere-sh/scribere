@@ -19,6 +19,7 @@ import { redirect } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
+import { AUTH_RETURN_PATH } from '$lib/server/auth';
 
 export const actions: Actions = {
 	default: async (event) => {
@@ -69,12 +70,25 @@ export const actions: Actions = {
 		if (userHasMFA) {
 			redirect(302, route('/auth/mfa'));
 		} else {
-			redirect(302, route('/'));
+			redirect(302, event.cookies.get(AUTH_RETURN_PATH) ?? route('/'));
 		}
 	}
 };
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async({ url, cookies}) => {
+    const returnPath = url.searchParams.get('return');
+
+    if (returnPath) {
+        cookies.set(AUTH_RETURN_PATH, returnPath, {
+            httpOnly: true,
+            maxAge: 60 * 10,
+            // eslint-disable-next-line turbo/no-undeclared-env-vars
+            secure: import.meta.env.PROD,
+            path: '/',
+            sameSite: 'lax'
+        });
+    }
+
 	return {
 		useableProviders: OAuth2Providers.validProviders,
 		form: await superValidate(zod(logInFormSchema))

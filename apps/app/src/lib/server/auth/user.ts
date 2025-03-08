@@ -39,3 +39,29 @@ export const lookupUserIdFromOAuthProvider = async (providerId: string, provider
 		return null;
 	}
 };
+
+export const linkOAuthProviderToUser = async (
+	providerId: string,
+	provider: string,
+	userId: string
+) => {
+	const [existentRecord] = await DB.select({
+		providerId: authProviderTable.ref
+	})
+		.from(authProviderTable)
+		.where(and(eq(authProviderTable.userId, userId), eq(authProviderTable.type, provider)));
+
+	if (existentRecord) {
+		if (existentRecord.providerId === providerId) {
+			return;
+		} else {
+			throw new Error('user must unlink this provider first');
+		}
+	}
+
+	await DB.insert(authProviderTable).values({
+		type: provider,
+		ref: providerId,
+		userId
+	});
+};

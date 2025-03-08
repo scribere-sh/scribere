@@ -1,5 +1,6 @@
 import { TRPC_PATH } from '$lib/client/trpc';
 import {
+    deleteExpiredSessions,
 	deleteSessionToken,
 	SESSION_TOKEN_NAME,
 	setSessionToken,
@@ -45,6 +46,11 @@ const validateSessionHandle: Handle = async ({ event, resolve }) => {
 
 	return resolve(event);
 };
+
+/**
+ * Auto-delete expired sessions every 10 minutes
+ */
+setInterval(deleteExpiredSessions, 10 * 60 * 1000);
 
 export const handle: Handle = sequence(
 	async ({ event, resolve }) => {

@@ -1,5 +1,7 @@
 import type { Atlassian, GitHub } from 'arctic';
 
+import { env } from '$env/dynamic/private';
+
 import validate from './validate-env';
 
 import { generateTokenString } from '../auth/cryptography';
@@ -28,4 +30,12 @@ export class OAuth2Providers {
 }
 
 export const generateState = generateTokenString;
+
 export const STATE_COOKIE_NAME = 'state';
+/**
+ * Cookie used to differentiate between auth and link
+ *
+ * must confirm that oauth isn't already connected
+ */
+export const OAUTH_ACTION_NAME = 'oauth_action';
+export const OAUTH_SKIPS_MFA = env.OAUTH_SKIP_MFA === 'true';

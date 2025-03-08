@@ -5,8 +5,7 @@
 	import MfaForm from './mfa-form.svelte';
 
 	const { data }: PageProps = $props();
-
-	const form = data.form;
+	const { form } = data;
 </script>
 
 <Card.Root class="w-96">
@@ -17,6 +16,6 @@
 		</Card.Description>
 	</Card.Header>
 	<Card.Content class="grid place-items-center">
-		<MfaForm form={data.form} />
+		<MfaForm {form} />
 	</Card.Content>
 </Card.Root>

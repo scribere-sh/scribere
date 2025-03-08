@@ -8,7 +8,7 @@ import { sessionsTable, usersTable } from '../db/tables';
 
 import { sha256 } from '@oslojs/crypto/sha2';
 import { encodeHexLowerCase } from '@oslojs/encoding';
-import { eq } from 'drizzle-orm';
+import { eq, lte } from 'drizzle-orm';
 
 export const SESSION_TOKEN_NAME = 'session';
 
@@ -158,6 +158,10 @@ export const invalidateSession = async (sessionId: string) => {
 export const invalidateUserSessions = async (userId: string) => {
 	await DB.delete(sessionsTable).where(eq(sessionsTable.userId, userId));
 };
+
+export const deleteExpiredSessions = async () => {
+    await DB.delete(sessionsTable).where(lte(sessionsTable.expiresAt, new Date()))
+}
 
 export const deleteSessionToken = (event: RequestEvent) => {
 	event.cookies.set(SESSION_TOKEN_NAME, '', {
