@@ -14,16 +14,16 @@ import { sequence } from '@sveltejs/kit/hooks';
 import { createTRPCHandle } from 'trpc-sveltekit';
 
 const apiRequireAuthHandle: Handle = async ({ event, resolve }) => {
-    if (event.url.pathname.startsWith('/api')) {
-        if (!event.locals.session || !event.locals.user) {
-            return new Response(null, {
-                status: 401
-            });
-        }
-    }
+	if (event.url.pathname.startsWith('/api')) {
+		if (!event.locals.session || !event.locals.user) {
+			return new Response(null, {
+				status: 401
+			});
+		}
+	}
 
-    return resolve(event);
-}
+	return resolve(event);
+};
 
 const validateSessionHandle: Handle = async ({ event, resolve }) => {
 	const token = event.cookies.get(SESSION_TOKEN_NAME) ?? null;
@@ -59,6 +59,6 @@ export const handle: Handle = sequence(
 		return resolve(event);
 	},
 	validateSessionHandle,
-    apiRequireAuthHandle,
+	apiRequireAuthHandle,
 	createTRPCHandle({ router, createContext, url: TRPC_PATH })
 );

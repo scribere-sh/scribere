@@ -5,6 +5,11 @@
 		"build": {
 			"outputs": [".svelte-kit", "build"]
 		},
+		"preview": {
+			"cache": false,
+			"persistent": true,
+			"interactive": true
+		},
 		"db:generate": {
 			"inputs": ["src/lib/server/drizzle.ts"],
 			"outputs": ["drizzle"],
