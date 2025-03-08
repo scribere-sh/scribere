@@ -26,7 +26,6 @@
 
 	const { data }: PageProps = $props();
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { name, nameQuery } = data;
 
 	let nameStore = writable({ name });
