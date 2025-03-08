@@ -113,5 +113,5 @@ export const sessionsTable = sqliteTable('sessions', {
 
 	expiresAt: integer({ mode: 'timestamp' }).notNull(),
 
-	mfaVerified: integer({ mode: 'boolean' }).notNull()
+	mfaVerified: integer({ mode: 'boolean' })
 });

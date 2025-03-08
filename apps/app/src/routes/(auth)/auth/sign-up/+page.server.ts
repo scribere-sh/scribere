@@ -59,7 +59,7 @@ export const actions: Actions = {
 		//
 		// it'd be set to true off the get to anyway
 		const sessionFlags: SessionFlags = {
-			mfaVerified: true
+			mfaVerified: null
 		};
 
 		const sessionToken = generateSessionToken();

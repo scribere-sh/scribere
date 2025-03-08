@@ -1,6 +1,6 @@
 import type { Actions, PageServerLoad } from './$types';
 
-import { OAuth2Providers } from '$lib/server/auth/oauth';
+import { OAuth2Providers } from '$lib/server/oauth';
 
 import { logInFormSchema } from '$lib/client/forms';
 
@@ -10,7 +10,6 @@ import { userHasTOTP } from '$lib/server/auth/mfa';
 import {
 	createSession,
 	generateSessionToken,
-	setSessionAsMFAVerified,
 	setSessionToken,
 	type SessionFlags
 } from '$lib/server/auth/session';
@@ -57,18 +56,19 @@ export const actions: Actions = {
 			return setError(form, 'password', 'Password Incorrect');
 		}
 
+		const userHasMFA = await userHasTOTP(user.id);
+
 		const sessionFlags: SessionFlags = {
-			mfaVerified: false
+			mfaVerified: userHasMFA ? false : null
 		};
 
 		const sessionToken = generateSessionToken();
 		const session = await createSession(sessionToken, user.id, sessionFlags);
 		setSessionToken(event, sessionToken, session.expiresAt);
 
-		if (await userHasTOTP(user.id)) {
+		if (userHasMFA) {
 			redirect(302, route('/auth/mfa'));
 		} else {
-			setSessionAsMFAVerified(session.id);
 			redirect(302, route('/'));
 		}
 	}

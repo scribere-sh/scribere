@@ -14,7 +14,6 @@ export const PAGES = {
 	'/debug/editor': `/debug/editor`,
 	'/auth/log-in': `/auth/log-in`,
 	'/auth/mfa': `/auth/mfa`,
-	'/auth/mfa/enrol': `/auth/mfa/enrol`,
 	'/auth/recovery-code': `/auth/recovery-code`,
 	'/auth/reset-password': `/auth/reset-password`,
 	'/auth/sign-up': `/auth/sign-up`
@@ -25,15 +24,13 @@ export const PAGES = {
  */
 export const SERVERS = {
 	'GET /robots.txt': `/robots.txt`,
+	'GET /auth/sign-out': `/auth/sign-out`,
 	'GET /auth/verify-email': `/auth/verify-email`,
 	'GET /oauth/[provider]': (params: { provider: string | number }) => {
 		return `/oauth/${params['provider']}`;
 	},
 	'GET /oauth/[provider]/callback': (params: { provider: string | number }) => {
 		return `/oauth/${params['provider']}/callback`;
-	},
-	'GET /oauth/[provider]/link': (params: { provider: string | number }) => {
-		return `/oauth/${params['provider']}/link`;
 	}
 };
 
@@ -43,7 +40,6 @@ export const SERVERS = {
 export const ACTIONS = {
 	'default /auth/log-in': `/auth/log-in`,
 	'default /auth/mfa': `/auth/mfa`,
-	'default /auth/mfa/enrol': `/auth/mfa/enrol`,
 	'default /auth/sign-up': `/auth/sign-up`
 };
 
@@ -168,22 +164,20 @@ export type KIT_ROUTES = {
 		'/debug/editor': never;
 		'/auth/log-in': never;
 		'/auth/mfa': never;
-		'/auth/mfa/enrol': never;
 		'/auth/recovery-code': never;
 		'/auth/reset-password': never;
 		'/auth/sign-up': never;
 	};
 	SERVERS: {
 		'GET /robots.txt': never;
+		'GET /auth/sign-out': never;
 		'GET /auth/verify-email': never;
 		'GET /oauth/[provider]': 'provider';
 		'GET /oauth/[provider]/callback': 'provider';
-		'GET /oauth/[provider]/link': 'provider';
 	};
 	ACTIONS: {
 		'default /auth/log-in': never;
 		'default /auth/mfa': never;
-		'default /auth/mfa/enrol': never;
 		'default /auth/sign-up': never;
 	};
 	LINKS: Record<string, never>;

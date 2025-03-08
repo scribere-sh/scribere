@@ -27,7 +27,7 @@ export const sessionTokenToSessionId = (sessionToken: string): string =>
 	encodeHexLowerCase(sha256(new TextEncoder().encode(sessionToken)));
 
 export interface SessionFlags {
-	mfaVerified: boolean;
+	mfaVerified: boolean | null;
 }
 
 export interface Session extends SessionFlags {

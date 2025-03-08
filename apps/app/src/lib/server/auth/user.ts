@@ -1,5 +1,7 @@
+import { and, eq } from 'drizzle-orm';
+
 import { DB } from '../db';
-import { usersTable } from '../db/tables';
+import { authProviderTable, usersTable } from '../db/tables';
 
 export interface User {
 	id: string;
@@ -23,3 +25,17 @@ export const createUser = async (user: Omit<User, 'id'>): Promise<User> => {
 	return newUser;
 };
 // #endregion
+
+export const lookupUserIdFromOAuthProvider = async (providerId: string, provider: string) => {
+	const [userRecord] = await DB.select({
+		userId: authProviderTable.userId
+	})
+		.from(authProviderTable)
+		.where(and(eq(authProviderTable.type, provider), eq(authProviderTable.ref, providerId)));
+
+	if (userRecord) {
+		return userRecord.userId;
+	} else {
+		return null;
+	}
+};

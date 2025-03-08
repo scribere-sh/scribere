@@ -1,13 +1,13 @@
 import type { Atlassian, GitHub } from 'arctic';
-import type { OAuth2ClientVariant } from './variant';
 
 import validate from './validate-env';
 
-import { generateTokenString } from '../cryptography';
+import { generateTokenString } from '../auth/cryptography';
+
 import { atlassianFactory } from './atlassian';
 import { githubFactory } from './github';
 
-export type OAuth2ClientFactory<Client> = (req_url: URL, variant?: OAuth2ClientVariant) => Client;
+export type OAuth2ClientFactory<Client> = (req_url: URL) => { client: Client; scopes: string[] };
 
 export class OAuth2Providers {
 	static get github(): OAuth2ClientFactory<GitHub> | null {

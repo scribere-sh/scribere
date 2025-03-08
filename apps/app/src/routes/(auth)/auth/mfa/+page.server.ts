@@ -24,14 +24,13 @@ export const actions: Actions = {
 		}
 
 		if (!(await userHasTOTP(event.locals.user.id))) {
-			// user hasn't enrolled, so well just mark them as verified and let them in
-			//
-			// NOTE: this should NEVER happen
-			await setSessionAsMFAVerified(event.locals.session.id);
 			redirect(302, route('/'));
 		}
 
-		if (!(await verifyUserOTP(event.locals.user.id, form.data.mfa))) {
+		if (await verifyUserOTP(event.locals.user.id, form.data.mfa)) {
+			await setSessionAsMFAVerified(event.locals.session.id);
+			redirect(302, route('/'));
+		} else {
 			return setError(form, 'mfa', 'Incorrect 2FA Token');
 		}
 	}
@@ -42,11 +41,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 		redirect(302, route('/auth/log-in'));
 	}
 
-	if (!(await userHasTOTP(locals.user.id))) {
-		// user not enrolled
-		//
-		// user should not be redirected here in this case
-		await setSessionAsMFAVerified(locals.session.id);
+	if (locals.session.mfaVerified === null) {
+		// user has no mfa
 		redirect(302, route('/'));
 	}
 
