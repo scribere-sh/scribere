@@ -1,7 +1,8 @@
 import { decodeBase32IgnorePadding, encodeBase32LowerCaseNoPadding } from '@oslojs/encoding';
 import type { RequestEvent } from '@sveltejs/kit';
 
-import { hash, verify } from '@node-rs/argon2';
+// @ts-expect-error they didn't want us to do this, we are doing it anyway
+import { hash, verify } from "@node-rs/argon2-wasm32-wasi";
 
 export const generateTokenBytes = (length: number = 32) => {
 	const bytes = new Uint8Array(length);

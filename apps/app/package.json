@@ -23,6 +23,7 @@
 		"@kitql/helpers": "^0.8",
 		"@libsql/client": "^0.14",
 		"@node-rs/argon2": "^2",
+        "@node-rs/argon2-wasm32-wasi": "^2",
 		"@oslojs/binary": "^1",
 		"@oslojs/crypto": "^1",
 		"@oslojs/encoding": "^1",

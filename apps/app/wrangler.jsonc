@@ -17,7 +17,9 @@
 
 		// Sender email and name
 		"SENDER_EMAIL": "noreply@scribere.sh",
-		"SENDER_NAME": "Scribere"
+		"SENDER_NAME": "Scribere",
+
+		"NAPI_RS_FORCE_WASI": true
 	},
 	"services": [
 		{

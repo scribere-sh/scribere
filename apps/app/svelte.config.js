@@ -17,8 +17,10 @@ const config = {
 		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
 		adapter: adapter({
 			platformProxy: {
-				configPath: './wrangler.jsonc'
-			}
+				configPath: './wrangler.jsonc',
+                environment: "preview",
+                
+			},
 		})
 	}
 };
