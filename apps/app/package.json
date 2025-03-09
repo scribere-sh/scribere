@@ -45,7 +45,6 @@
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "^4.20250224.0",
-        "@node-rs/argon2": "^2",
 		"@scribere/editor": "workspace:*",
 		"@scribere/email": "workspace:*",
 		"@scribere/eslint-config": "workspace:*",
