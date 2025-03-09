@@ -1,6 +1,6 @@
 import type { RequestHandler } from './$types';
 
-import { AUTH_RETURN_PATH } from '$lib/server/auth';
+import { setReturnPathCookie } from '$lib/server/auth';
 import {
 	generateState,
 	OAuth2Providers,
@@ -45,14 +45,7 @@ export const GET: RequestHandler = async ({ params, cookies, url }) => {
 	});
 
 	if (returnPath) {
-		cookies.set(AUTH_RETURN_PATH, returnPath, {
-			httpOnly: true,
-			maxAge: 60 * 10,
-			// eslint-disable-next-line turbo/no-undeclared-env-vars
-			secure: import.meta.env.PROD,
-			path: '/',
-			sameSite: 'lax'
-		});
+		setReturnPathCookie(cookies, returnPath);
 	}
 
 	if (oauthAction) {

@@ -5,7 +5,7 @@ import { mfaFormSchema } from '$lib/client/forms';
 
 import { redirect } from '@sveltejs/kit';
 
-import { getReturnPathFromCookie } from '$lib/server/auth';
+import { clearReturnPathCookie, getReturnPathFromCookie } from '$lib/server/auth';
 import { userHasTOTP, verifyUserOTP } from '$lib/server/auth/mfa';
 import { setSessionAsMFAVerified } from '$lib/server/auth/session';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
@@ -24,7 +24,7 @@ export const actions: Actions = {
 			redirect(302, route('/auth/log-in'));
 		}
 
-		const returnPath = getReturnPathFromCookie(event) ?? route('/');
+		const returnPath = getReturnPathFromCookie(event.cookies) ?? route('/');
 
 		if (!(await userHasTOTP(event.locals.user.id))) {
 			redirect(302, returnPath);
@@ -32,6 +32,7 @@ export const actions: Actions = {
 
 		if (await verifyUserOTP(event.locals.user.id, form.data.mfa)) {
 			await setSessionAsMFAVerified(event.locals.session.id);
+			clearReturnPathCookie(event.cookies);
 			redirect(302, returnPath);
 		} else {
 			return setError(form, 'mfa', 'Incorrect 2FA Token');

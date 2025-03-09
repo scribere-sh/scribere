@@ -1,26 +1,19 @@
 import type { LayoutServerLoad } from './$types';
 
 import { route } from '$lib/ROUTES';
-import { AUTH_RETURN_PATH } from '$lib/server/auth';
+import { setReturnPathCookie } from '$lib/server/auth';
 import { redirect } from '@sveltejs/kit';
 
-export const load: LayoutServerLoad = async ({ locals, cookies, url }) => {
-	if (!locals.session || !locals.user || !locals.session.mfaVerified) {
-		cookies.set(AUTH_RETURN_PATH, url.pathname, {
-			httpOnly: true,
-			maxAge: 60 * 10,
-			// eslint-disable-next-line turbo/no-undeclared-env-vars
-			secure: import.meta.env.PROD,
-			path: '/',
-			sameSite: 'lax'
-		});
+export const load: LayoutServerLoad = async (event) => {
+	if (!event.locals.session || !event.locals.user) {
+		setReturnPathCookie(event.cookies, event.url.pathname);
 	}
 
-	if (!locals.session || !locals.user) {
+	if (!event.locals.session || !event.locals.user) {
 		redirect(302, route('/auth/log-in'));
 	}
 
-	if (locals.session.mfaVerified === false) {
+	if (event.locals.session.mfaVerified === false) {
 		redirect(302, route('/auth/mfa'));
 	}
 };

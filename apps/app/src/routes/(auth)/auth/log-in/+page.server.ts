@@ -5,7 +5,7 @@ import { OAuth2Providers } from '$lib/server/oauth';
 import { logInFormSchema } from '$lib/client/forms';
 
 import { route } from '$lib/ROUTES';
-import { AUTH_RETURN_PATH, getReturnPathFromCookie } from '$lib/server/auth';
+import { AUTH_RETURN_PATH, clearReturnPathCookie, getReturnPathFromCookie } from '$lib/server/auth';
 import { verifyArgon2id } from '$lib/server/auth/cryptography';
 import { userHasTOTP } from '$lib/server/auth/mfa';
 import {
@@ -70,7 +70,9 @@ export const actions: Actions = {
 		if (userHasMFA) {
 			redirect(302, route('/auth/mfa'));
 		} else {
-			redirect(302, getReturnPathFromCookie(event) ?? route('/'));
+			const returnPath = getReturnPathFromCookie(event.cookies);
+			clearReturnPathCookie(event.cookies);
+			redirect(302, returnPath ?? route('/'));
 		}
 	}
 };

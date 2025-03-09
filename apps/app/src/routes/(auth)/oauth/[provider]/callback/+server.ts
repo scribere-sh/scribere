@@ -3,7 +3,7 @@ import type { RequestHandler } from './$types';
 import { ObjectParser } from '@pilcrowjs/object-parser';
 
 import { route } from '$lib/ROUTES';
-import { AUTH_RETURN_PATH, getReturnPathFromCookie } from '$lib/server/auth';
+import { clearReturnPathCookie, getReturnPathFromCookie } from '$lib/server/auth';
 import { userHasTOTP } from '$lib/server/auth/mfa';
 import {
 	createSession,
@@ -46,7 +46,7 @@ export const GET = (async (event) => {
 	const storedState = event.cookies.get(STATE_COOKIE_NAME);
 
 	const oauthAction = event.cookies.get(OAUTH_ACTION_NAME);
-	const returnPath = getReturnPathFromCookie(event) ?? route('/');
+	const returnPath = getReturnPathFromCookie(event.cookies) ?? route('/');
 
 	if (!state || !code || state !== storedState) {
 		return new Response(null, {
@@ -114,7 +114,7 @@ export const GET = (async (event) => {
 		const session = await createSession(sessionToken, localUserId, sessionFlags);
 		setSessionToken(event, sessionToken, session.expiresAt);
 
-		if (!userHasMFA) event.cookies.delete(AUTH_RETURN_PATH, { path: '/' });
+		if (!userHasMFA) clearReturnPathCookie(event.cookies);
 		const redirectPath = userHasMFA && !OAUTH_SKIPS_MFA ? route('/auth/mfa') : returnPath;
 
 		return new Response(null, {
