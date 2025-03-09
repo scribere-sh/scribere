@@ -1,7 +1,7 @@
 import { decodeBase32IgnorePadding, encodeBase32LowerCaseNoPadding } from '@oslojs/encoding';
 import type { RequestEvent } from '@sveltejs/kit';
 
-import { __FUCK_YOU_WE_LOCAL } from "$env/static/private";
+import { env } from "$env/dynamic/private";
 
 // import { hash, verify } from "@node-rs/argon2";
 
@@ -24,7 +24,7 @@ export const createArgon2id = async (
 	event: RequestEvent,
 	data: string
 ): Promise<string> => {
-    if (__FUCK_YOU_WE_LOCAL) {
+    if (env.__FUCK_YOU_WE_LOCAL) {
         return await (await import("@node-rs/argon2")).hash(data);
     } else {
         const body = {
@@ -60,7 +60,7 @@ export const verifyArgon2id = async (
 	saved: string,
 	data: string
 ): Promise<boolean> => {
-    if (__FUCK_YOU_WE_LOCAL) {
+    if (env.__FUCK_YOU_WE_LOCAL) {
         console.log('using local');
         return await (await import("@node-rs/argon2")).verify(saved, data);
     } else {
