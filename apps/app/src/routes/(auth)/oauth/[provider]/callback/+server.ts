@@ -108,13 +108,11 @@ export const GET = (async (event) => {
 		};
 
 		// if session already exists, invalidate it first
-        if (event.locals.session)
-            await invalidateSession(event.locals.session.id);
+		if (event.locals.session) await invalidateSession(event.locals.session.id);
 
 		const sessionToken = generateSessionToken();
 		const session = await createSession(sessionToken, localUserId, sessionFlags);
 		setSessionToken(event, sessionToken, session.expiresAt);
-
 
 		if (!userHasMFA) event.cookies.delete(AUTH_RETURN_PATH, { path: '/' });
 		const redirectPath = userHasMFA && !OAUTH_SKIPS_MFA ? route('/auth/mfa') : returnPath;

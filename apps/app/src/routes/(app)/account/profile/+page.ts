@@ -2,15 +2,11 @@ import type { PageLoad, PageParentData } from './$types';
 
 import { trpc } from '$lib/client/trpc';
 
-export const load = (async (event) => {
+export const load: PageLoad = async (event) => {
 	const { queryClient } = (await event.parent()) as PageParentData;
 	const rpc = trpc(event, queryClient);
 
-	const name = event.data.nameForQuery;
-
 	return {
-		name,
-		nameQuery: await rpc.hello_world.createServerQuery({ name }),
-		rpc
+		userProfileQuery: await rpc.account.profile.loadCurrentUserProfile.createServerQuery()
 	};
-}) satisfies PageLoad;
+};

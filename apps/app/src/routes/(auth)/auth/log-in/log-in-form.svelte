@@ -9,6 +9,7 @@
 
 	import { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { toast } from 'svelte-sonner';
 
 	const {
 		form: _form
@@ -16,8 +17,19 @@
 		form: PageData['form'];
 	} = $props();
 
+	let disabled = $state(false);
+
 	const form = superForm(_form, {
-		validators: zodClient(logInFormSchema)
+		validators: zodClient(logInFormSchema),
+		onResult: ({ result }) => {
+			if (!['redirect'].includes(result.type)) disabled = false;
+			if (result.type === 'error') {
+				toast.error(`Failed to login: ${result.error.message}`);
+			}
+		},
+		onSubmit: () => {
+			disabled = true;
+		}
 	});
 
 	const { form: formData, enhance } = form;
@@ -30,6 +42,7 @@
 				<Form.Label>Email Address</Form.Label>
 				<Input
 					{...props}
+					{disabled}
 					placeholder="example@contoso.com"
 					bind:value={$formData.emailAddress}
 				/>
@@ -44,6 +57,7 @@
 				<Form.Label>Password</Form.Label>
 				<Input
 					{...props}
+					{disabled}
 					placeholder="********"
 					type="password"
 					bind:value={$formData.password}
@@ -53,5 +67,5 @@
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Button class="mt-4 w-full">Log In</Form.Button>
+	<Form.Button {disabled} class="mt-4 w-full">Log In</Form.Button>
 </form>

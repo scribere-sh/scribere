@@ -10,6 +10,7 @@
  */
 export const PAGES = {
 	'/': `/`,
+	'/account/profile': `/account/profile`,
 	'/debug': `/debug`,
 	'/debug/editor': `/debug/editor`,
 	'/auth/log-in': `/auth/log-in`,
@@ -23,6 +24,10 @@ export const PAGES = {
  * SERVERS
  */
 export const SERVERS = {
+	'POST /api/assets': `/api/assets`,
+	'PUT /api/assets': `/api/assets`,
+	'GET /api/assets': `/api/assets`,
+	'DELETE /api/assets': `/api/assets`,
 	'GET /robots.txt': `/robots.txt`,
 	'GET /auth/sign-out': `/auth/sign-out`,
 	'GET /auth/verify-email': `/auth/verify-email`,
@@ -160,6 +165,7 @@ export function route<T extends keyof AllTypes>(key: T, ...params: any[]): strin
 export type KIT_ROUTES = {
 	PAGES: {
 		'/': never;
+		'/account/profile': never;
 		'/debug': never;
 		'/debug/editor': never;
 		'/auth/log-in': never;
@@ -169,6 +175,10 @@ export type KIT_ROUTES = {
 		'/auth/sign-up': never;
 	};
 	SERVERS: {
+		'POST /api/assets': never;
+		'PUT /api/assets': never;
+		'GET /api/assets': never;
+		'DELETE /api/assets': never;
 		'GET /robots.txt': never;
 		'GET /auth/sign-out': never;
 		'GET /auth/verify-email': never;

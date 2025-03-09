@@ -1,13 +1,13 @@
 import { TRPC_PATH } from '$lib/client/trpc';
 import {
-    deleteExpiredSessions,
+	deleteExpiredSessions,
 	deleteSessionToken,
 	SESSION_TOKEN_NAME,
 	setSessionToken,
 	validateSessionToken
 } from '$lib/server/auth/session';
 import { createContext } from '$lib/server/trpc/context';
-import { router } from '$lib/server/trpc/router';
+import router from '$lib/server/trpc/router';
 
 import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';

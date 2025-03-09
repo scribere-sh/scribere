@@ -11,12 +11,12 @@ import {
 export const GET: RequestHandler = async ({ params, cookies, url }) => {
 	const validProviders = OAuth2Providers.validProviders;
 
-	let returnPath = url.searchParams.get('return')
+	let returnPath = url.searchParams.get('return');
 	if (returnPath) {
 		returnPath = decodeURIComponent(returnPath);
 	}
 
-    let oauthAction = url.searchParams.get('action');
+	let oauthAction = url.searchParams.get('action');
 	if (oauthAction) {
 		oauthAction = decodeURIComponent(oauthAction);
 	}

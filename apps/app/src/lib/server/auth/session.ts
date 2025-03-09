@@ -160,8 +160,8 @@ export const invalidateUserSessions = async (userId: string) => {
 };
 
 export const deleteExpiredSessions = async () => {
-    await DB.delete(sessionsTable).where(lte(sessionsTable.expiresAt, new Date()))
-}
+	await DB.delete(sessionsTable).where(lte(sessionsTable.expiresAt, new Date()));
+};
 
 export const deleteSessionToken = (event: RequestEvent) => {
 	event.cookies.set(SESSION_TOKEN_NAME, '', {

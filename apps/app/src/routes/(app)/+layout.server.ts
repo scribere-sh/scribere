@@ -20,7 +20,7 @@ export const load: LayoutServerLoad = async ({ locals, cookies, url }) => {
 		redirect(302, route('/auth/log-in'));
 	}
 
-	if (!locals.session.mfaVerified) {
+	if (locals.session.mfaVerified === false) {
 		redirect(302, route('/auth/mfa'));
 	}
 };

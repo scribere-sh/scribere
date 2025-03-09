@@ -5,6 +5,7 @@ import { OAuth2Providers } from '$lib/server/oauth';
 import { logInFormSchema } from '$lib/client/forms';
 
 import { route } from '$lib/ROUTES';
+import { AUTH_RETURN_PATH, getReturnPathFromCookie } from '$lib/server/auth';
 import { verifyArgon2id } from '$lib/server/auth/cryptography';
 import { userHasTOTP } from '$lib/server/auth/mfa';
 import {
@@ -19,7 +20,6 @@ import { redirect } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { AUTH_RETURN_PATH } from '$lib/server/auth';
 
 export const actions: Actions = {
 	default: async (event) => {
@@ -49,7 +49,7 @@ export const actions: Actions = {
 		if (!authProvider || !authProvider.hash) {
 			return fail(500, {
 				form,
-				message: 'HOW ON GODS GREEN EARTH DO YOU NOT HAVE A PASSWORD SET HUH!!?!??!?!?!'
+				message: 'HOW ON GODS GREEN EARTH DO YOU NOT HAVE A PASSWORD SET'
 			});
 		}
 
@@ -70,24 +70,24 @@ export const actions: Actions = {
 		if (userHasMFA) {
 			redirect(302, route('/auth/mfa'));
 		} else {
-			redirect(302, event.cookies.get(AUTH_RETURN_PATH) ?? route('/'));
+			redirect(302, getReturnPathFromCookie(event) ?? route('/'));
 		}
 	}
 };
 
-export const load: PageServerLoad = async({ url, cookies}) => {
-    const returnPath = url.searchParams.get('return');
+export const load: PageServerLoad = async ({ url, cookies }) => {
+	const returnPath = url.searchParams.get('return');
 
-    if (returnPath) {
-        cookies.set(AUTH_RETURN_PATH, returnPath, {
-            httpOnly: true,
-            maxAge: 60 * 10,
-            // eslint-disable-next-line turbo/no-undeclared-env-vars
-            secure: import.meta.env.PROD,
-            path: '/',
-            sameSite: 'lax'
-        });
-    }
+	if (returnPath) {
+		cookies.set(AUTH_RETURN_PATH, decodeURIComponent(returnPath), {
+			httpOnly: true,
+			maxAge: 60 * 10,
+			// eslint-disable-next-line turbo/no-undeclared-env-vars
+			secure: import.meta.env.PROD,
+			path: '/',
+			sameSite: 'lax'
+		});
+	}
 
 	return {
 		useableProviders: OAuth2Providers.validProviders,
