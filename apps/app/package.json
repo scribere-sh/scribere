@@ -4,7 +4,6 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
-		"dev:wrangler": "wrangler pages dev",
 		"build": "vite build",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"fmt": "prettier --write .",
@@ -22,8 +21,6 @@
 	"dependencies": {
 		"@kitql/helpers": "^0.8",
 		"@libsql/client": "^0.14",
-		"@node-rs/argon2": "^2",
-        "@node-rs/argon2-wasm32-wasi": "^2",
 		"@oslojs/binary": "^1",
 		"@oslojs/crypto": "^1",
 		"@oslojs/encoding": "^1",
@@ -48,6 +45,7 @@
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "^4.20250224.0",
+        "@node-rs/argon2": "^2",
 		"@scribere/editor": "workspace:*",
 		"@scribere/email": "workspace:*",
 		"@scribere/eslint-config": "workspace:*",

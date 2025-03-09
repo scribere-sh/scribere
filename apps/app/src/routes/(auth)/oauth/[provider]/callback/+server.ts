@@ -19,7 +19,8 @@ import {
 	OAUTH_SKIPS_MFA,
 	STATE_COOKIE_NAME
 } from '$lib/server/oauth';
-import { OAuth2RequestError, OAuth2Tokens } from 'arctic';
+import type { OAuth2Tokens } from 'arctic';
+import { OAuth2RequestError } from 'arctic';
 
 const IDENTITY_TRANSLATORS: Record<string, (tokens: OAuth2Tokens) => Promise<string>> = {
 	github: async (tokens) => {

@@ -1,9 +1,12 @@
 import type { Actions, PageServerLoad } from './$types';
 
+import { redirect } from '@sveltejs/kit';
+import { and, eq } from 'drizzle-orm';
+import { fail, setError, superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
+
 import { OAuth2Providers } from '$lib/server/oauth';
-
 import { logInFormSchema } from '$lib/client/forms';
-
 import { route } from '$lib/ROUTES';
 import { AUTH_RETURN_PATH, clearReturnPathCookie, getReturnPathFromCookie } from '$lib/server/auth';
 import { verifyArgon2id } from '$lib/server/auth/cryptography';
@@ -16,10 +19,6 @@ import {
 } from '$lib/server/auth/session';
 import { DB } from '$lib/server/db';
 import { authProviderTable, emailAddressTable } from '$lib/server/db/tables';
-import { redirect } from '@sveltejs/kit';
-import { and, eq } from 'drizzle-orm';
-import { fail, setError, superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
 
 export const actions: Actions = {
 	default: async (event) => {

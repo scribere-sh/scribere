@@ -4,6 +4,10 @@
 	"compatibility_date": "2025-02-27",
 	"compatibility_flags": ["nodejs_compat"],
 	"pages_build_output_dir": ".svelte-kit/cloudflare",
+	"dev": {
+		"ip": "127.0.0.1",
+		"port": 8787
+	},
 	"placement": {
 		"mode": "smart",
 		// not AKL because the DB is in Sydney
@@ -17,9 +21,7 @@
 
 		// Sender email and name
 		"SENDER_EMAIL": "noreply@scribere.sh",
-		"SENDER_NAME": "Scribere",
-
-		"NAPI_RS_FORCE_WASI": true
+		"SENDER_NAME": "Scribere"
 	},
 	"services": [
 		{
