@@ -29,18 +29,23 @@ export const createArgon2id = async (event: RequestEvent, data: string): Promise
 		}
 	};
 
-	const fetchFn = dev ? event.fetch : event.platform!.env.ARGON2.fetch;
-	const fetchUrl = dev ? `https://${env.DEV_AUTH_ARGON2_DOMAIN}/hash` : 'http://internal/hash';
+	let response;
 
-    if ( dev ) console.info('Used Remote Argon2');
-
-	const response = await fetchFn(fetchUrl, {
-		method: 'POST',
-		body: JSON.stringify(body),
-        headers: dev ? {
-            "dev-argon2": "yomama"
-        } : undefined
-	});
+	if (dev) {
+		console.info('Used Remote Argon2');
+		response = await event.fetch(`https://${env.DEV_AUTH_ARGON2_DOMAIN}/hash`, {
+			method: 'POST',
+			body: JSON.stringify(body),
+			headers: {
+				'dev-argon2': 'yomama'
+			}
+		});
+	} else {
+		response = await event.platform!.env.ARGON2.fetch('http://internal/hash', {
+			method: 'POST',
+			body: JSON.stringify(body)
+		});
+	}
 
 	const text = await response.text();
 
@@ -65,20 +70,23 @@ export const verifyArgon2id = async (
 		hash: saved
 	};
 
-	const fetchFn = dev ? event.fetch : event.platform!.env.ARGON2.fetch;
-	const fetchUrl = dev
-		? `https://${env.DEV_AUTH_ARGON2_DOMAIN}/verify`
-		: 'http://internal/verify';
+	let response;
 
-    if ( dev ) console.info('Used Remote Argon2');
-
-	const response = await fetchFn(fetchUrl, {
-		method: 'POST',
-		body: JSON.stringify(body),
-        headers: dev ? {
-            "dev-argon2": "yomama"
-        } : undefined
-	});
+	if (dev) {
+		console.info('Used Remote Argon2');
+		response = await event.fetch(`https://${env.DEV_AUTH_ARGON2_DOMAIN}/verify`, {
+			method: 'POST',
+			body: JSON.stringify(body),
+			headers: {
+				'dev-argon2': 'yomama'
+			}
+		});
+	} else {
+		response = await event.platform!.env.ARGON2.fetch('http://internal/verify', {
+			method: 'POST',
+			body: JSON.stringify(body)
+		});
+	}
 
 	const text = await response.text();
 
