@@ -23,7 +23,7 @@ jobs:
               run: pnpm install
 
             - name: Run Tests
-              run: turbo test
+              run: pnpm turbo test
 
             - name: Test Report
               uses: dorny/test-reporter@v1
