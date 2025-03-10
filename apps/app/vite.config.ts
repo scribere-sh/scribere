@@ -25,5 +25,8 @@ export default defineConfig({
 			$routes: resolve('./src/lib/ROUTES.ts'),
 			$util: resolve('./src/lib/server/util.ts')
 		}
-	}
+	},
+    test: {
+        outputFile: "../../reports/vitest-scribere.xml"
+    }
 });
