@@ -2,7 +2,6 @@ import type { RequestHandler } from './$types';
 
 import { ObjectParser } from '@pilcrowjs/object-parser';
 
-import { route } from '$routes';
 import { clearReturnPathCookie, getReturnPathFromCookie } from '$auth';
 import { userHasTOTP } from '$auth/mfa';
 import {
@@ -13,12 +12,8 @@ import {
 	type SessionFlags
 } from '$auth/session';
 import { linkOAuthProviderToUser, lookupUserIdFromOAuthProvider } from '$auth/user';
-import {
-	OAuth2Providers,
-	OAUTH_ACTION_NAME,
-	OAUTH_SKIPS_MFA,
-	STATE_COOKIE_NAME
-} from '$oauth';
+import { OAuth2Providers, OAUTH_ACTION_NAME, OAUTH_SKIPS_MFA, STATE_COOKIE_NAME } from '$oauth';
+import { route } from '$routes';
 import type { OAuth2Tokens } from 'arctic';
 import { OAuth2RequestError } from 'arctic';
 

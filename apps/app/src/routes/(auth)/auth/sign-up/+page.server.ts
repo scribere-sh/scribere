@@ -9,17 +9,14 @@ import { insertEmailAddress, verifyEmailAddressAvailability } from '$auth/email'
 import { assignPasswordToUser, verifyPasswordStrength } from '$auth/password';
 import { createUser, lookupHandleAvailability } from '$auth/user';
 
-import { route } from '$routes';
-import {
-	generateEmailValidation,
-	sendEmailValidationChallenge
-} from '$auth/email-validation';
+import { generateEmailValidation, sendEmailValidationChallenge } from '$auth/email-validation';
 import {
 	createSession,
 	generateSessionToken,
 	setSessionToken,
 	type SessionFlags
 } from '$auth/session';
+import { route } from '$routes';
 import { redirect } from '@sveltejs/kit';
 
 export const actions: Actions = {

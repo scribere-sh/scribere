@@ -5,8 +5,6 @@ import { and, eq } from 'drizzle-orm';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-import { logInFormSchema } from '$forms';
-import { route } from '$routes';
 import { AUTH_RETURN_PATH, clearReturnPathCookie, getReturnPathFromCookie } from '$auth';
 import { verifyArgon2id } from '$auth/cryptography';
 import { userHasTOTP } from '$auth/mfa';
@@ -18,7 +16,9 @@ import {
 } from '$auth/session';
 import { DB } from '$db';
 import { authProviderTable, emailAddressTable, usersTable } from '$db/tables';
+import { logInFormSchema } from '$forms';
 import { OAuth2Providers } from '$oauth';
+import { route } from '$routes';
 import { z } from 'zod';
 
 export const actions: Actions = {

@@ -9,6 +9,8 @@
 		"fmt": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
 		"prepare": "svelte-kit sync || echo ''",
+        "test": "vitest run --reporter=junit --outputFile=junit.xml",
+        "test:dev": "vitest",
 		"preview": "vite preview",
 		"sync": "svelte-kit sync",
 		"db:generate": "drizzle-kit generate",
@@ -69,6 +71,7 @@
 		"tailwindcss": "^3",
 		"typescript": "^5.8.2",
 		"vite": "^6.2.1",
+        "vitest": "^3.0.8",
 		"vite-plugin-kit-routes": "~0.8.3",
 		"wrangler": "^3.114.0"
 	}

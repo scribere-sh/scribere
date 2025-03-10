@@ -35,6 +35,15 @@
         "db:migrate": {
             "cache": false,
             "dependsOn": ["@scribere/app#db:migrate"]
+        },
+        "test": {
+            "cache": false,
+            "dependsOn": ["^test"]
+        },
+        "test:dev": {
+            "cache": false,
+            "persistent": true,
+            "dependsOn": ["^test"]
         }
     }
 }

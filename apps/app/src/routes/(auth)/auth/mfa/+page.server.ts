@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 
-import { route } from '$lib/ROUTES';
 import { mfaFormSchema } from '$forms';
+import { route } from '$lib/ROUTES';
 
 import { redirect } from '@sveltejs/kit';
 
