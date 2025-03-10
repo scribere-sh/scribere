@@ -16,7 +16,7 @@
 
 <FormPrimitive.Label {...restProps} bind:ref>
 	{#snippet child({ props })}
-		<Label {...props} class={cn(className)}>
+		<Label {...props} class={cn('font-semibold', className)}>
 			{@render children?.()}
 		</Label>
 	{/snippet}

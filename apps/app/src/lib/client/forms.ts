@@ -1,7 +1,13 @@
 import { z } from 'zod';
 
+const handleSchema = z
+	.string()
+	.regex(/^[a-z0-9.-]+$/)
+	.nonempty()
+	.max(32);
+
 export const logInFormSchema = z.object({
-	emailAddress: z.string().email(),
+	handleOrEmail: z.string().max(32),
 	password: z
 		.string()
 		.min(8, 'Must contain at least 8 characters')
@@ -12,8 +18,8 @@ export const logInFormSchema = z.object({
 });
 
 export const signupFormSchema = z.object({
-	givenName: z.string().nonempty().max(100),
-	familyName: z.string().nonempty().max(100),
+	displayName: z.string().nonempty().max(60),
+	handle: handleSchema,
 	emailAddress: z.string().email(),
 	password: z
 		.string()

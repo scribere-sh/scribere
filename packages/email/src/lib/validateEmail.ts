@@ -1,9 +1,5 @@
-import type { CreateEmailResponse } from 'resend';
-
 import Handlebars from 'handlebars';
 import EmailValidationTemplate from './templates/emailValidateTemplate.handlebars?raw';
-
-import { Resend } from 'resend';
 
 export interface ValidateEmailProps {
 	apiKey: string;
@@ -20,6 +16,10 @@ export interface ValidateEmailProps {
 	};
 }
 
+export interface EmailSendResult {
+    id: string
+}
+
 const template = Handlebars.compile(EmailValidationTemplate);
 
 export const renderValidationEmail = (
@@ -30,18 +30,26 @@ export const renderValidationEmail = (
 
 export const sendValidationEmail = async (
 	props: ValidateEmailProps
-): Promise<CreateEmailResponse> => {
-	const { apiKey: api_key } = props;
+): Promise<EmailSendResult>  => {
+	const { apiKey, from, to } = props;
 
-	const resend = new Resend(api_key);
-
-	const payload = renderValidationEmail(props);
-
-	return await resend.emails.send({
-		from: `${props.from.name} <${props.from.email}>`,
-		to: props.to.email,
+	const emailText = renderValidationEmail(props);
+    const payload = {
+		from: `${from.name} <${from.email}>`,
+		to: to.email,
 		subject: 'Verify your email',
 
-		html: payload
-	});
+		html: emailText
+	}
+
+    const response = await fetch(`https://api.resend.com/emails`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${apiKey}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    });
+
+    return await response.json() as EmailSendResult;
 };

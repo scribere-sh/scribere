@@ -4,6 +4,10 @@
 	import * as Card from '@scribere/ui/card';
 	import * as Avatar from '@scribere/ui/avatar';
 	import { Skeleton } from '@scribere/ui/skeleton';
+	import { Button } from '@scribere/ui/button';
+
+	import Edit from 'lucide-svelte/icons/edit';
+	import X from 'lucide-svelte/icons/x';
 
 	const { data }: PageProps = $props();
 
@@ -13,30 +17,48 @@
 <Card.Root class="mx-auto mt-32 w-1/2">
 	<div class="flex flex-row">
 		<div class="aspect-[1/2] h-20 overflow-visible pl-8">
-			<Avatar.Root class="size-44 -translate-y-20 border">
+			<Avatar.Root class="size-44 -translate-y-20 border bg-card">
 				{#if $profileQuery.isLoading}
-					<Skeleton class="w-full" />
+					<Skeleton class="size-full" />
 				{:else if $profileQuery.isSuccess}
 					{@const data = $profileQuery.data}
 
 					<Avatar.Image src="https://placehold.co/400x400" />
 
 					<Avatar.Fallback class="text-2xl uppercase">
-						{data.givenName[0]}{data.familyName[0]}
+						{data.displayName[0]}
+					</Avatar.Fallback>
+				{:else}
+					<Avatar.Fallback>
+						<X class="size-8 text-destructive" />
 					</Avatar.Fallback>
 				{/if}
 			</Avatar.Root>
 		</div>
-		<Card.Header>
-			<Card.Title>
+		<Card.Header class="flex h-20 w-full flex-row items-center justify-between">
+			<div class="w-full">
 				{#if $profileQuery.isLoading}
-					<Skeleton class="w-full" />
+					<Skeleton class="my-1 h-6 w-[80%] rounded-full" />
+					<Skeleton class="my-0.5 h-5 w-[40%] rounded-full" />
 				{:else if $profileQuery.isSuccess}
 					{@const data = $profileQuery.data}
-					<span class="text-2xl">{data.givenName}&nbsp;{data.familyName}</span>
+					<Card.Title>
+						<span class="text-2xl">{data.displayName}</span>
+					</Card.Title>
+					<Card.Description>Your Profile</Card.Description>
+				{:else}
+					<span class="text-2xl text-destructive-text">Failed to fetch profile</span>
 				{/if}
-			</Card.Title>
-			<Card.Description>Your Profile</Card.Description>
+			</div>
+			<div class="grid h-full place-items-center px-4">
+				<Button
+					variant="outline"
+					disabled={!$profileQuery.isSuccess}
+					onclick={() => alert('nah')}
+				>
+					<Edit /> Edit Profile
+				</Button>
+			</div>
 		</Card.Header>
 	</div>
 	<Card.Content>HEHEHEA</Card.Content>

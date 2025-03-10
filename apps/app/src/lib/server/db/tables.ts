@@ -5,17 +5,18 @@ export const usersTable = sqliteTable('users', {
 	/**
 	 * User ID
 	 */
-	id: text().primaryKey().unique().$defaultFn(ulid),
+	id: text().primaryKey().unique().notNull().$defaultFn(ulid),
 
 	/**
-	 * The given (first) name of the user
+	 * The name to display, this can be updated at any time to match what the user wants (discord style)
 	 */
-	givenName: text().notNull(),
+	displayName: text().notNull(),
 
 	/**
-	 * The family (last) name of the user
+	 * The handle name of the user, this will have a restricted character set (i.e. /[a-z0-9.-]/) and will
+	 * be used for mentioning (discord style).
 	 */
-	familyName: text().notNull(),
+	handle: text().notNull(),
 
 	/**
 	 * The date and time this account was created
@@ -105,7 +106,7 @@ export const emailValidationChallengeTable = sqliteTable('email_verification_req
 });
 
 export const sessionsTable = sqliteTable('sessions', {
-	id: text().primaryKey(),
+	id: text().primaryKey().notNull(),
 
 	userId: text()
 		.notNull()
@@ -114,4 +115,27 @@ export const sessionsTable = sqliteTable('sessions', {
 	expiresAt: integer({ mode: 'timestamp' }).notNull(),
 
 	mfaVerified: integer({ mode: 'boolean' })
+});
+
+export const assetTable = sqliteTable('assets', {
+	/**
+	 * the ID will be the unique identifier of the asset
+	 */
+	id: text().primaryKey().notNull(),
+	/**
+	 * this refers to what created this attachment (for example, is it connected to a space, a user, etc.)
+	 */
+	parentType: text().notNull(),
+	/**
+	 * this refers to the id of parent type, this could link to a space, a page, a user, etc.
+	 */
+	parentId: text().notNull(),
+	/**
+	 * refers to how the UI should access it, this will likely be a blob path within our R2 instance.
+	 */
+	uri: text().notNull(),
+	/**
+	 *
+	 */
+	mimeType: text().notNull()
 });

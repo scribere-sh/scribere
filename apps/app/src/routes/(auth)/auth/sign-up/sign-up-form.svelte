@@ -39,21 +39,31 @@
 </script>
 
 <form method="POST" use:enhance class="w-full">
-	<Form.Field {form} name="givenName">
+	<Form.Field {form} name="displayName">
 		<Form.Control>
 			{#snippet children({ props }: PropsObj)}
-				<Form.Label>Given Name</Form.Label>
-				<Input {...props} {disabled} placeholder="John" bind:value={$formData.givenName} />
+				<Form.Label>Display Name</Form.Label>
+				<Input
+					{...props}
+					{disabled}
+					placeholder="John Doe"
+					bind:value={$formData.displayName}
+				/>
 			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Field {form} name="familyName">
+	<Form.Field {form} name="handle">
 		<Form.Control>
 			{#snippet children({ props }: PropsObj)}
-				<Form.Label>Family Name</Form.Label>
-				<Input {...props} {disabled} placeholder="Doe" bind:value={$formData.familyName} />
+				<Form.Label>Handle</Form.Label>
+				<Input
+					{...props}
+					{disabled}
+					placeholder="john.doe202"
+					bind:value={$formData.handle}
+				/>
 			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />

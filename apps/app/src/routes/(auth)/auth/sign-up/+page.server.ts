@@ -7,7 +7,7 @@ import { signupFormSchema } from '$lib/client/forms';
 
 import { insertEmailAddress, verifyEmailAddressAvailability } from '$lib/server/auth/email';
 import { assignPasswordToUser, verifyPasswordStrength } from '$lib/server/auth/password';
-import { createUser } from '$lib/server/auth/user';
+import { createUser, lookupHandleAvailability } from '$lib/server/auth/user';
 
 import { route } from '$lib/ROUTES';
 import {
@@ -35,13 +35,17 @@ export const actions: Actions = {
 			return setError(form, 'emailAddress', 'Email Address already in use!');
 		}
 
+		if (!(await lookupHandleAvailability(form.data.handle))) {
+			return setError(form, 'handle', 'Handle already taken');
+		}
+
 		if (!(await verifyPasswordStrength(form.data.password, event))) {
 			return setError(form, 'password', 'Password is not strong enough!');
 		}
 
 		const user = await createUser({
-			givenName: form.data.givenName,
-			familyName: form.data.familyName
+			displayName: form.data.displayName,
+			handle: form.data.handle
 		});
 
 		await insertEmailAddress(form.data.emailAddress, user.id);
@@ -49,7 +53,7 @@ export const actions: Actions = {
 
 		const challenge = await generateEmailValidation(event, form.data.emailAddress);
 		await sendEmailValidationChallenge(
-			user.givenName,
+			user.displayName,
 			form.data.emailAddress,
 			event.url,
 			challenge

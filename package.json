@@ -2,6 +2,7 @@
     "name": "@scribere/repo",
     "private": true,
     "description": "Knowledge Sharing, Simplified",
+    "type": "module",
     "contributors": [
         {
             "name": "Hudson Curren",
@@ -25,8 +26,8 @@
         "node": "23.8.0"
     },
     "devDependencies": {
-        "turbo": "^2.4.4",
-        "typescript": "^5.8.2"
+        "turbo": "2.4.4",
+        "typescript": "5.8.2"
     },
     "pnpm": {
         "onlyBuiltDependencies": [
@@ -36,6 +37,9 @@
         ],
         "overrides": {
             "jiti": "2"
+        },
+        "patchedDependencies": {
+            "trpc-svelte-query-adapter": "patches/trpc-svelte-query-adapter.patch"
         }
     }
 }

@@ -4,7 +4,7 @@
 
 	import { cn, debounce } from '@scribere/ui/utils';
 
-	import { buttonVariants, Button } from '@scribere/ui/button';
+	import { buttonVariants, Button, type ButtonVariant } from '@scribere/ui/button';
 	import { Input } from '@scribere/ui/input';
 	import { Label } from '@scribere/ui/label';
 	import * as Tooltip from '@scribere/ui/tooltip';
@@ -48,7 +48,7 @@
 			{#each ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'] as variant}
 				<Tooltip.Root>
 					<Tooltip.Trigger
-						class={cn(buttonVariants({ variant }), 'w-28 capitalize')}
+						class={cn(buttonVariants({ variant: variant as ButtonVariant }), 'w-28 capitalize')}
 						onclick={toggleDark}
 					>
 						{variant}
@@ -96,4 +96,3 @@
 		</div>
 	</div>
 </Tooltip.Provider>
-<Button variant></Button>

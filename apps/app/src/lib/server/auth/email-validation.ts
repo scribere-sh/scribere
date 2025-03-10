@@ -52,7 +52,7 @@ export const generateEmailValidation = async (
  * send an email validation challenge
  */
 export const sendEmailValidationChallenge = async (
-	userGivenName: string,
+	displayName: string,
 	emailAddress: string,
 	reqUrl: URL,
 	challenge: EmailAddressChallenge
@@ -70,24 +70,26 @@ export const sendEmailValidationChallenge = async (
 			name: env.SENDER_NAME
 		},
 		to: {
-			name: userGivenName,
+			name: displayName,
 			email: emailAddress
 		},
 
 		validationUrl: validationUrl.toString()
 	};
 
-	const result = await sendValidationEmail(props);
+    try {
+        const result = await sendValidationEmail(props);	
+        const emailRef = result.id;
 
-	if (result.error) throw result.error;
-
-	const emailRef = result.data!.id;
-
-	await DB.update(emailValidationChallengeTable)
-		.set({
-			emailRef
-		})
-		.where(eq(emailValidationChallengeTable.challengeRef, challenge.ref));
+        await DB.update(emailValidationChallengeTable)
+            .set({
+                emailRef
+            })
+            .where(eq(emailValidationChallengeTable.challengeRef, challenge.ref));
+    } catch (e: unknown) {
+        console.log(e);
+        throw e;
+    }
 };
 
 export const verifyEmailValidationRequest = async (event: RequestEvent) => {

@@ -12,11 +12,11 @@
         }
     },
     "peerDependencies": {
-        "prettier": "^3"
+        "prettier": "3"
     },
     "devDependencies": {
-        "prettier-plugin-svelte": "^3",
-        "prettier-plugin-organize-imports": "^4.1",
-        "prettier-plugin-tailwindcss": "^0.6"
+        "prettier-plugin-organize-imports": "^4.1.0",
+        "prettier-plugin-svelte": "^3.3.3",
+        "prettier-plugin-tailwindcss": "^0.6.11"
     }
 }

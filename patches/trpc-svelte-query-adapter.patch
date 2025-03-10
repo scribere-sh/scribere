@@ -1,0 +1,20 @@
+diff --git a/package.json b/package.json
+index 9aae0ff8b1248b220281670abe25a054c4738988..77c023f1b71226f2b60c84c85a2572ce79cab967 100644
+--- a/package.json
++++ b/package.json
+@@ -40,11 +40,11 @@
+     "@tanstack/svelte-query": "^5.8.2",
+     "@trpc/client": "^10.43.3",
+     "@trpc/server": "^10.43.3",
+-    "@sveltejs/vite-plugin-svelte": "^4.0.0",
+-    "svelte": "^5",
+-    "typescript": "^5.2.2"
++    "@sveltejs/vite-plugin-svelte": ">=4.0.0 <6",
++    "svelte": "^5"
+   },
+   "devDependencies": {
+-    "@types/node": "^20.14.10"
++    "@types/node": "^20.14.10",
++    "typescript": "^5.2.2"
+   }
+ }

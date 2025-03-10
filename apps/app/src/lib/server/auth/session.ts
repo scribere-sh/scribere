@@ -62,8 +62,9 @@ export const validateSessionToken = async (
 		sessionMfaVerified: sessionsTable.mfaVerified,
 
 		userId: usersTable.id,
-		userGivenName: usersTable.givenName,
-		userFamilyName: usersTable.familyName
+		userDisplayName: usersTable.displayName,
+		userHandle: usersTable.handle,
+		userCreatedAt: usersTable.createdAt
 	})
 		.from(sessionsTable)
 		.innerJoin(usersTable, eq(sessionsTable.userId, usersTable.id))
@@ -83,8 +84,9 @@ export const validateSessionToken = async (
 
 		const user: User = {
 			id: query.userId,
-			givenName: query.userGivenName,
-			familyName: query.userFamilyName
+			displayName: query.userDisplayName,
+			handle: query.userHandle,
+			createdAt: query.userCreatedAt
 		};
 
 		if (Date.now() >= session.expiresAt.getTime()) {

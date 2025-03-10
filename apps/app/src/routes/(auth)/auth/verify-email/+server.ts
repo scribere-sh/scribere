@@ -22,7 +22,7 @@ export const GET: RequestHandler = async (event) => {
 		.from(emailValidationChallengeTable)
 		.where(eq(emailValidationChallengeTable.challengeRef, validationRef));
 
-	if (!(await verifyArgon2id(challengeArgon, validationToken))) {
+	if (!(await verifyArgon2id(event, challengeArgon, validationToken))) {
 		return new Response(null, {
 			status: 400
 		});

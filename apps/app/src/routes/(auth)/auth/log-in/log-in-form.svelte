@@ -36,15 +36,15 @@
 </script>
 
 <form method="POST" use:enhance class="w-full">
-	<Form.Field {form} name="emailAddress">
+	<Form.Field {form} name="handleOrEmail">
 		<Form.Control>
 			{#snippet children({ props }: PropsObj)}
-				<Form.Label>Email Address</Form.Label>
+				<Form.Label>Hande or Email Address</Form.Label>
 				<Input
 					{...props}
 					{disabled}
-					placeholder="example@contoso.com"
-					bind:value={$formData.emailAddress}
+					placeholder="example@contoso.com / john.doe123"
+					bind:value={$formData.handleOrEmail}
 				/>
 			{/snippet}
 		</Form.Control>
@@ -58,7 +58,7 @@
 				<Input
 					{...props}
 					{disabled}
-					placeholder="********"
+					placeholder="***********"
 					type="password"
 					bind:value={$formData.password}
 				/>

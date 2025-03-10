@@ -21,7 +21,7 @@ export const decodeTokenStringToBytes = (token: string): Uint8Array => {
 
 export const createArgon2id = async (event: RequestEvent, data: string): Promise<string> => {
 	const body = {
-		passowrd: data,
+		password: data,
 		options: {
 			timeCost: 2,
 			memoryCost: 19456,
@@ -32,15 +32,16 @@ export const createArgon2id = async (event: RequestEvent, data: string): Promise
 	let response;
 
 	if (dev) {
-        const [k, v] = env.DEV_AUTH_ARGON2_HEADER.split(':');
+		const [k, v] = env.DEV_AUTH_ARGON2_HEADER.split(':');
 
-        const headers = new Headers();
-        headers.set(k, v);
+		const headers = new Headers();
+		headers.set(k, v);
 
 		response = await event.fetch(`https://${env.DEV_AUTH_ARGON2_DOMAIN}/hash`, {
 			method: 'POST',
 			body: JSON.stringify(body),
-			headers
+			headers,
+			signal: event.request?.signal
 		});
 	} else {
 		response = await event.platform!.env.ARGON2.fetch('http://internal/hash', {
@@ -75,15 +76,16 @@ export const verifyArgon2id = async (
 	let response;
 
 	if (dev) {
-        const [k, v] = env.DEV_AUTH_ARGON2_HEADER.split(':');
+		const [k, v] = env.DEV_AUTH_ARGON2_HEADER.split(':');
 
-        const headers = new Headers();
-        headers.set(k, v);
-        
+		const headers = new Headers();
+		headers.set(k, v);
+
 		response = await event.fetch(`https://${env.DEV_AUTH_ARGON2_DOMAIN}/verify`, {
 			method: 'POST',
 			body: JSON.stringify(body),
-			headers
+			headers,
+			signal: event.request?.signal
 		});
 	} else {
 		response = await event.platform!.env.ARGON2.fetch('http://internal/verify', {

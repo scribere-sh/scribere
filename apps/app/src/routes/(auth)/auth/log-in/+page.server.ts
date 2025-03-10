@@ -17,8 +17,9 @@ import {
 	type SessionFlags
 } from '$lib/server/auth/session';
 import { DB } from '$lib/server/db';
-import { authProviderTable, emailAddressTable } from '$lib/server/db/tables';
+import { authProviderTable, emailAddressTable, usersTable } from '$lib/server/db/tables';
 import { OAuth2Providers } from '$lib/server/oauth';
+import { z } from 'zod';
 
 export const actions: Actions = {
 	default: async (event) => {
@@ -29,14 +30,27 @@ export const actions: Actions = {
 			});
 		}
 
-		const [user] = await DB.select({
-			id: emailAddressTable.userId
-		})
-			.from(emailAddressTable)
-			.where(eq(emailAddressTable.emailAddress, form.data.emailAddress));
+		let user;
+		if (z.string().email().safeParse(form.data.handleOrEmail).success) {
+			const [maybeUser] = await DB.select({
+				id: emailAddressTable.userId
+			})
+				.from(emailAddressTable)
+				.where(eq(emailAddressTable.emailAddress, form.data.handleOrEmail));
+
+			user = maybeUser;
+		} else {
+			const [maybeUser] = await DB.select({
+				id: usersTable.id
+			})
+				.from(usersTable)
+				.where(eq(usersTable.handle, form.data.handleOrEmail));
+
+			user = maybeUser;
+		}
 
 		if (!user) {
-			return setError(form, 'emailAddress', 'Email Address not Found');
+			return setError(form, 'handleOrEmail', 'User not found');
 		}
 
 		const [authProvider] = await DB.select({ hash: authProviderTable.hash })
