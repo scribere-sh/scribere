@@ -48,7 +48,10 @@
 			{#each ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'] as variant}
 				<Tooltip.Root>
 					<Tooltip.Trigger
-						class={cn(buttonVariants({ variant: variant as ButtonVariant }), 'w-28 capitalize')}
+						class={cn(
+							buttonVariants({ variant: variant as ButtonVariant }),
+							'w-28 capitalize'
+						)}
 						onclick={toggleDark}
 					>
 						{variant}

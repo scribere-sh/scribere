@@ -19,7 +19,18 @@ const config = {
 			platformProxy: {
 				configPath: './wrangler.jsonc'
 			}
-		})
+		}),
+
+		alias: {
+			$auth: 'src/lib/server/auth',
+			$db: 'src/lib/server/db',
+			$oauth: 'src/lib/server/oauth',
+			$trpc: 'src/lib/server/trpc',
+            '$trpc-client': 'src/lib/client/trpc.ts',
+            $forms: 'src/lib/client/forms.ts',
+            $routes: 'src/lib/ROUTES.ts',
+            $util: 'src/lib/server/util.ts'
+		}
 	}
 };
 

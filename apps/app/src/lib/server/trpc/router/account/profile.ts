@@ -1,11 +1,11 @@
 import { TRPCError } from '@trpc/server';
 import { eq } from 'drizzle-orm';
 
-import { DB } from '$lib/server/db';
-import { usersTable } from '$lib/server/db/tables';
+import { DB } from '$db';
+import { usersTable } from '$db/tables';
 
-import { t } from '$lib/server/trpc';
-import { authMiddleware } from '$lib/server/trpc/middleware';
+import { t } from '$trpc';
+import { authMiddleware } from '$trpc/middleware';
 
 const router = t.router({
 	loadCurrentUserProfile: t.procedure.use(authMiddleware).query(async ({ ctx }) => {

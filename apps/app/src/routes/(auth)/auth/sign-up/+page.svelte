@@ -6,7 +6,7 @@
 	import * as Card from '@scribere/ui/card';
 	import { Button } from '@scribere/ui/button';
 
-	import { route } from '$lib/ROUTES';
+	import { route } from '$routes';
 
 	const { data }: PageProps = $props();
 </script>

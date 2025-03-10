@@ -3,12 +3,12 @@
 
 	import * as Form from '@scribere/ui/form';
 	import * as InputOTP from '@scribere/ui/input-otp';
-	import type { PropsObj } from '$lib/server/util';
+	import type { PropsObj } from '$util';
 
 	import { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
-	import { mfaFormSchema } from '$lib/client/forms';
+	import { mfaFormSchema } from '$forms';
 
 	const { form: _form }: Pick<PageData, 'form'> = $props();
 

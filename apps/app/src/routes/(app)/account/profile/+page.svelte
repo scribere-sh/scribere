@@ -29,9 +29,9 @@
 						{data.displayName[0]}
 					</Avatar.Fallback>
 				{:else}
-					<Avatar.Fallback>
-						<X class="size-8 text-destructive" />
-					</Avatar.Fallback>
+					<div class="grid size-full place-items-center">
+						<X class="size-8 text-destructive-text" />
+					</div>
 				{/if}
 			</Avatar.Root>
 		</div>

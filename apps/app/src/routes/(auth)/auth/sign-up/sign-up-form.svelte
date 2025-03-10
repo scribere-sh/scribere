@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 
-	import type { PropsObj } from '$lib/server/util';
-	import { signupFormSchema } from '$lib/client/forms';
+	import type { PropsObj } from '$util';
+	import { signupFormSchema } from '$forms';
 
 	import * as Form from '@scribere/ui/form';
 	import { Input } from '@scribere/ui/input';

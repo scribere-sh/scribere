@@ -3,7 +3,7 @@ import { initTRPC } from '@trpc/server';
 import { ZodError } from 'zod';
 
 import { dev } from '$app/environment';
-import { transformer } from '$lib/client/trpc';
+import { transformer } from '$trpc-client';
 import { type Context } from './context';
 
 import router from './router';

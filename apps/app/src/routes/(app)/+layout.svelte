@@ -10,7 +10,13 @@
 </script>
 
 <QueryClientProvider client={data.queryClient}>
-	<Header.Root></Header.Root>
+	<Header.Root>
+		<Header.Content>
+			<h1 class="text-3xl">Scribere</h1>
+
+			<span>icon</span>
+		</Header.Content>
+	</Header.Root>
 
 	{@render children()}
 	<SvelteQueryDevtools />

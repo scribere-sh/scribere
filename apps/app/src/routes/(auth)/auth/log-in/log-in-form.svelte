@@ -1,11 +1,11 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import type { PropsObj } from '$lib/server/util';
+	import type { PropsObj } from '$util';
 
 	import * as Form from '@scribere/ui/form';
 	import { Input } from '@scribere/ui/input';
 
-	import { logInFormSchema } from '$lib/client/forms';
+	import { logInFormSchema } from '$forms';
 
 	import { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';

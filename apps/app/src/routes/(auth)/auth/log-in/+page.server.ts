@@ -5,20 +5,20 @@ import { and, eq } from 'drizzle-orm';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-import { logInFormSchema } from '$lib/client/forms';
-import { route } from '$lib/ROUTES';
-import { AUTH_RETURN_PATH, clearReturnPathCookie, getReturnPathFromCookie } from '$lib/server/auth';
-import { verifyArgon2id } from '$lib/server/auth/cryptography';
-import { userHasTOTP } from '$lib/server/auth/mfa';
+import { logInFormSchema } from '$forms';
+import { route } from '$routes';
+import { AUTH_RETURN_PATH, clearReturnPathCookie, getReturnPathFromCookie } from '$auth';
+import { verifyArgon2id } from '$auth/cryptography';
+import { userHasTOTP } from '$auth/mfa';
 import {
 	createSession,
 	generateSessionToken,
 	setSessionToken,
 	type SessionFlags
-} from '$lib/server/auth/session';
-import { DB } from '$lib/server/db';
-import { authProviderTable, emailAddressTable, usersTable } from '$lib/server/db/tables';
-import { OAuth2Providers } from '$lib/server/oauth';
+} from '$auth/session';
+import { DB } from '$db';
+import { authProviderTable, emailAddressTable, usersTable } from '$db/tables';
+import { OAuth2Providers } from '$oauth';
 import { z } from 'zod';
 
 export const actions: Actions = {

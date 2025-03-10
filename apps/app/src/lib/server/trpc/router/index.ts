@@ -1,6 +1,6 @@
 import z from 'zod';
 
-import { t, TRPCLog } from '$lib/server/trpc';
+import { t, TRPCLog } from '$trpc';
 
 import account from './account';
 

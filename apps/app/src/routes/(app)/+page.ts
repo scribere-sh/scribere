@@ -1,6 +1,6 @@
 import type { PageLoad, PageParentData } from './$types';
 
-import { trpc } from '$lib/client/trpc';
+import { trpc } from '$trpc-client';
 
 export const load = (async (event) => {
 	const { queryClient } = (await event.parent()) as PageParentData;

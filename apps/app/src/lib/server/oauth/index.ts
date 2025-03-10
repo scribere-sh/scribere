@@ -39,3 +39,5 @@ export const STATE_COOKIE_NAME = 'state';
  */
 export const OAUTH_ACTION_NAME = 'oauth_action';
 export const OAUTH_SKIPS_MFA = env.OAUTH_SKIP_MFA === 'true';
+
+export const ALL_OAUTH_PROVIDERS = ['github', 'atlassian'];

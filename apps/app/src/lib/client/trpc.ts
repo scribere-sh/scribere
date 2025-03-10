@@ -2,7 +2,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { page } from '$app/state';
 
-import type { Router } from '$lib/server/trpc';
+import type { Router } from '$trpc';
 
 import type { QueryClient } from '@tanstack/svelte-query';
 import { svelteQueryWrapper } from 'trpc-svelte-query-adapter';

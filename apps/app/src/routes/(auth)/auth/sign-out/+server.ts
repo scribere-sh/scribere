@@ -1,7 +1,7 @@
 import type { RequestHandler } from './$types';
 
-import { route } from '$lib/ROUTES';
-import { deleteSessionToken, invalidateSession } from '$lib/server/auth/session';
+import { route } from '$routes';
+import { deleteSessionToken, invalidateSession } from '$auth/session';
 
 export const GET: RequestHandler = async (event) => {
 	if (event.locals.session) await invalidateSession(event.locals.session.id);

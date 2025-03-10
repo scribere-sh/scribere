@@ -7,7 +7,7 @@
 	import { Separator } from '@scribere/ui/separator';
 	import { Button } from '@scribere/ui/button';
 
-	import { route } from '$lib/ROUTES';
+	import { route } from '$routes';
 	import { cn } from '@scribere/ui/utils';
 
 	const { data }: PageProps = $props();

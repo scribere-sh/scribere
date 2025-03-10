@@ -1,12 +1,12 @@
 import type { RequestHandler } from './$types';
 
-import { setReturnPathCookie } from '$lib/server/auth';
+import { setReturnPathCookie } from '$auth';
 import {
 	generateState,
 	OAuth2Providers,
 	OAUTH_ACTION_NAME,
 	STATE_COOKIE_NAME
-} from '$lib/server/oauth';
+} from '$oauth';
 
 export const GET: RequestHandler = async ({ params, cookies, url }) => {
 	const validProviders = OAuth2Providers.validProviders;

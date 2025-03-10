@@ -1,13 +1,13 @@
 import type { Actions, PageServerLoad } from './$types';
 
 import { route } from '$lib/ROUTES';
-import { mfaFormSchema } from '$lib/client/forms';
+import { mfaFormSchema } from '$forms';
 
 import { redirect } from '@sveltejs/kit';
 
-import { clearReturnPathCookie, getReturnPathFromCookie } from '$lib/server/auth';
-import { userHasTOTP, verifyUserOTP } from '$lib/server/auth/mfa';
-import { setSessionAsMFAVerified } from '$lib/server/auth/session';
+import { clearReturnPathCookie, getReturnPathFromCookie } from '$auth';
+import { userHasTOTP, verifyUserOTP } from '$auth/mfa';
+import { setSessionAsMFAVerified } from '$auth/session';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 

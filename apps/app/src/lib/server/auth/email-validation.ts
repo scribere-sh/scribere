@@ -77,19 +77,19 @@ export const sendEmailValidationChallenge = async (
 		validationUrl: validationUrl.toString()
 	};
 
-    try {
-        const result = await sendValidationEmail(props);	
-        const emailRef = result.id;
+	try {
+		const result = await sendValidationEmail(props);
+		const emailRef = result.id;
 
-        await DB.update(emailValidationChallengeTable)
-            .set({
-                emailRef
-            })
-            .where(eq(emailValidationChallengeTable.challengeRef, challenge.ref));
-    } catch (e: unknown) {
-        console.log(e);
-        throw e;
-    }
+		await DB.update(emailValidationChallengeTable)
+			.set({
+				emailRef
+			})
+			.where(eq(emailValidationChallengeTable.challengeRef, challenge.ref));
+	} catch (e: unknown) {
+		console.log(e);
+		throw e;
+	}
 };
 
 export const verifyEmailValidationRequest = async (event: RequestEvent) => {

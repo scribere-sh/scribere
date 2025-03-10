@@ -1,9 +1,11 @@
-import { t } from '$lib/server/trpc';
+import { t } from '$trpc';
 
 import profile from './profile';
+import settings from './settings';
 
 const router = t.router({
-	profile
+	profile,
+	settings
 });
 
 export default router;

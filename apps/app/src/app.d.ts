@@ -1,5 +1,5 @@
-import type { Session } from '$lib/server/auth/session';
-import type { User } from '$lib/server/auth/user';
+import type { Session } from '$auth/session';
+import type { User } from '$auth/user';
 
 import type { Fetcher, R2Bucket } from '@cloudflare/workers-types';
 

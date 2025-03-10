@@ -3,23 +3,23 @@ import type { Action, Actions, PageServerLoad } from './$types';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-import { signupFormSchema } from '$lib/client/forms';
+import { signupFormSchema } from '$forms';
 
-import { insertEmailAddress, verifyEmailAddressAvailability } from '$lib/server/auth/email';
-import { assignPasswordToUser, verifyPasswordStrength } from '$lib/server/auth/password';
-import { createUser, lookupHandleAvailability } from '$lib/server/auth/user';
+import { insertEmailAddress, verifyEmailAddressAvailability } from '$auth/email';
+import { assignPasswordToUser, verifyPasswordStrength } from '$auth/password';
+import { createUser, lookupHandleAvailability } from '$auth/user';
 
-import { route } from '$lib/ROUTES';
+import { route } from '$routes';
 import {
 	generateEmailValidation,
 	sendEmailValidationChallenge
-} from '$lib/server/auth/email-validation';
+} from '$auth/email-validation';
 import {
 	createSession,
 	generateSessionToken,
 	setSessionToken,
 	type SessionFlags
-} from '$lib/server/auth/session';
+} from '$auth/session';
 import { redirect } from '@sveltejs/kit';
 
 export const actions: Actions = {

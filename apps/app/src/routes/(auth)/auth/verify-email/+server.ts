@@ -1,9 +1,9 @@
 import type { RequestHandler } from './$types';
 
-import { route } from '$lib/ROUTES';
-import { verifyArgon2id } from '$lib/server/auth/cryptography';
-import { DB } from '$lib/server/db';
-import { emailAddressTable, emailValidationChallengeTable } from '$lib/server/db/tables';
+import { route } from '$routes';
+import { verifyArgon2id } from '$auth/cryptography';
+import { DB } from '$db';
+import { emailAddressTable, emailValidationChallengeTable } from '$db/tables';
 import { eq } from 'drizzle-orm';
 
 export const GET: RequestHandler = async (event) => {
