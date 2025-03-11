@@ -67,9 +67,9 @@
                 <Tooltip.Root>
                     <Tooltip.Trigger>
                         {#snippet child({ props })}
-                            <Label class="font-semibold" for="{uid}-name-input" {...props}
-                                >Name</Label
-                            >
+                            <Label class="font-semibold" for="{uid}-name-input" {...props}>
+                                Name
+                            </Label>
                         {/snippet}
                     </Tooltip.Trigger>
                     <Tooltip.Content>

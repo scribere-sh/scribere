@@ -9,6 +9,8 @@ const config = {
     trailingComma: "all",
     printWidth: 100,
     semi: true,
+    embeddedLanguageFormatting: "auto",
+    htmlWhitespaceSensitivity: "strict",
     plugins: [
         "prettier-plugin-svelte",
         "@trivago/prettier-plugin-sort-imports",

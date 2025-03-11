@@ -7,8 +7,12 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { insertEmailAddress, verifyEmailAddressAvailability } from '$auth/email';
 import { generateEmailValidation, sendEmailValidationChallenge } from '$auth/email-validation';
 import { assignPasswordToUser, verifyPasswordStrength } from '$auth/password';
-import type { SessionFlags } from '$auth/session';
-import { createSession, generateSessionToken, setSessionToken } from '$auth/session';
+import {
+    createSession,
+    generateSessionToken,
+    type SessionFlags,
+    setSessionToken,
+} from '$auth/session';
 import { createUser, lookupHandleAvailability } from '$auth/user';
 
 import { signupFormSchema } from '$forms';
