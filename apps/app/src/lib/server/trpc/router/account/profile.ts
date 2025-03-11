@@ -14,12 +14,12 @@ const router = t.router({
             throw new TRPCError({
                 code: 'INTERNAL_SERVER_ERROR',
                 message:
-                    'Somehow, magically, the user that has a valid session was not found in the database.',
+                    'Somehow, magically, the user that has a valid session was not found in the database.'
             });
         }
 
         return user;
-    }),
+    })
 });
 
 export default router;

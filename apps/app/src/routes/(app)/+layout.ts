@@ -6,6 +6,6 @@ export const load = (async () => {
     const queryClient = new QueryClient();
 
     return {
-        queryClient,
+        queryClient
     };
 }) satisfies LayoutLoad;

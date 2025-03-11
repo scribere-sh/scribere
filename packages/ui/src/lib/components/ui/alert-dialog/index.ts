@@ -35,5 +35,5 @@ export {
     Portal,
     Root,
     Title,
-    Trigger,
+    Trigger
 };

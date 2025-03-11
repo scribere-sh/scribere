@@ -25,7 +25,7 @@
         },
         onSubmit: () => {
             disabled = true;
-        },
+        }
     });
 
     const { form: formData, enhance } = form;

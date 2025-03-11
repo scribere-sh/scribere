@@ -11,7 +11,7 @@ import {
     createSession,
     generateSessionToken,
     type SessionFlags,
-    setSessionToken,
+    setSessionToken
 } from '$auth/session';
 import { createUser, lookupHandleAvailability } from '$auth/user';
 
@@ -23,7 +23,7 @@ export const actions: Actions = {
         const form = await superValidate(event, zod(signupFormSchema));
         if (!form.valid) {
             return fail(400, {
-                form,
+                form
             });
         }
 
@@ -41,7 +41,7 @@ export const actions: Actions = {
 
         const user = await createUser({
             displayName: form.data.displayName,
-            handle: form.data.handle,
+            handle: form.data.handle
         });
 
         await insertEmailAddress(form.data.emailAddress, user.id);
@@ -52,14 +52,14 @@ export const actions: Actions = {
             user.displayName,
             form.data.emailAddress,
             event.url,
-            challenge,
+            challenge
         );
 
         // user won't have mfa
         //
         // it'd be set to true off the get to anyway
         const sessionFlags: SessionFlags = {
-            mfaVerified: null,
+            mfaVerified: null
         };
 
         const sessionToken = generateSessionToken();
@@ -67,7 +67,7 @@ export const actions: Actions = {
         setSessionToken(event, sessionToken, session.expiresAt);
 
         redirect(302, route('/'));
-    }) satisfies Action,
+    }) satisfies Action
 };
 
 export const load: PageServerLoad = async ({ locals }) => {
@@ -76,6 +76,6 @@ export const load: PageServerLoad = async ({ locals }) => {
     }
 
     return {
-        form: await superValidate(zod(signupFormSchema)),
+        form: await superValidate(zod(signupFormSchema))
     };
 };

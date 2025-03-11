@@ -7,7 +7,7 @@ import {
     deleteSessionToken,
     SESSION_TOKEN_NAME,
     setSessionToken,
-    validateSessionToken,
+    validateSessionToken
 } from '$auth/session';
 
 import { TRPC_PATH } from '$trpc-client';
@@ -18,7 +18,7 @@ const apiRequireAuthHandle: Handle = async ({ event, resolve }) => {
     if (event.url.pathname.startsWith('/api')) {
         if (!event.locals.session || !event.locals.user) {
             return new Response(null, {
-                status: 401,
+                status: 401
             });
         }
     }
@@ -58,7 +58,7 @@ export const handle: Handle = sequence(
             console.error(`event.platform IS MISSING!!!!!`);
 
             return new Response(null, {
-                status: 500,
+                status: 500
             });
         }
         event.locals.R2 = event.platform!.env.R2;
@@ -66,5 +66,5 @@ export const handle: Handle = sequence(
     },
     validateSessionHandle,
     apiRequireAuthHandle,
-    createTRPCHandle({ router, createContext, url: TRPC_PATH }),
+    createTRPCHandle({ router, createContext, url: TRPC_PATH })
 );

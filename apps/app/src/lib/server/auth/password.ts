@@ -18,7 +18,7 @@ const sha1Password = (pw: string) => encodeHexLowerCase(sha1(new TextEncoder().e
 
 export const verifyPasswordStrength = async (
     password: string,
-    { fetch }: RequestEvent,
+    { fetch }: RequestEvent
 ): Promise<boolean> => {
     // todo: check string length?
     // it's done already in the form
@@ -40,21 +40,21 @@ export const verifyPasswordStrength = async (
 export const assignPasswordToUser = async (
     event: RequestEvent,
     userId: string,
-    password: string,
+    password: string
 ) => {
     const passwordHash = await createPasswordHash(event, password);
 
     await DB.insert(authProviderTable).values({
         userId,
         type: 'password',
-        hash: passwordHash,
+        hash: passwordHash
     });
 };
 
 export const verifyPasswordOfUser = async (
     event: RequestEvent,
     userId: string,
-    provided_password: string,
+    provided_password: string
 ) => {
     const [password] = await DB.select({ hash: authProviderTable.hash })
         .from(authProviderTable)
@@ -74,7 +74,7 @@ export const createPasswordHash = async (event: RequestEvent, password: string) 
 export const validatePassword = async (
     event: RequestEvent,
     stored_hash: string,
-    password: string,
+    password: string
 ) => {
     return await verifyArgon2id(event, stored_hash, password);
 };

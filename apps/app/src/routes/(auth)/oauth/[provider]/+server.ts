@@ -18,7 +18,7 @@ export const GET: RequestHandler = async ({ params, cookies, url }) => {
 
     if (!validProviders.includes(params.provider)) {
         return new Response(null, {
-            status: 400,
+            status: 400
         });
     }
 
@@ -36,7 +36,7 @@ export const GET: RequestHandler = async ({ params, cookies, url }) => {
         // eslint-disable-next-line turbo/no-undeclared-env-vars
         secure: import.meta.env.PROD,
         path: '/',
-        sameSite: 'lax',
+        sameSite: 'lax'
     });
 
     if (returnPath) {
@@ -50,14 +50,14 @@ export const GET: RequestHandler = async ({ params, cookies, url }) => {
             // eslint-disable-next-line turbo/no-undeclared-env-vars
             secure: import.meta.env.PROD,
             path: '/',
-            sameSite: 'lax',
+            sameSite: 'lax'
         });
     }
 
     return new Response(null, {
         status: 302,
         headers: {
-            Location: authURL.toString(),
-        },
+            Location: authURL.toString()
+        }
     });
 };

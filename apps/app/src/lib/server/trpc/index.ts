@@ -8,7 +8,7 @@ import { dev } from '$app/environment';
 import { transformer } from '$trpc-client';
 
 export const TRPCLog = new Log('tRPC', {
-    withDate: 'dateTime',
+    withDate: 'dateTime'
 });
 
 export const t = initTRPC.context<Context>().create({
@@ -24,11 +24,11 @@ export const t = initTRPC.context<Context>().create({
                       zodError:
                           error.code === 'BAD_REQUEST' && error.cause instanceof ZodError
                               ? error.cause.flatten()
-                              : null,
-                  },
+                              : null
+                  }
               };
           }
-        : undefined,
+        : undefined
 });
 
 export type Router = typeof router;

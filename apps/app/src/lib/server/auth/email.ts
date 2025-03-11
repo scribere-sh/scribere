@@ -15,7 +15,7 @@ export const insertEmailAddress = async (emailAddress: string, userId: string) =
         userId,
         emailAddress,
         isValidated: false,
-        challengeRef: null,
+        challengeRef: null
     });
 };
 

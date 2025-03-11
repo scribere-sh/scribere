@@ -10,5 +10,5 @@ export {
     Content as HoverCardContent,
     Trigger as HoverCardTrigger,
     Root,
-    Trigger,
+    Trigger
 };

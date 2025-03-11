@@ -23,7 +23,7 @@ export const usersTable = sqliteTable('users', {
      */
     createdAt: integer({ mode: 'timestamp' })
         .notNull()
-        .$defaultFn(() => new Date(Date.now())),
+        .$defaultFn(() => new Date(Date.now()))
 });
 
 export const authProviderTable = sqliteTable('auth_providers', {
@@ -56,7 +56,7 @@ export const authProviderTable = sqliteTable('auth_providers', {
      *
      * Overall this should do its best to keep things away
      */
-    hash: text(),
+    hash: text()
 });
 
 export const twoFactorAuthenticationProviderTable = sqliteTable(
@@ -68,8 +68,8 @@ export const twoFactorAuthenticationProviderTable = sqliteTable(
 
         type: text().notNull(),
 
-        challenge: text().notNull(),
-    },
+        challenge: text().notNull()
+    }
 );
 
 export const emailAddressTable = sqliteTable('email_addresses', {
@@ -96,13 +96,13 @@ export const emailAddressTable = sqliteTable('email_addresses', {
     /**
      * if not verified, this will point to a validationRef in the {@link emailValidationChallengeTable | `emailValidationChallengeTable`}
      */
-    challengeRef: text(),
+    challengeRef: text()
 });
 
 export const emailValidationChallengeTable = sqliteTable('email_verification_requests', {
     emailRef: text(),
     challengeRef: text().notNull(),
-    challengeTokenHash: text().notNull(),
+    challengeTokenHash: text().notNull()
 });
 
 export const sessionsTable = sqliteTable('sessions', {
@@ -114,7 +114,7 @@ export const sessionsTable = sqliteTable('sessions', {
 
     expiresAt: integer({ mode: 'timestamp' }).notNull(),
 
-    mfaVerified: integer({ mode: 'boolean' }),
+    mfaVerified: integer({ mode: 'boolean' })
 });
 
 export const assetTable = sqliteTable('assets', {
@@ -137,5 +137,5 @@ export const assetTable = sqliteTable('assets', {
     /**
      *
      */
-    mimeType: text().notNull(),
+    mimeType: text().notNull()
 });

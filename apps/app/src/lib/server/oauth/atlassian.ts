@@ -12,8 +12,8 @@ export const atlassianFactory = (req_url: URL) => {
         client: new Atlassian(
             env.ATLASSIAN_CLIENT_ID!,
             env.ATLASSIAN_CLIENT_SECRET!,
-            callbackURL.toString(),
+            callbackURL.toString()
         ),
-        scopes: [] as string[],
+        scopes: [] as string[]
     };
 };

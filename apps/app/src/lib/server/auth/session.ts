@@ -49,7 +49,7 @@ const SESSION_NULL: SessionTokenValidationResult = { session: null, user: null }
  * in and steals all of the session, the data will be useless.
  */
 export const validateSessionToken = async (
-    sessionToken: string,
+    sessionToken: string
 ): Promise<SessionTokenValidationResult> => {
     const sessionId = sessionTokenToSessionId(sessionToken);
 
@@ -61,7 +61,7 @@ export const validateSessionToken = async (
         userId: usersTable.id,
         userDisplayName: usersTable.displayName,
         userHandle: usersTable.handle,
-        userCreatedAt: usersTable.createdAt,
+        userCreatedAt: usersTable.createdAt
     })
         .from(sessionsTable)
         .innerJoin(usersTable, eq(sessionsTable.userId, usersTable.id))
@@ -76,14 +76,14 @@ export const validateSessionToken = async (
             id: query.sessionId,
             expiresAt: query.sessionExpiry,
             mfaVerified: query.sessionMfaVerified,
-            userId: query.userId,
+            userId: query.userId
         };
 
         const user: User = {
             id: query.userId,
             displayName: query.userDisplayName,
             handle: query.userHandle,
-            createdAt: query.userCreatedAt,
+            createdAt: query.userCreatedAt
         };
 
         if (Date.now() >= session.expiresAt.getTime()) {
@@ -101,7 +101,7 @@ export const validateSessionToken = async (
 
         return {
             session,
-            user,
+            user
         };
     }
 };
@@ -109,7 +109,7 @@ export const validateSessionToken = async (
 export const setSessionAsMFAVerified = async (sessionId: string) => {
     await DB.update(sessionsTable)
         .set({
-            mfaVerified: true,
+            mfaVerified: true
         })
         .where(eq(sessionsTable.id, sessionId));
 };
@@ -127,7 +127,7 @@ export const generateSessionToken = generateTokenString;
 export const createSession = async (
     sessionToken: string,
     userId: string,
-    flags: SessionFlags,
+    flags: SessionFlags
 ): Promise<Session> => {
     const sessionId = sessionTokenToSessionId(sessionToken);
 
@@ -135,14 +135,14 @@ export const createSession = async (
         id: sessionId,
         userId,
         expiresAt: new Date(Date.now() + TIME_TO_EXPIRE_MS),
-        mfaVerified: flags.mfaVerified,
+        mfaVerified: flags.mfaVerified
     };
 
     await DB.insert(sessionsTable).values({
         id: sessionId,
         userId,
         expiresAt: session.expiresAt,
-        mfaVerified: session.mfaVerified,
+        mfaVerified: session.mfaVerified
     });
 
     return session;
@@ -169,7 +169,7 @@ export const deleteSessionToken = (event: RequestEvent) => {
         // eslint-disable-next-line turbo/no-undeclared-env-vars
         secure: import.meta.env.PROD,
         sameSite: 'lax',
-        maxAge: 0,
+        maxAge: 0
     });
 };
 // #endregion
@@ -182,7 +182,7 @@ export const setSessionToken = (event: RequestEvent, sessionToken: string, expir
         // eslint-disable-next-line turbo/no-undeclared-env-vars
         secure: import.meta.env.PROD,
         sameSite: 'lax',
-        expires: expiresAt,
+        expires: expiresAt
     });
 };
 // #endregion

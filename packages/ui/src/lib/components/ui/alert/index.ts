@@ -11,5 +11,5 @@ export {
     Title as AlertTitle,
     Description,
     Root,
-    Title,
+    Title
 };

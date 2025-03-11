@@ -7,9 +7,9 @@ export const load = (() => {
         rendered: renderValidationEmail({
             to: {
                 email: 'ha',
-                name: 'fda',
+                name: 'fda'
             },
-            validationUrl: 'https://google.com',
-        }),
+            validationUrl: 'https://google.com'
+        })
     };
 }) satisfies PageServerLoad;

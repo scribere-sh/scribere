@@ -4,7 +4,7 @@ export const createContext = async (event: RequestEvent) => {
     return {
         ...event,
         session: event.locals.session,
-        user: event.locals.user,
+        user: event.locals.user
     };
 };
 

@@ -39,7 +39,7 @@
                 href={disabled
                     ? '#'
                     : route('GET /oauth/[provider]', {
-                          provider: method.id,
+                          provider: method.id
                       })}
             >
                 {#if method.icon}

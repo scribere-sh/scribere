@@ -45,7 +45,7 @@ const METHODS: OAuthProviderItem[] = [
         name: 'GitHub',
         id: 'github',
         bg_colour: '#181717',
-        text_colour: '#FEFEFE',
+        text_colour: '#FEFEFE'
     },
     {
         // todo replace with atlassian
@@ -53,14 +53,14 @@ const METHODS: OAuthProviderItem[] = [
         name: 'Atlassian',
         id: 'atlassian',
         bg_colour: '#0050D4',
-        text_colour: '#FEFEFE',
-    },
+        text_colour: '#FEFEFE'
+    }
 ];
 
 export const load: PageLoad = (event) => {
     return {
         methods: METHODS,
         // also load server data
-        ...event.data,
+        ...event.data
     };
 };

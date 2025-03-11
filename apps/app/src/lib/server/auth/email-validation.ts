@@ -26,7 +26,7 @@ export interface EmailAddressChallenge {
  */
 export const generateEmailValidation = async (
     event: RequestEvent,
-    emailAddress: string,
+    emailAddress: string
 ): Promise<EmailAddressChallenge> => {
     const challengeRef = generateChallengeRef(emailAddress);
     const challengeToken = generateChallengeToken();
@@ -35,7 +35,7 @@ export const generateEmailValidation = async (
 
     await DB.insert(emailValidationChallengeTable).values({
         challengeRef,
-        challengeTokenHash: challengeTokenArgon2id,
+        challengeTokenHash: challengeTokenArgon2id
     });
 
     await DB.update(emailAddressTable)
@@ -44,7 +44,7 @@ export const generateEmailValidation = async (
 
     return {
         ref: challengeRef,
-        token: challengeToken,
+        token: challengeToken
     };
 };
 
@@ -55,7 +55,7 @@ export const sendEmailValidationChallenge = async (
     displayName: string,
     emailAddress: string,
     reqUrl: URL,
-    challenge: EmailAddressChallenge,
+    challenge: EmailAddressChallenge
 ) => {
     const validationUrl = reqUrl;
     validationUrl.pathname = route('GET /auth/verify-email');
@@ -67,14 +67,14 @@ export const sendEmailValidationChallenge = async (
 
         from: {
             email: env.SENDER_EMAIL,
-            name: env.SENDER_NAME,
+            name: env.SENDER_NAME
         },
         to: {
             name: displayName,
-            email: emailAddress,
+            email: emailAddress
         },
 
-        validationUrl: validationUrl.toString(),
+        validationUrl: validationUrl.toString()
     };
 
     try {
@@ -83,7 +83,7 @@ export const sendEmailValidationChallenge = async (
 
         await DB.update(emailValidationChallengeTable)
             .set({
-                emailRef,
+                emailRef
             })
             .where(eq(emailValidationChallengeTable.challengeRef, challenge.ref));
     } catch (e: unknown) {
@@ -101,7 +101,7 @@ export const verifyEmailValidationRequest = async (event: RequestEvent) => {
     }
 
     const [challenge] = await DB.select({
-        challengeToken: emailValidationChallengeTable.challengeTokenHash,
+        challengeToken: emailValidationChallengeTable.challengeTokenHash
     })
         .from(emailValidationChallengeTable)
         .where(eq(emailValidationChallengeTable.challengeRef, challengeRef));
@@ -109,14 +109,14 @@ export const verifyEmailValidationRequest = async (event: RequestEvent) => {
     if (await verifyArgon2id(event, challenge.challengeToken, challengeToken)) {
         await DB.batch([
             DB.delete(emailValidationChallengeTable).where(
-                eq(emailValidationChallengeTable.challengeRef, challengeRef),
+                eq(emailValidationChallengeTable.challengeRef, challengeRef)
             ),
             DB.update(emailAddressTable)
                 .set({
                     challengeRef: null,
-                    isValidated: true,
+                    isValidated: true
                 })
-                .where(eq(emailAddressTable.challengeRef, challengeRef)),
+                .where(eq(emailAddressTable.challengeRef, challengeRef))
         ]);
     } else {
         throw new Error('Email validation challenge failed');

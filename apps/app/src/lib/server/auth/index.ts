@@ -29,12 +29,12 @@ export const setReturnPathCookie = (cookies: RequestEvent['cookies'], path: stri
         // eslint-disable-next-line turbo/no-undeclared-env-vars
         secure: import.meta.env.PROD,
         path: '/',
-        sameSite: 'lax',
+        sameSite: 'lax'
     });
 };
 
 export const clearReturnPathCookie = (cookies: RequestEvent['cookies']) => {
     cookies.delete(AUTH_RETURN_PATH, {
-        path: '/',
+        path: '/'
     });
 };

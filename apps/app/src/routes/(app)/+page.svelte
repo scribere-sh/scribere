@@ -49,7 +49,7 @@
                     <Tooltip.Trigger
                         class={cn(
                             buttonVariants({ variant: variant as ButtonVariant }),
-                            'w-28 capitalize',
+                            'w-28 capitalize'
                         )}
                         onclick={toggleDark}
                     >

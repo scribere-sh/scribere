@@ -32,9 +32,9 @@ export const transformer = {
      */
     output: {
         serialize: Devalue.stringify,
-        deserialize: Devalue.parse,
+        deserialize: Devalue.parse
     },
-    __default: true,
+    __default: true
 };
 
 let __browserClient: ReturnType<typeof svelteQueryWrapper<Router>>;
@@ -54,11 +54,11 @@ export const trpc = (init?: TRPCClientInit, queryClient?: QueryClient) => {
             links: [
                 httpLink({
                     url: TRPC_PATH,
-                    fetch: init?.fetch,
-                }),
-            ],
+                    fetch: init?.fetch
+                })
+            ]
         }),
-        queryClient,
+        queryClient
     });
 
     if (browser) __browserClient = client;

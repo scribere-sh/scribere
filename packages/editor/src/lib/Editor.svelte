@@ -56,12 +56,12 @@
                     'Mod-z': undo,
                     'Mod-y': redo,
                     'Mod-b': toggleBold,
-                    'Mod-i': toggleItalic,
+                    'Mod-i': toggleItalic
                 }),
                 exitCodeBlockKeymap(),
                 keymap(baseKeymap),
-                inputRulesPlugin,
-            ],
+                inputRulesPlugin
+            ]
         });
 
         view = new EditorView(ref, {
@@ -74,7 +74,7 @@
                 isItalicOnSelection = isMarkActive(new_state, schema.marks.em);
 
                 if (onupdate) onupdate(new_state);
-            },
+            }
         });
 
         return () => {

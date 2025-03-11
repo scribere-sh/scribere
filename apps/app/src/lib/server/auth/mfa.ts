@@ -33,8 +33,8 @@ export const userHasTOTP = async (userId: string): Promise<boolean> => {
         .where(
             and(
                 eq(twoFactorAuthenticationProviderTable.userId, userId),
-                eq(twoFactorAuthenticationProviderTable.type, TOTP_TYPE),
-            ),
+                eq(twoFactorAuthenticationProviderTable.type, TOTP_TYPE)
+            )
         );
 
     return result.length > 0;
@@ -54,14 +54,14 @@ export const verifyOTP = (key: string, digits: string) => {
         MFA_PERIOD_SECONDS,
         MFA_DIGITS,
         digits,
-        MFA_GRACE_PERIOD_SECONDS,
+        MFA_GRACE_PERIOD_SECONDS
     );
 };
 
 export const enrolUserWithTOTP = async (
     userId: string,
     key: string,
-    initial: string,
+    initial: string
 ): Promise<boolean> => {
     if (!verifyOTP(key, initial)) {
         return false;
@@ -70,7 +70,7 @@ export const enrolUserWithTOTP = async (
     await DB.insert(twoFactorAuthenticationProviderTable).values({
         userId,
         type: TOTP_TYPE,
-        challenge: key,
+        challenge: key
     });
 
     return true;
@@ -78,14 +78,14 @@ export const enrolUserWithTOTP = async (
 
 export const verifyUserOTP = async (userId: string, digits: string): Promise<boolean> => {
     const [otpChallengeLookup] = await DB.select({
-        challenge: twoFactorAuthenticationProviderTable.challenge,
+        challenge: twoFactorAuthenticationProviderTable.challenge
     })
         .from(twoFactorAuthenticationProviderTable)
         .where(
             and(
                 eq(twoFactorAuthenticationProviderTable.userId, userId),
-                eq(twoFactorAuthenticationProviderTable.type, TOTP_TYPE),
-            ),
+                eq(twoFactorAuthenticationProviderTable.type, TOTP_TYPE)
+            )
         );
 
     if (!otpChallengeLookup) {

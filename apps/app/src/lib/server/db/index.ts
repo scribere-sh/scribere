@@ -6,7 +6,7 @@ import { env } from '$env/dynamic/private';
 export const DB = drizzle({
     connection: {
         url: env.TURSO_URL,
-        authToken: env.TURSO_AUTH_TOKEN,
+        authToken: env.TURSO_AUTH_TOKEN
     },
-    logger: dev ? { logQuery: console.info } : undefined,
+    logger: dev ? { logQuery: console.info } : undefined
 });

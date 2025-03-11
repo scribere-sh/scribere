@@ -24,7 +24,7 @@
     class={cn(
         'w-screen border-t border-border/40 bg-background/95 backdrop-blur transition-[height] supports-[backdrop-blur]:bg-background/50',
         heightClass,
-        className,
+        className
     )}
     {...rest}
 >

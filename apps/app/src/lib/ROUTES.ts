@@ -18,7 +18,7 @@ export const PAGES = {
     '/auth/mfa': `/auth/mfa`,
     '/auth/recovery-code': `/auth/recovery-code`,
     '/auth/reset-password': `/auth/reset-password`,
-    '/auth/sign-up': `/auth/sign-up`,
+    '/auth/sign-up': `/auth/sign-up`
 };
 
 /**
@@ -37,7 +37,7 @@ export const SERVERS = {
     },
     'GET /oauth/[provider]/callback': (params: { provider: string | number }) => {
         return `/oauth/${params['provider']}/callback`;
-    },
+    }
 };
 
 /**
@@ -46,7 +46,7 @@ export const SERVERS = {
 export const ACTIONS = {
     'default /auth/log-in': `/auth/log-in`,
     'default /auth/mfa': `/auth/mfa`,
-    'default /auth/sign-up': `/auth/sign-up`,
+    'default /auth/sign-up': `/auth/sign-up`
 };
 
 /**
@@ -61,7 +61,7 @@ type ParamValue = string | number | undefined;
  */
 export const appendSp = (
     sp?: Record<string, ParamValue | ParamValue[]>,
-    prefix: '?' | '&' = '?',
+    prefix: '?' | '&' = '?'
 ) => {
     if (sp === undefined) return '';
 
@@ -123,7 +123,7 @@ export type Routes = keyof AllTypes extends `${string}/${infer Route}`
     ? `/${Route}`
     : keyof AllTypes;
 export const routes = [
-    ...new Set(Object.keys(AllObjs).map((route) => /^\/.*|[^ ]?\/.*$/.exec(route)?.[0] ?? route)),
+    ...new Set(Object.keys(AllObjs).map((route) => /^\/.*|[^ ]?\/.*$/.exec(route)?.[0] ?? route))
 ] as Routes[];
 
 /**

@@ -43,7 +43,7 @@ const codeBlockRule = new InputRule(/^`{3}([a-zA-Z0-9-]+)? /, (state, match, sta
     return state.tr
         .insert(end + 1, schema.nodes.paragraph.create())
         .setBlockType(start, end, schema.nodes.codeBlock, {
-            lang: (match[1] ?? 'plaintext').toLowerCase(),
+            lang: (match[1] ?? 'plaintext').toLowerCase()
         })
         .deleteRange(start, end)
         .insert(start - 1, schema.nodes.paragraph.create());
@@ -83,7 +83,7 @@ export const exitCodeBlockKeymap = () => {
                         dispatch(
                             tr
                                 .insert(to + 1, paragraphNode)
-                                .setSelection(TextSelection.create(tr.doc, to + 2)),
+                                .setSelection(TextSelection.create(tr.doc, to + 2))
                         );
                     }
 
@@ -96,10 +96,10 @@ export const exitCodeBlockKeymap = () => {
             }
 
             return false;
-        },
+        }
     });
 };
 
 export const inputRulesPlugin = inputRules({
-    rules: [ellipsis, headingRule, boldItalicRule, codeBlockRule],
+    rules: [ellipsis, headingRule, boldItalicRule, codeBlockRule]
 });

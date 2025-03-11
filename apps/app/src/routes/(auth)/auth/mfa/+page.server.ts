@@ -16,7 +16,7 @@ export const actions: Actions = {
         const form = await superValidate(event, zod(mfaFormSchema));
         if (!form.valid) {
             return fail(400, {
-                form,
+                form
             });
         }
 
@@ -37,7 +37,7 @@ export const actions: Actions = {
         } else {
             return setError(form, 'mfa', 'Incorrect 2FA Token');
         }
-    },
+    }
 };
 
 export const load: PageServerLoad = async ({ locals }) => {
@@ -51,6 +51,6 @@ export const load: PageServerLoad = async ({ locals }) => {
     }
 
     return {
-        form: await superValidate(zod(mfaFormSchema)),
+        form: await superValidate(zod(mfaFormSchema))
     };
 };

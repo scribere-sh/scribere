@@ -23,7 +23,7 @@ export interface EmailSendResult {
 const template = Handlebars.compile(EmailValidationTemplate);
 
 export const renderValidationEmail = (
-    props: Pick<ValidateEmailProps, 'to' | 'validationUrl'>,
+    props: Pick<ValidateEmailProps, 'to' | 'validationUrl'>
 ): string => {
     return template(props);
 };
@@ -37,16 +37,16 @@ export const sendValidationEmail = async (props: ValidateEmailProps): Promise<Em
         to: to.email,
         subject: 'Verify your email',
 
-        html: emailText,
+        html: emailText
     };
 
     const response = await fetch(`https://api.resend.com/emails`, {
         method: 'POST',
         headers: {
             Authorization: `Bearer ${apiKey}`,
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(payload)
     });
 
     return (await response.json()) as EmailSendResult;

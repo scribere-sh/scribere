@@ -12,8 +12,8 @@ export const githubFactory = (req_url: URL) => {
         client: new GitHub(
             env.GITHUB_CLIENT_ID!,
             env.GITHUB_CLIENT_SECRET!,
-            callbackURL.toString(),
+            callbackURL.toString()
         ),
-        scopes: [] as string[],
+        scopes: [] as string[]
     };
 };

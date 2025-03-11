@@ -12,7 +12,7 @@ import {
     createSession,
     generateSessionToken,
     type SessionFlags,
-    setSessionToken,
+    setSessionToken
 } from '$auth/session';
 
 import { AUTH_RETURN_PATH, clearReturnPathCookie, getReturnPathFromCookie } from '$auth';
@@ -27,14 +27,14 @@ export const actions: Actions = {
         const form = await superValidate(event, zod(logInFormSchema));
         if (!form.valid) {
             return fail(400, {
-                form,
+                form
             });
         }
 
         let user;
         if (z.string().email().safeParse(form.data.handleOrEmail).success) {
             const [maybeUser] = await DB.select({
-                id: emailAddressTable.userId,
+                id: emailAddressTable.userId
             })
                 .from(emailAddressTable)
                 .where(eq(emailAddressTable.emailAddress, form.data.handleOrEmail));
@@ -42,7 +42,7 @@ export const actions: Actions = {
             user = maybeUser;
         } else {
             const [maybeUser] = await DB.select({
-                id: usersTable.id,
+                id: usersTable.id
             })
                 .from(usersTable)
                 .where(eq(usersTable.handle, form.data.handleOrEmail));
@@ -57,13 +57,13 @@ export const actions: Actions = {
         const [authProvider] = await DB.select({ hash: authProviderTable.hash })
             .from(authProviderTable)
             .where(
-                and(eq(authProviderTable.userId, user.id), eq(authProviderTable.type, 'password')),
+                and(eq(authProviderTable.userId, user.id), eq(authProviderTable.type, 'password'))
             );
 
         if (!authProvider || !authProvider.hash) {
             return fail(500, {
                 form,
-                message: 'HOW ON GODS GREEN EARTH DO YOU NOT HAVE A PASSWORD SET',
+                message: 'HOW ON GODS GREEN EARTH DO YOU NOT HAVE A PASSWORD SET'
             });
         }
 
@@ -74,7 +74,7 @@ export const actions: Actions = {
         const userHasMFA = await userHasTOTP(user.id);
 
         const sessionFlags: SessionFlags = {
-            mfaVerified: userHasMFA ? false : null,
+            mfaVerified: userHasMFA ? false : null
         };
 
         const sessionToken = generateSessionToken();
@@ -88,7 +88,7 @@ export const actions: Actions = {
             clearReturnPathCookie(event.cookies);
             redirect(302, returnPath ?? route('/'));
         }
-    },
+    }
 };
 
 export const load: PageServerLoad = async ({ url, cookies }) => {
@@ -101,12 +101,12 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
             // eslint-disable-next-line turbo/no-undeclared-env-vars
             secure: import.meta.env.PROD,
             path: '/',
-            sameSite: 'lax',
+            sameSite: 'lax'
         });
     }
 
     return {
         useableProviders: OAuth2Providers.validProviders,
-        form: await superValidate(zod(logInFormSchema)),
+        form: await superValidate(zod(logInFormSchema))
     };
 };

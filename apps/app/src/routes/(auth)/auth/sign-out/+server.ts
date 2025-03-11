@@ -12,7 +12,7 @@ export const GET: RequestHandler = async (event) => {
     return new Response(null, {
         status: 302,
         headers: {
-            Location: route('/auth/log-in'),
-        },
+            Location: route('/auth/log-in')
+        }
     });
 };

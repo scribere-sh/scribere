@@ -30,7 +30,7 @@ export const createUser = async (user: Omit<User, 'id' | 'createdAt'>) => {
 
 export const lookupUserIdFromOAuthProvider = async (providerId: string, provider: string) => {
     const [userRecord] = await DB.select({
-        userId: authProviderTable.userId,
+        userId: authProviderTable.userId
     })
         .from(authProviderTable)
         .where(and(eq(authProviderTable.type, provider), eq(authProviderTable.ref, providerId)));
@@ -45,10 +45,10 @@ export const lookupUserIdFromOAuthProvider = async (providerId: string, provider
 export const linkOAuthProviderToUser = async (
     providerId: string,
     provider: string,
-    userId: string,
+    userId: string
 ) => {
     const [existentRecord] = await DB.select({
-        providerId: authProviderTable.ref,
+        providerId: authProviderTable.ref
     })
         .from(authProviderTable)
         .where(and(eq(authProviderTable.userId, userId), eq(authProviderTable.type, provider)));
@@ -64,6 +64,6 @@ export const linkOAuthProviderToUser = async (
     await DB.insert(authProviderTable).values({
         type: provider,
         ref: providerId,
-        userId,
+        userId
     });
 };

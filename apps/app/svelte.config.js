@@ -8,7 +8,7 @@ const config = {
     preprocess: vitePreprocess(),
 
     compilerOptions: {
-        modernAst: true,
+        modernAst: true
     },
 
     kit: {
@@ -17,8 +17,8 @@ const config = {
         // See https://svelte.dev/docs/kit/adapters for more information about adapters.
         adapter: adapter({
             platformProxy: {
-                configPath: './wrangler.jsonc',
-            },
+                configPath: './wrangler.jsonc'
+            }
         }),
 
         alias: {
@@ -29,9 +29,9 @@ const config = {
             '$trpc-client': 'src/lib/client/trpc.ts',
             $forms: 'src/lib/client/forms.ts',
             $routes: 'src/lib/ROUTES.ts',
-            $util: 'src/lib/server/util.ts',
-        },
-    },
+            $util: 'src/lib/server/util.ts'
+        }
+    }
 };
 
 export default config;

@@ -6,7 +6,7 @@ const schemaSpec: SchemaSpec = {
          * Doc
          */
         doc: {
-            content: 'block+',
+            content: 'block+'
         } as NodeSpec,
 
         /**
@@ -17,7 +17,7 @@ const schemaSpec: SchemaSpec = {
             content: 'inline*',
             group: 'block',
             parseDOM: [{ tag: 'p' }],
-            toDOM: () => ['p', 0],
+            toDOM: () => ['p', 0]
         } as NodeSpec,
 
         blockquote: {
@@ -25,13 +25,13 @@ const schemaSpec: SchemaSpec = {
             group: 'block',
             defining: true,
             parseDOM: [{ tag: 'blockquote' }],
-            toDom: () => ['blockquote', 0],
+            toDom: () => ['blockquote', 0]
         } as NodeSpec,
 
         horizontal_rule: {
             group: 'block',
             parseDOM: [{ tag: 'hr' }],
-            toDom: () => ['hr'],
+            toDom: () => ['hr']
         } as NodeSpec,
 
         heading: {
@@ -45,9 +45,9 @@ const schemaSpec: SchemaSpec = {
                 { tag: 'h3', attrs: { level: 3 } },
                 { tag: 'h4', attrs: { level: 4 } },
                 { tag: 'h5', attrs: { level: 5 } },
-                { tag: 'h6', attrs: { level: 6 } },
+                { tag: 'h6', attrs: { level: 6 } }
             ],
-            toDOM: (node) => ['h' + node.attrs.level, 0],
+            toDOM: (node) => ['h' + node.attrs.level, 0]
         } as NodeSpec,
 
         codeBlock: {
@@ -62,8 +62,8 @@ const schemaSpec: SchemaSpec = {
             toDOM: () => [
                 'pre',
                 { class: 'codeBlock font-mono mx-4 border bg-gray-100' },
-                ['code', 0],
-            ],
+                ['code', 0]
+            ]
         } as NodeSpec,
 
         /**
@@ -71,7 +71,7 @@ const schemaSpec: SchemaSpec = {
          */
 
         text: {
-            group: 'inline',
+            group: 'inline'
         } as NodeSpec,
 
         image: {
@@ -79,7 +79,7 @@ const schemaSpec: SchemaSpec = {
             attrs: {
                 src: { validate: 'string' },
                 alt: { default: null, validate: 'string|null' },
-                title: { default: null, validate: 'string|null' },
+                title: { default: null, validate: 'string|null' }
             },
             group: 'inline',
             draggable: true,
@@ -90,15 +90,15 @@ const schemaSpec: SchemaSpec = {
                         return {
                             src: dom.getAttribute('src'),
                             title: dom.getAttribute('title'),
-                            alt: dom.getAttribute('alt'),
+                            alt: dom.getAttribute('alt')
                         };
-                    },
-                },
+                    }
+                }
             ],
             toDOM: (node) => {
                 const { src, alt, title } = node.attrs;
                 return ['img', { src, alt, title }];
-            },
+            }
         } as NodeSpec,
 
         hard_break: {
@@ -106,14 +106,14 @@ const schemaSpec: SchemaSpec = {
             group: 'inline',
             selectable: false,
             parseDOM: [{ tag: 'br' }],
-            toDOM: () => ['br'],
-        } as NodeSpec,
+            toDOM: () => ['br']
+        } as NodeSpec
     },
     marks: {
         link: {
             attrs: {
                 href: { validate: 'string' },
-                title: { default: null, validate: 'string|null' },
+                title: { default: null, validate: 'string|null' }
             },
             inclusive: false,
             parseDOM: [
@@ -122,15 +122,15 @@ const schemaSpec: SchemaSpec = {
                     getAttrs: (node: HTMLElement) => {
                         return {
                             href: node.getAttribute('href'),
-                            title: node.getAttribute('href'),
+                            title: node.getAttribute('href')
                         };
-                    },
-                },
+                    }
+                }
             ],
             toDOM: (node) => {
                 const { href, title } = node.attrs;
                 return ['a', { href, title }, 0];
-            },
+            }
         } as MarkSpec,
 
         em: {
@@ -138,9 +138,9 @@ const schemaSpec: SchemaSpec = {
                 { tag: 'i' },
                 { tag: 'em' },
                 { style: 'font-style=italic' },
-                { style: 'font-style=normal', clearMark: (m) => m.type.name == 'em' },
+                { style: 'font-style=normal', clearMark: (m) => m.type.name == 'em' }
             ],
-            toDOM: () => ['em', 0],
+            toDOM: () => ['em', 0]
         } as MarkSpec,
 
         strong: {
@@ -151,22 +151,22 @@ const schemaSpec: SchemaSpec = {
                 // tags with a font-weight normal.
                 {
                     tag: 'b',
-                    getAttrs: (node: HTMLElement) => node.style.fontWeight != 'normal' && null,
+                    getAttrs: (node: HTMLElement) => node.style.fontWeight != 'normal' && null
                 },
                 { style: 'font-weight=400', clearMark: (m) => m.type.name == 'strong' },
                 {
                     style: 'font-weight',
-                    getAttrs: (value: string) => /^(bold(er)?|[5-9]\d{2,})$/.test(value) && null,
-                },
+                    getAttrs: (value: string) => /^(bold(er)?|[5-9]\d{2,})$/.test(value) && null
+                }
             ],
-            toDOM: () => ['strong', 0],
+            toDOM: () => ['strong', 0]
         } as MarkSpec,
 
         code: {
             parseDOM: [{ tag: 'code' }],
-            toDOM: () => ['code', 0],
-        } as MarkSpec,
-    },
+            toDOM: () => ['code', 0]
+        } as MarkSpec
+    }
 };
 
 export const schema = new Schema(schemaSpec);

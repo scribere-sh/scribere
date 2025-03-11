@@ -10,7 +10,7 @@ import {
     generateSessionToken,
     invalidateSession,
     type SessionFlags,
-    setSessionToken,
+    setSessionToken
 } from '$auth/session';
 import { linkOAuthProviderToUser, lookupUserIdFromOAuthProvider } from '$auth/user';
 
@@ -34,7 +34,7 @@ const IDENTITY_TRANSLATORS: Record<string, (tokens: OAuth2Tokens) => Promise<str
     atlassian: async (tokens) => {
         // todo
         return '';
-    },
+    }
 };
 
 export const GET = (async (event) => {
@@ -47,7 +47,7 @@ export const GET = (async (event) => {
 
     if (!state || !code || state !== storedState) {
         return new Response(null, {
-            status: 401,
+            status: 401
         });
     }
 
@@ -55,7 +55,7 @@ export const GET = (async (event) => {
 
     if (!validProviders.includes(event.params.provider)) {
         return new Response(null, {
-            status: 400,
+            status: 400
         });
     }
 
@@ -65,7 +65,7 @@ export const GET = (async (event) => {
     const { client } = providerFactory(event.url);
 
     event.cookies.delete(STATE_COOKIE_NAME, {
-        path: '/',
+        path: '/'
     });
 
     try {
@@ -82,26 +82,26 @@ export const GET = (async (event) => {
             return new Response(null, {
                 status: 302,
                 headers: {
-                    Location: returnPath,
-                },
+                    Location: returnPath
+                }
             });
         }
 
         const localUserId = await lookupUserIdFromOAuthProvider(
             providerUserId,
-            event.params.provider,
+            event.params.provider
         );
 
         if (!localUserId) {
             return new Response(null, {
-                status: 400,
+                status: 400
             });
         }
 
         const userHasMFA = await userHasTOTP(localUserId);
 
         const sessionFlags: SessionFlags = {
-            mfaVerified: userHasMFA ? OAUTH_SKIPS_MFA : null,
+            mfaVerified: userHasMFA ? OAUTH_SKIPS_MFA : null
         };
 
         // if session already exists, invalidate it first
@@ -117,18 +117,18 @@ export const GET = (async (event) => {
         return new Response(null, {
             status: 302,
             headers: {
-                Location: redirectPath,
-            },
+                Location: redirectPath
+            }
         });
     } catch (e: unknown) {
         if (e instanceof OAuth2RequestError) {
             return new Response(null, {
-                status: 400,
+                status: 400
             });
         } else {
             console.error(e);
             return new Response(null, {
-                status: 500,
+                status: 500
             });
         }
     }

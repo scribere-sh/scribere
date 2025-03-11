@@ -6,6 +6,6 @@ export const load = (async (event) => {
     const nameForQuery = event.locals.user?.displayName ?? DEFAULT_NAME;
 
     return {
-        nameForQuery,
+        nameForQuery
     };
 }) satisfies PageServerLoad;

@@ -6,7 +6,7 @@ const config = {
     useTabs: false,
     tabWidth: 4,
     singleQuote: true,
-    trailingComma: "all",
+    trailingComma: "none",
     printWidth: 100,
     semi: true,
     embeddedLanguageFormatting: "auto",

@@ -10,9 +10,9 @@ const router = t.router({
         .input(
             z
                 .object({
-                    name: z.string().optional(),
+                    name: z.string().optional()
                 })
-                .strict(),
+                .strict()
         )
         .query(async ({ input }) => {
             const name = input.name?.trim();
@@ -22,7 +22,7 @@ const router = t.router({
             TRPCLog.success(`Greeting ${name || 'World'}`);
 
             return { message };
-        }),
+        })
 });
 
 export default router;

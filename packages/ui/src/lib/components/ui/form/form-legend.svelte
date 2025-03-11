@@ -15,7 +15,7 @@
     bind:ref
     class={cn(
         'text-xs font-semibold leading-none text-primary/50 data-[fs-error]:text-destructive',
-        className,
+        className
     )}
     {...restProps}
 />

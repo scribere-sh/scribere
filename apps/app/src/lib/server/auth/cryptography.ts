@@ -25,8 +25,8 @@ export const createArgon2id = async (event: RequestEvent, data: string): Promise
         options: {
             timeCost: 2,
             memoryCost: 19456,
-            parallelism: 1,
-        },
+            parallelism: 1
+        }
     };
 
     let response;
@@ -41,12 +41,12 @@ export const createArgon2id = async (event: RequestEvent, data: string): Promise
             method: 'POST',
             body: JSON.stringify(body),
             headers,
-            signal: event.request?.signal,
+            signal: event.request?.signal
         });
     } else {
         response = await event.platform!.env.ARGON2.fetch('http://internal/hash', {
             method: 'POST',
-            body: JSON.stringify(body),
+            body: JSON.stringify(body)
         });
     }
 
@@ -66,11 +66,11 @@ export const createArgon2id = async (event: RequestEvent, data: string): Promise
 export const verifyArgon2id = async (
     event: RequestEvent,
     saved: string,
-    data: string,
+    data: string
 ): Promise<boolean> => {
     const body = {
         password: data,
-        hash: saved,
+        hash: saved
     };
 
     let response;
@@ -85,12 +85,12 @@ export const verifyArgon2id = async (
             method: 'POST',
             body: JSON.stringify(body),
             headers,
-            signal: event.request?.signal,
+            signal: event.request?.signal
         });
     } else {
         response = await event.platform!.env.ARGON2.fetch('http://internal/verify', {
             method: 'POST',
-            body: JSON.stringify(body),
+            body: JSON.stringify(body)
         });
     }
 

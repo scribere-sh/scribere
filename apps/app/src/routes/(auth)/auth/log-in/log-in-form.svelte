@@ -12,7 +12,7 @@
     import type { PropsObj } from '$util';
 
     const {
-        form: _form,
+        form: _form
     }: {
         form: PageData['form'];
     } = $props();
@@ -29,7 +29,7 @@
         },
         onSubmit: () => {
             disabled = true;
-        },
+        }
     });
 
     const { form: formData, enhance } = form;

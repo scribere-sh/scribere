@@ -7,6 +7,6 @@ export const load: PageLoad = async (event) => {
     const rpc = trpc(event, queryClient);
 
     return {
-        userSettingsQuery: await rpc.account.settings.loadCurrentUserSettings.createServerQuery(),
+        userSettingsQuery: await rpc.account.settings.loadCurrentUserSettings.createServerQuery()
     };
 };
