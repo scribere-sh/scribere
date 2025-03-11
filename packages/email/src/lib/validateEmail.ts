@@ -1,5 +1,5 @@
-import EmailValidationTemplate from './templates/emailValidateTemplate.handlebars?raw';
-import Handlebars from 'handlebars';
+import EmailValidationTemplate from './templates/emailValidateTemplate.mustache?raw';
+import Mustache from 'mustache';
 
 export interface ValidateEmailProps {
     apiKey: string;
@@ -23,8 +23,7 @@ export interface EmailSendResult {
 export const renderValidationEmail = (
     props: Pick<ValidateEmailProps, 'to' | 'validationUrl'>
 ): string => {
-    const template = Handlebars.compile(EmailValidationTemplate);
-    return template(props);
+    return Mustache.render(EmailValidationTemplate, props);
 };
 
 export const sendValidationEmail = async (props: ValidateEmailProps): Promise<EmailSendResult> => {
