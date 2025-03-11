@@ -1,4 +1,4 @@
-import { drizzle } from 'drizzle-orm/libsql/node';
+import { drizzle } from 'drizzle-orm/libsql';
 
 import { dev } from '$app/environment';
 import { env } from '$env/dynamic/private';
