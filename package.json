@@ -37,9 +37,6 @@
         ],
         "overrides": {
             "jiti": "2"
-        },
-        "patchedDependencies": {
-            "trpc-svelte-query-adapter": "patches/trpc-svelte-query-adapter.patch"
         }
     }
 }

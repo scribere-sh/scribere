@@ -29,6 +29,8 @@
         "@oslojs/otp": "^1.1.0",
         "@pilcrowjs/object-parser": "~0.0.4",
         "@scribere/ui": "workspace:*",
+        "@scribere/editor": "workspace:*",
+        "@scribere/email": "workspace:*",
         "@tanstack/svelte-query": "^5.67.2",
         "@tanstack/svelte-query-devtools": "^5.67.2",
         "@trpc/client": "^10.45.2",
@@ -47,8 +49,6 @@
     },
     "devDependencies": {
         "@cloudflare/workers-types": "4.20250303.0",
-        "@scribere/editor": "workspace:*",
-        "@scribere/email": "workspace:*",
         "@scribere/eslint-config": "workspace:*",
         "@scribere/prettier-config": "workspace:*",
         "@scribere/typescript-config": "workspace:*",
