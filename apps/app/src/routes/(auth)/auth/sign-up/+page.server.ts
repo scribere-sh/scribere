@@ -40,15 +40,20 @@ export const actions: Actions = {
         }
 
         const user = await event.locals.DB.transaction(async (tx_db) => {
+            console.log("start tx");
             const user = await createUser(tx_db, {
                 displayName: form.data.displayName,
                 handle: form.data.handle
             });
 
+            console.log("tx insert email");
             await insertEmailAddress(tx_db, form.data.emailAddress, user.id);
+            console.log("tx assign password");
             await assignPasswordToUser(tx_db, event, user.id, form.data.password);
 
+            console.log("tx gen challenge")
             const challenge = await generateEmailValidation(tx_db, event, form.data.emailAddress);
+            console.log("tx send challenge");
             await sendEmailValidationChallenge(
                 tx_db,
                 user.displayName,
@@ -57,8 +62,11 @@ export const actions: Actions = {
                 challenge
             );
 
+            console.log("tx challenge sent")
             return user;
         });
+
+        console.log('tx commit');
 
         // user won't have mfa
         //
@@ -67,10 +75,12 @@ export const actions: Actions = {
             mfaVerified: null
         };
 
+        console.log('session')
         const sessionToken = generateSessionToken();
         const session = await createSession(event.locals.DB, sessionToken, user.id, sessionFlags);
         setSessionToken(event, sessionToken, session.expiresAt);
 
+        console.log('session created and assigned');
         redirect(302, route('/'));
     }) satisfies Action
 };
