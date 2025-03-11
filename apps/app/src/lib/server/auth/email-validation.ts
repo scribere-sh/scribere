@@ -1,22 +1,22 @@
+import { DB } from '../db';
+import { emailAddressTable, emailValidationChallengeTable } from '../db/tables';
+import { createArgon2id, generateTokenString, verifyArgon2id } from './cryptography';
 import { encodeHexLowerCase } from '@oslojs/encoding';
+import type { RequestEvent } from '@sveltejs/kit';
+import { eq } from 'drizzle-orm';
 
 import { sendValidationEmail, type ValidateEmailProps } from '@scribere/email/validateEmail';
 
 import { env } from '$env/dynamic/private';
-import { route } from '$lib/ROUTES';
-import type { RequestEvent } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
-import { DB } from '../db';
-import { emailAddressTable, emailValidationChallengeTable } from '../db/tables';
-import { createArgon2id, generateTokenString, verifyArgon2id } from './cryptography';
+import { route } from '$routes';
 
 export const generateChallengeRef = (emailAddress: string) =>
-	encodeHexLowerCase(new TextEncoder().encode(emailAddress));
+    encodeHexLowerCase(new TextEncoder().encode(emailAddress));
 export const generateChallengeToken = generateTokenString;
 
 export interface EmailAddressChallenge {
-	ref: string;
-	token: string;
+    ref: string;
+    token: string;
 }
 
 /**
@@ -25,100 +25,100 @@ export interface EmailAddressChallenge {
  * @param emailAddress The email address to verify and challenge
  */
 export const generateEmailValidation = async (
-	event: RequestEvent,
-	emailAddress: string
+    event: RequestEvent,
+    emailAddress: string,
 ): Promise<EmailAddressChallenge> => {
-	const challengeRef = generateChallengeRef(emailAddress);
-	const challengeToken = generateChallengeToken();
+    const challengeRef = generateChallengeRef(emailAddress);
+    const challengeToken = generateChallengeToken();
 
-	const challengeTokenArgon2id = await createArgon2id(event, challengeToken);
+    const challengeTokenArgon2id = await createArgon2id(event, challengeToken);
 
-	await DB.insert(emailValidationChallengeTable).values({
-		challengeRef,
-		challengeTokenHash: challengeTokenArgon2id
-	});
+    await DB.insert(emailValidationChallengeTable).values({
+        challengeRef,
+        challengeTokenHash: challengeTokenArgon2id,
+    });
 
-	await DB.update(emailAddressTable)
-		.set({ challengeRef })
-		.where(eq(emailAddressTable.emailAddress, emailAddress));
+    await DB.update(emailAddressTable)
+        .set({ challengeRef })
+        .where(eq(emailAddressTable.emailAddress, emailAddress));
 
-	return {
-		ref: challengeRef,
-		token: challengeToken
-	};
+    return {
+        ref: challengeRef,
+        token: challengeToken,
+    };
 };
 
 /**
  * send an email validation challenge
  */
 export const sendEmailValidationChallenge = async (
-	displayName: string,
-	emailAddress: string,
-	reqUrl: URL,
-	challenge: EmailAddressChallenge
+    displayName: string,
+    emailAddress: string,
+    reqUrl: URL,
+    challenge: EmailAddressChallenge,
 ) => {
-	const validationUrl = reqUrl;
-	validationUrl.pathname = route('GET /auth/verify-email');
-	validationUrl.searchParams.set('ref', challenge.ref);
-	validationUrl.searchParams.set('token', challenge.token);
+    const validationUrl = reqUrl;
+    validationUrl.pathname = route('GET /auth/verify-email');
+    validationUrl.searchParams.set('ref', challenge.ref);
+    validationUrl.searchParams.set('token', challenge.token);
 
-	const props: ValidateEmailProps = {
-		apiKey: env.RESEND_API_KEY,
+    const props: ValidateEmailProps = {
+        apiKey: env.RESEND_API_KEY,
 
-		from: {
-			email: env.SENDER_EMAIL,
-			name: env.SENDER_NAME
-		},
-		to: {
-			name: displayName,
-			email: emailAddress
-		},
+        from: {
+            email: env.SENDER_EMAIL,
+            name: env.SENDER_NAME,
+        },
+        to: {
+            name: displayName,
+            email: emailAddress,
+        },
 
-		validationUrl: validationUrl.toString()
-	};
+        validationUrl: validationUrl.toString(),
+    };
 
-	try {
-		const result = await sendValidationEmail(props);
-		const emailRef = result.id;
+    try {
+        const result = await sendValidationEmail(props);
+        const emailRef = result.id;
 
-		await DB.update(emailValidationChallengeTable)
-			.set({
-				emailRef
-			})
-			.where(eq(emailValidationChallengeTable.challengeRef, challenge.ref));
-	} catch (e: unknown) {
-		console.log(e);
-		throw e;
-	}
+        await DB.update(emailValidationChallengeTable)
+            .set({
+                emailRef,
+            })
+            .where(eq(emailValidationChallengeTable.challengeRef, challenge.ref));
+    } catch (e: unknown) {
+        console.log(e);
+        throw e;
+    }
 };
 
 export const verifyEmailValidationRequest = async (event: RequestEvent) => {
-	const challengeRef = event.url.searchParams.get('ref');
-	const challengeToken = event.url.searchParams.get('token');
+    const challengeRef = event.url.searchParams.get('ref');
+    const challengeToken = event.url.searchParams.get('token');
 
-	if (!challengeRef || !challengeToken) {
-		throw new Error('Validation Challenge ref and/or token not specified');
-	}
+    if (!challengeRef || !challengeToken) {
+        throw new Error('Validation Challenge ref and/or token not specified');
+    }
 
-	const [challenge] = await DB.select({
-		challengeToken: emailValidationChallengeTable.challengeTokenHash
-	})
-		.from(emailValidationChallengeTable)
-		.where(eq(emailValidationChallengeTable.challengeRef, challengeRef));
+    const [challenge] = await DB.select({
+        challengeToken: emailValidationChallengeTable.challengeTokenHash,
+    })
+        .from(emailValidationChallengeTable)
+        .where(eq(emailValidationChallengeTable.challengeRef, challengeRef));
 
-	if (await verifyArgon2id(event, challenge.challengeToken, challengeToken)) {
-		await DB.batch([
-			DB.delete(emailValidationChallengeTable).where(
-				eq(emailValidationChallengeTable.challengeRef, challengeRef)
-			),
-			DB.update(emailAddressTable)
-				.set({
-					challengeRef: null,
-					isValidated: true
-				})
-				.where(eq(emailAddressTable.challengeRef, challengeRef))
-		]);
-	} else {
-		throw new Error('Email validation challenge failed');
-	}
+    if (await verifyArgon2id(event, challenge.challengeToken, challengeToken)) {
+        await DB.batch([
+            DB.delete(emailValidationChallengeTable).where(
+                eq(emailValidationChallengeTable.challengeRef, challengeRef),
+            ),
+            DB.update(emailAddressTable)
+                .set({
+                    challengeRef: null,
+                    isValidated: true,
+                })
+                .where(eq(emailAddressTable.challengeRef, challengeRef)),
+        ]);
+    } else {
+        throw new Error('Email validation challenge failed');
+    }
 };

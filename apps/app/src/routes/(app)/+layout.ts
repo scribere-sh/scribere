@@ -3,9 +3,9 @@ import type { LayoutLoad } from './$types';
 import { QueryClient } from '@tanstack/svelte-query';
 
 export const load = (async () => {
-	const queryClient = new QueryClient();
+    const queryClient = new QueryClient();
 
-	return {
-		queryClient
-	};
+    return {
+        queryClient,
+    };
 }) satisfies LayoutLoad;

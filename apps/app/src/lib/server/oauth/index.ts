@@ -1,32 +1,29 @@
+import { generateTokenString } from '../auth/cryptography';
+import { atlassianFactory } from './atlassian';
+import { githubFactory } from './github';
+import validate from './validate-env';
 import type { Atlassian, GitHub } from 'arctic';
 
 import { env } from '$env/dynamic/private';
 
-import validate from './validate-env';
-
-import { generateTokenString } from '../auth/cryptography';
-
-import { atlassianFactory } from './atlassian';
-import { githubFactory } from './github';
-
 export type OAuth2ClientFactory<Client> = (req_url: URL) => { client: Client; scopes: string[] };
 
 export class OAuth2Providers {
-	static get github(): OAuth2ClientFactory<GitHub> | null {
-		return validate.github() ? githubFactory : null;
-	}
+    static get github(): OAuth2ClientFactory<GitHub> | null {
+        return validate.github() ? githubFactory : null;
+    }
 
-	static get atlassian(): OAuth2ClientFactory<Atlassian> | null {
-		return validate.atlassian() ? atlassianFactory : null;
-	}
+    static get atlassian(): OAuth2ClientFactory<Atlassian> | null {
+        return validate.atlassian() ? atlassianFactory : null;
+    }
 
-	static get validProviders(): string[] {
-		const list = [];
-		if (OAuth2Providers.github != null) list.push('github');
-		if (OAuth2Providers.atlassian != null) list.push('atlassian');
+    static get validProviders(): string[] {
+        const list = [];
+        if (OAuth2Providers.github != null) list.push('github');
+        if (OAuth2Providers.atlassian != null) list.push('atlassian');
 
-		return list;
-	}
+        return list;
+    }
 }
 
 export const generateState = generateTokenString;

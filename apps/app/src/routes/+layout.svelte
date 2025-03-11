@@ -1,8 +1,9 @@
 <script lang="ts">
-	import type { LayoutProps } from './$types';
-	import { ModeWatcher } from 'mode-watcher';
+    import type { LayoutProps } from './$types';
 
-	const { children }: LayoutProps = $props();
+    import { ModeWatcher } from 'mode-watcher';
+
+    const { children }: LayoutProps = $props();
 </script>
 
 <ModeWatcher defaultMode="system" />

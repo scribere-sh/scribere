@@ -6,5 +6,5 @@ Disallow: *
 `;
 
 export const GET: RequestHandler = () => {
-	return new Response(ROBOTS_TXT.trim());
+    return new Response(ROBOTS_TXT.trim());
 };

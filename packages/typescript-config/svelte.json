@@ -11,7 +11,5 @@
         "strict": true,
         "moduleResolution": "bundler"
     },
-    "exclude": [
-        "!src"
-    ]
+    "exclude": ["!src"]
 }

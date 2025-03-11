@@ -1,122 +1,123 @@
 <html>
-	<head>
-		<style>
-			:root {
-				--bg: #fefefe;
-				--card: #f0f0f0;
-				--footer: #e2e2e2;
-				--button: beige;
-			}
+    <head>
+        <style>
+            :root {
+                --bg: #fefefe;
+                --card: #f0f0f0;
+                --footer: #e2e2e2;
+                --button: beige;
+            }
 
-			@media (prefers-color-scheme: dark) {
-				:root {
-					--bg: #000000;
-					--card: #222222;
-					--footer: #333333;
-					--button: beige;
-				}
-			}
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --bg: #000000;
+                    --card: #222222;
+                    --footer: #333333;
+                    --button: beige;
+                }
+            }
 
-			*,
-			body {
-				margin: 0;
-				padding: 0;
-				box-sizing: border-box;
-				font-family: sans-serif;
-			}
+            *,
+            body {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: sans-serif;
+            }
 
-			body {
-				background-color: var(--bg);
-				display: flex;
-				flex-direction: column;
-				justify-content: flex-start;
-				align-items: center;
+            body {
+                background-color: var(--bg);
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
 
-				padding-top: 4rem;
-			}
+                padding-top: 4rem;
+            }
 
-			main {
-				min-width: 250px;
-				width: 50rem;
-				max-width: 750px;
+            main {
+                min-width: 250px;
+                width: 50rem;
+                max-width: 750px;
 
-				background-color: var(--card);
+                background-color: var(--card);
 
-				padding: 3rem;
-			}
+                padding: 3rem;
+            }
 
-			footer {
-				min-width: 250px;
-				width: 50rem;
-				max-width: 750px;
+            footer {
+                min-width: 250px;
+                width: 50rem;
+                max-width: 750px;
 
-				background-color: var(--footer);
-				padding: 3rem;
-			}
+                background-color: var(--footer);
+                padding: 3rem;
+            }
 
-			h1 {
-				font-weight: bold;
-				font-size: xx-large;
-			}
+            h1 {
+                font-weight: bold;
+                font-size: xx-large;
+            }
 
-			div.sep {
-				height: 2rem;
-			}
+            div.sep {
+                height: 2rem;
+            }
 
-			div.button-container {
-				height: 6rem;
-				display: grid;
-				place-items: center;
-			}
+            div.button-container {
+                height: 6rem;
+                display: grid;
+                place-items: center;
+            }
 
-			div.button-container a {
-				display: grid;
-				place-items: center;
-				text-align: center;
+            div.button-container a {
+                display: grid;
+                place-items: center;
+                text-align: center;
 
-				background-color: var(--button);
+                background-color: var(--button);
 
-				width: 20rem;
-				height: 2rem;
+                width: 20rem;
+                height: 2rem;
 
-				text-decoration: none;
-				color: initial;
-			}
-		</style>
-	</head>
-	<body>
-		<main>
-			<h1>Scribere</h1>
+                text-decoration: none;
+                color: initial;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <h1>Scribere</h1>
 
-			<div class='sep'></div>
+            <div class='sep'></div>
 
-			<p>
-				Hi,
-				{{to.name}}.
-			</p>
+            <p>
+                Hi,
+                {{to.name}}.
+            </p>
 
-			<div class='sep'></div>
+            <div class='sep'></div>
 
-			<p>
-				Welcome to Scribere, now that you&apos;ve signed up, we just need to verify your email.
-			</p>
+            <p>
+                Welcome to Scribere, now that you&apos;ve signed up, we just need to verify your
+                email.
+            </p>
 
-			<div class='button-container'>
-				<a href='{{validationUrl}}' target='_blank'>
-					<span>Verify Email</span>
-				</a>
-			</div>
+            <div class='button-container'>
+                <a href='{{validationUrl}}' target='_blank'>
+                    <span>Verify Email</span>
+                </a>
+            </div>
 
-			<p>
-				Click the link above or paste the below url into your browser
-			</p>
+            <p>
+                Click the link above or paste the below url into your browser
+            </p>
 
-			<div class='sep'></div>
+            <div class='sep'></div>
 
-			<a href='{{validationUrl}}' target='_blank'>{{validationUrl}}</a>
-		</main>
-		<footer>
-			&copy; Scribere
-		</footer>
-	</body>
+            <a href='{{validationUrl}}' target='_blank'>{{validationUrl}}</a>
+        </main>
+        <footer>
+            &copy; Scribere
+        </footer>
+    </body>
 </html>

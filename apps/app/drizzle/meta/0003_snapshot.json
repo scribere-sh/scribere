@@ -1,174 +1,174 @@
 {
-	"version": "6",
-	"dialect": "sqlite",
-	"id": "d2718e8d-1b03-4a45-a809-c4c8250cd9c6",
-	"prevId": "37d4692a-d08e-417d-aeb0-b7bc159e07bb",
-	"tables": {
-		"authn_providers": {
-			"name": "authn_providers",
-			"columns": {
-				"userId": {
-					"name": "userId",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				},
-				"type": {
-					"name": "type",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				},
-				"ref": {
-					"name": "ref",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": false,
-					"autoincrement": false
-				},
-				"hash": {
-					"name": "hash",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": false,
-					"autoincrement": false
-				}
-			},
-			"indexes": {},
-			"foreignKeys": {
-				"authn_providers_userId_users_id_fk": {
-					"name": "authn_providers_userId_users_id_fk",
-					"tableFrom": "authn_providers",
-					"tableTo": "users",
-					"columnsFrom": ["userId"],
-					"columnsTo": ["id"],
-					"onDelete": "no action",
-					"onUpdate": "no action"
-				}
-			},
-			"compositePrimaryKeys": {},
-			"uniqueConstraints": {},
-			"checkConstraints": {}
-		},
-		"email_addresses": {
-			"name": "email_addresses",
-			"columns": {
-				"userId": {
-					"name": "userId",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				},
-				"emailAddress": {
-					"name": "emailAddress",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				},
-				"isVerified": {
-					"name": "isVerified",
-					"type": "integer",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				},
-				"verificationDate": {
-					"name": "verificationDate",
-					"type": "integer",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				},
-				"verificationRef": {
-					"name": "verificationRef",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": false,
-					"autoincrement": false
-				}
-			},
-			"indexes": {
-				"email_addresses_emailAddress_unique": {
-					"name": "email_addresses_emailAddress_unique",
-					"columns": ["emailAddress"],
-					"isUnique": true
-				}
-			},
-			"foreignKeys": {
-				"email_addresses_userId_users_id_fk": {
-					"name": "email_addresses_userId_users_id_fk",
-					"tableFrom": "email_addresses",
-					"tableTo": "users",
-					"columnsFrom": ["userId"],
-					"columnsTo": ["id"],
-					"onDelete": "no action",
-					"onUpdate": "no action"
-				}
-			},
-			"compositePrimaryKeys": {},
-			"uniqueConstraints": {},
-			"checkConstraints": {}
-		},
-		"users": {
-			"name": "users",
-			"columns": {
-				"id": {
-					"name": "id",
-					"type": "text",
-					"primaryKey": true,
-					"notNull": true,
-					"autoincrement": false
-				},
-				"givenName": {
-					"name": "givenName",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				},
-				"familyName": {
-					"name": "familyName",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				},
-				"createdAt": {
-					"name": "createdAt",
-					"type": "integer",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				}
-			},
-			"indexes": {
-				"users_id_unique": {
-					"name": "users_id_unique",
-					"columns": ["id"],
-					"isUnique": true
-				}
-			},
-			"foreignKeys": {},
-			"compositePrimaryKeys": {},
-			"uniqueConstraints": {},
-			"checkConstraints": {}
-		}
-	},
-	"views": {},
-	"enums": {},
-	"_meta": {
-		"schemas": {},
-		"tables": {},
-		"columns": {
-			"\"authn_providers\".\"context\"": "\"authn_providers\".\"hash\"",
-			"\"email_addresses\".\"verificationSentDate\"": "\"email_addresses\".\"verificationDate\""
-		}
-	},
-	"internal": {
-		"indexes": {}
-	}
+    "version": "6",
+    "dialect": "sqlite",
+    "id": "d2718e8d-1b03-4a45-a809-c4c8250cd9c6",
+    "prevId": "37d4692a-d08e-417d-aeb0-b7bc159e07bb",
+    "tables": {
+        "authn_providers": {
+            "name": "authn_providers",
+            "columns": {
+                "userId": {
+                    "name": "userId",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "autoincrement": false
+                },
+                "type": {
+                    "name": "type",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "autoincrement": false
+                },
+                "ref": {
+                    "name": "ref",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": false,
+                    "autoincrement": false
+                },
+                "hash": {
+                    "name": "hash",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": false,
+                    "autoincrement": false
+                }
+            },
+            "indexes": {},
+            "foreignKeys": {
+                "authn_providers_userId_users_id_fk": {
+                    "name": "authn_providers_userId_users_id_fk",
+                    "tableFrom": "authn_providers",
+                    "tableTo": "users",
+                    "columnsFrom": ["userId"],
+                    "columnsTo": ["id"],
+                    "onDelete": "no action",
+                    "onUpdate": "no action"
+                }
+            },
+            "compositePrimaryKeys": {},
+            "uniqueConstraints": {},
+            "checkConstraints": {}
+        },
+        "email_addresses": {
+            "name": "email_addresses",
+            "columns": {
+                "userId": {
+                    "name": "userId",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "autoincrement": false
+                },
+                "emailAddress": {
+                    "name": "emailAddress",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "autoincrement": false
+                },
+                "isVerified": {
+                    "name": "isVerified",
+                    "type": "integer",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "autoincrement": false
+                },
+                "verificationDate": {
+                    "name": "verificationDate",
+                    "type": "integer",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "autoincrement": false
+                },
+                "verificationRef": {
+                    "name": "verificationRef",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": false,
+                    "autoincrement": false
+                }
+            },
+            "indexes": {
+                "email_addresses_emailAddress_unique": {
+                    "name": "email_addresses_emailAddress_unique",
+                    "columns": ["emailAddress"],
+                    "isUnique": true
+                }
+            },
+            "foreignKeys": {
+                "email_addresses_userId_users_id_fk": {
+                    "name": "email_addresses_userId_users_id_fk",
+                    "tableFrom": "email_addresses",
+                    "tableTo": "users",
+                    "columnsFrom": ["userId"],
+                    "columnsTo": ["id"],
+                    "onDelete": "no action",
+                    "onUpdate": "no action"
+                }
+            },
+            "compositePrimaryKeys": {},
+            "uniqueConstraints": {},
+            "checkConstraints": {}
+        },
+        "users": {
+            "name": "users",
+            "columns": {
+                "id": {
+                    "name": "id",
+                    "type": "text",
+                    "primaryKey": true,
+                    "notNull": true,
+                    "autoincrement": false
+                },
+                "givenName": {
+                    "name": "givenName",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "autoincrement": false
+                },
+                "familyName": {
+                    "name": "familyName",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "autoincrement": false
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "type": "integer",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "autoincrement": false
+                }
+            },
+            "indexes": {
+                "users_id_unique": {
+                    "name": "users_id_unique",
+                    "columns": ["id"],
+                    "isUnique": true
+                }
+            },
+            "foreignKeys": {},
+            "compositePrimaryKeys": {},
+            "uniqueConstraints": {},
+            "checkConstraints": {}
+        }
+    },
+    "views": {},
+    "enums": {},
+    "_meta": {
+        "schemas": {},
+        "tables": {},
+        "columns": {
+            "\"authn_providers\".\"context\"": "\"authn_providers\".\"hash\"",
+            "\"email_addresses\".\"verificationSentDate\"": "\"email_addresses\".\"verificationDate\""
+        }
+    },
+    "internal": {
+        "indexes": {}
+    }
 }

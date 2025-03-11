@@ -1,20 +1,21 @@
 <script lang="ts">
-	import * as FormPrimitive from 'formsnap';
-	import type { WithoutChild } from 'bits-ui';
-	import { cn } from '$lib/utils.js';
+    import * as FormPrimitive from 'formsnap';
+    import type { WithoutChild } from 'bits-ui';
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		...restProps
-	}: WithoutChild<FormPrimitive.LegendProps> = $props();
+    import { cn } from '$lib/utils.js';
+
+    let {
+        ref = $bindable(null),
+        class: className,
+        ...restProps
+    }: WithoutChild<FormPrimitive.LegendProps> = $props();
 </script>
 
 <FormPrimitive.Legend
-	bind:ref
-	class={cn(
-		'text-xs font-semibold leading-none text-primary/50 data-[fs-error]:text-destructive',
-		className
-	)}
-	{...restProps}
+    bind:ref
+    class={cn(
+        'text-xs font-semibold leading-none text-primary/50 data-[fs-error]:text-destructive',
+        className,
+    )}
+    {...restProps}
 />

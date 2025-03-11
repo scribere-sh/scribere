@@ -2,8 +2,8 @@ import Content from './app-header-content.svelte';
 import Root from './app-header.svelte';
 
 export const HEADER_VARIANTS = {
-	normal: 'h-24',
-	slim: 'h-16'
+    normal: 'h-24',
+    slim: 'h-16',
 };
 
 /**
@@ -14,9 +14,9 @@ export const HEADER_VARIANTS = {
 export type HeaderVariant = keyof typeof HEADER_VARIANTS;
 
 export {
-	//
-	Root as AppHeader,
-	Content as AppHeaderContent,
-	Content,
-	Root
+    //
+    Root as AppHeader,
+    Content as AppHeaderContent,
+    Content,
+    Root,
 };

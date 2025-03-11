@@ -1,11 +1,11 @@
-import { drizzle } from "drizzle-orm/libsql/node";
+import { drizzle } from 'drizzle-orm/libsql/node';
 
 export const TestDB = () => {
     const db = drizzle({
         connection: {
-            url: ":memory:"
-        }
+            url: ':memory:',
+        },
     });
 
     db.run(`PRAGMA foreign_keys=off`);
-}
+};

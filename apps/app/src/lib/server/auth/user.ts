@@ -1,15 +1,14 @@
-import { and, eq, type InferSelectModel } from 'drizzle-orm';
-
 import { DB } from '../db';
 import { authProviderTable, usersTable } from '../db/tables';
+import { and, eq, type InferSelectModel } from 'drizzle-orm';
 
 export type User = InferSelectModel<typeof usersTable>;
 
 export const lookupHandleAvailability = async (handle: string) => {
-	const query = await DB.select({ handle: usersTable.handle })
-		.from(usersTable)
-		.where(eq(usersTable.handle, handle));
-	return query.length === 0;
+    const query = await DB.select({ handle: usersTable.handle })
+        .from(usersTable)
+        .where(eq(usersTable.handle, handle));
+    return query.length === 0;
 };
 
 // #region Create User
@@ -23,48 +22,48 @@ export const lookupHandleAvailability = async (handle: string) => {
  * @returns the new User, including the ID
  */
 export const createUser = async (user: Omit<User, 'id' | 'createdAt'>) => {
-	const [newUser] = await DB.insert(usersTable).values(user).returning();
+    const [newUser] = await DB.insert(usersTable).values(user).returning();
 
-	return newUser;
+    return newUser;
 };
 // #endregion
 
 export const lookupUserIdFromOAuthProvider = async (providerId: string, provider: string) => {
-	const [userRecord] = await DB.select({
-		userId: authProviderTable.userId
-	})
-		.from(authProviderTable)
-		.where(and(eq(authProviderTable.type, provider), eq(authProviderTable.ref, providerId)));
+    const [userRecord] = await DB.select({
+        userId: authProviderTable.userId,
+    })
+        .from(authProviderTable)
+        .where(and(eq(authProviderTable.type, provider), eq(authProviderTable.ref, providerId)));
 
-	if (userRecord) {
-		return userRecord.userId;
-	} else {
-		return null;
-	}
+    if (userRecord) {
+        return userRecord.userId;
+    } else {
+        return null;
+    }
 };
 
 export const linkOAuthProviderToUser = async (
-	providerId: string,
-	provider: string,
-	userId: string
+    providerId: string,
+    provider: string,
+    userId: string,
 ) => {
-	const [existentRecord] = await DB.select({
-		providerId: authProviderTable.ref
-	})
-		.from(authProviderTable)
-		.where(and(eq(authProviderTable.userId, userId), eq(authProviderTable.type, provider)));
+    const [existentRecord] = await DB.select({
+        providerId: authProviderTable.ref,
+    })
+        .from(authProviderTable)
+        .where(and(eq(authProviderTable.userId, userId), eq(authProviderTable.type, provider)));
 
-	if (existentRecord) {
-		if (existentRecord.providerId === providerId) {
-			return;
-		} else {
-			throw new Error('user must unlink this provider first');
-		}
-	}
+    if (existentRecord) {
+        if (existentRecord.providerId === providerId) {
+            return;
+        } else {
+            throw new Error('user must unlink this provider first');
+        }
+    }
 
-	await DB.insert(authProviderTable).values({
-		type: provider,
-		ref: providerId,
-		userId
-	});
+    await DB.insert(authProviderTable).values({
+        type: provider,
+        ref: providerId,
+        userId,
+    });
 };

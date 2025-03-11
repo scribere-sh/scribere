@@ -1,35 +1,34 @@
+import type { Context } from './context';
+import router from './router';
 import { Log } from '@kitql/helpers';
 import { initTRPC } from '@trpc/server';
 import { ZodError } from 'zod';
 
 import { dev } from '$app/environment';
 import { transformer } from '$trpc-client';
-import { type Context } from './context';
-
-import router from './router';
 
 export const TRPCLog = new Log('tRPC', {
-	withDate: 'dateTime'
+    withDate: 'dateTime',
 });
 
 export const t = initTRPC.context<Context>().create({
-	transformer,
-	errorFormatter: dev
-		? ({ shape, error }) => {
-				console.error(error);
+    transformer,
+    errorFormatter: dev
+        ? ({ shape, error }) => {
+              console.error(error);
 
-				return {
-					...shape,
-					data: {
-						...shape.data,
-						zodError:
-							error.code === 'BAD_REQUEST' && error.cause instanceof ZodError
-								? error.cause.flatten()
-								: null
-					}
-				};
-			}
-		: undefined
+              return {
+                  ...shape,
+                  data: {
+                      ...shape.data,
+                      zodError:
+                          error.code === 'BAD_REQUEST' && error.cause instanceof ZodError
+                              ? error.cause.flatten()
+                              : null,
+                  },
+              };
+          }
+        : undefined,
 });
 
 export type Router = typeof router;

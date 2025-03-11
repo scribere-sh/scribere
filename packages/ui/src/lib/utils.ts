@@ -14,7 +14,7 @@ import { twMerge } from 'tailwind-merge';
  * @returns deduplicated, well ordered css classes to be used by tailwind
  */
 export function cn(...inputs: ClassValue[]) {
-	return twMerge(clsx(inputs));
+    return twMerge(clsx(inputs));
 }
 
 /**
@@ -34,9 +34,9 @@ export function cn(...inputs: ClassValue[]) {
  * @returns the debounced function to be used in event handlers
  */
 export function debounce<T>(cb: (v: T) => void, durationMs: number): (v: T) => void {
-	let timer: ReturnType<typeof setTimeout>;
-	return (v: T) => {
-		clearTimeout(timer);
-		timer = setTimeout(() => cb(v), durationMs);
-	};
+    let timer: ReturnType<typeof setTimeout>;
+    return (v: T) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => cb(v), durationMs);
+    };
 }

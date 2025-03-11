@@ -1,12 +1,12 @@
 import { env } from '$env/dynamic/private';
 
 interface ValidateEnvFunction {
-	(...variable_names: string[]): boolean;
+    (...variable_names: string[]): boolean;
 }
 
 interface ValidateEnv extends ValidateEnvFunction {
-	github: ValidateEnvFunction;
-	atlassian: ValidateEnvFunction;
+    github: ValidateEnvFunction;
+    atlassian: ValidateEnvFunction;
 }
 
 /**
@@ -18,7 +18,7 @@ interface ValidateEnv extends ValidateEnvFunction {
  * @returns if all environment variables are present
  */
 const validate: ValidateEnv = (...variable_names) =>
-	variable_names.filter((_var) => _var in env).length === variable_names.length;
+    variable_names.filter((_var) => _var in env).length === variable_names.length;
 
 validate.github = () => validate('GITHUB_CLIENT_ID', 'GITHUB_CLIENT_SECRET');
 validate.atlassian = () => validate('ATLASSIAN_CLIENT_ID', 'ATLASSIAN_CLIENT_SECRET');

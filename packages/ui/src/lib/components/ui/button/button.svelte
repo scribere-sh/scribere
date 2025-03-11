@@ -1,18 +1,18 @@
 <script lang="ts">
-	import { buttonVariants, type ButtonProps } from '.';
+    import { type ButtonProps, buttonVariants } from '.';
 
-	import { cn } from '$lib/utils.js';
+    import { cn } from '$lib/utils.js';
 
-	let {
-		class: className,
-		variant = 'default',
-		size = 'default',
-		ref = $bindable(null),
-		href = undefined,
-		type = 'button',
-		children,
-		...restProps
-	}: ButtonProps = $props();
+    let {
+        class: className,
+        variant = 'default',
+        size = 'default',
+        ref = $bindable(null),
+        href = undefined,
+        type = 'button',
+        children,
+        ...restProps
+    }: ButtonProps = $props();
 </script>
 
 <!--
@@ -27,21 +27,21 @@
  -->
 
 {#if href}
-	<a
-		bind:this={ref}
-		class={cn(buttonVariants({ variant, size }), className)}
-		{href}
-		{...restProps}
-	>
-		{@render children?.()}
-	</a>
+    <a
+        bind:this={ref}
+        class={cn(buttonVariants({ variant, size }), className)}
+        {href}
+        {...restProps}
+    >
+        {@render children?.()}
+    </a>
 {:else}
-	<button
-		bind:this={ref}
-		class={cn(buttonVariants({ variant, size }), className)}
-		{type}
-		{...restProps}
-	>
-		{@render children?.()}
-	</button>
+    <button
+        bind:this={ref}
+        class={cn(buttonVariants({ variant, size }), className)}
+        {type}
+        {...restProps}
+    >
+        {@render children?.()}
+    </button>
 {/if}

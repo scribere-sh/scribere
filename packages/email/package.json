@@ -1,50 +1,50 @@
 {
-	"name": "@scribere/email",
-	"private": true,
-	"scripts": {
-		"dev": "svelte-kit sync && svelte-package --watch",
-		"build": "svelte-kit sync && svelte-package",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"sync": "svelte-kit sync",
-		"fmt": "prettier --write .",
-		"lint": "prettier --check . && eslint ."
-	},
-	"type": "module",
-	"files": [
-		"dist",
-		"!dist/**/*.test.*",
-		"!dist/**/*.spec.*"
-	],
-	"exports": {
-		"./validateEmail": {
-			"types": "./dist/validateEmail.d.ts",
-			"default": "./dist/validateEmail.js"
-		},
-		"./templates/*": {
-			"types": "./dist/templates/*.d.ts",
-			"svelte": "./dist/templates/*.svelte",
-			"default": "./dist/templates/*.js"
-		}
-	},
-	"devDependencies": {
-		"@scribere/eslint-config": "workspace:*",
-		"@scribere/prettier-config": "workspace:*",
-		"@scribere/typescript-config": "workspace:*",
-		"@scribere/ui": "workspace:*",
-		"@sveltejs/adapter-auto": "4.0.0",
-		"@sveltejs/kit": "2.19.0",
-		"@sveltejs/package": "2.3.10",
-		"@sveltejs/vite-plugin-svelte": "5.0.3",
-		"eslint": "9.22.0",
-		"prettier": "3.5.3",
-		"prettier-plugin-organize-imports": "~4.1.0",
-		"prettier-plugin-svelte": "3.3.3",
-		"prettier-plugin-tailwindcss": "~0.6.11",
-		"svelte-check": "4.1.5",
-		"typescript": "5.8.2",
-		"vite": "6.2.1"
-	},
-	"dependencies": {
-		"handlebars": "4.7.8"
-	}
+    "name": "@scribere/email",
+    "private": true,
+    "scripts": {
+        "dev": "svelte-kit sync && svelte-package --watch",
+        "build": "svelte-kit sync && svelte-package",
+        "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+        "sync": "svelte-kit sync",
+        "fmt": "prettier --write .",
+        "lint": "prettier --check . && eslint ."
+    },
+    "type": "module",
+    "files": [
+        "dist",
+        "!dist/**/*.test.*",
+        "!dist/**/*.spec.*"
+    ],
+    "exports": {
+        "./validateEmail": {
+            "types": "./dist/validateEmail.d.ts",
+            "default": "./dist/validateEmail.js"
+        },
+        "./templates/*": {
+            "types": "./dist/templates/*.d.ts",
+            "svelte": "./dist/templates/*.svelte",
+            "default": "./dist/templates/*.js"
+        }
+    },
+    "devDependencies": {
+        "@scribere/eslint-config": "workspace:*",
+        "@scribere/prettier-config": "workspace:*",
+        "@scribere/typescript-config": "workspace:*",
+        "@scribere/ui": "workspace:*",
+        "@sveltejs/adapter-auto": "4.0.0",
+        "@sveltejs/kit": "2.19.0",
+        "@sveltejs/package": "2.3.10",
+        "@sveltejs/vite-plugin-svelte": "5.0.3",
+        "eslint": "9.22.0",
+        "prettier": "3.5.3",
+        "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+        "prettier-plugin-svelte": "3.3.3",
+        "prettier-plugin-tailwindcss": "~0.6.11",
+        "svelte-check": "4.1.5",
+        "typescript": "5.8.2",
+        "vite": "6.2.1"
+    },
+    "dependencies": {
+        "handlebars": "4.7.8"
+    }
 }

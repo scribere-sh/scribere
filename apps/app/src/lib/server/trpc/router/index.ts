@@ -1,29 +1,28 @@
+import account from './account';
 import z from 'zod';
 
 import { t, TRPCLog } from '$trpc';
 
-import account from './account';
-
 const router = t.router({
-	account,
+    account,
 
-	hello_world: t.procedure
-		.input(
-			z
-				.object({
-					name: z.string().optional()
-				})
-				.strict()
-		)
-		.query(async ({ input }) => {
-			const name = input.name?.trim();
+    hello_world: t.procedure
+        .input(
+            z
+                .object({
+                    name: z.string().optional(),
+                })
+                .strict(),
+        )
+        .query(async ({ input }) => {
+            const name = input.name?.trim();
 
-			const message = name !== undefined ? `Hello, ${name}!` : `Hello, World!`;
+            const message = name !== undefined ? `Hello, ${name}!` : `Hello, World!`;
 
-			TRPCLog.success(`Greeting ${name || 'World'}`);
+            TRPCLog.success(`Greeting ${name || 'World'}`);
 
-			return { message };
-		})
+            return { message };
+        }),
 });
 
 export default router;
