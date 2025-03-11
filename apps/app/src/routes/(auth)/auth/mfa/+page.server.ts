@@ -25,14 +25,16 @@ export const actions: Actions = {
             redirect(302, route('/auth/log-in'));
         }
 
+        const db = DB();
+
         const returnPath = getReturnPathFromCookie(event.cookies) ?? route('/');
 
-        if (!(await userHasTOTP(DB, event.locals.user.id))) {
+        if (!(await userHasTOTP(db, event.locals.user.id))) {
             redirect(302, returnPath);
         }
 
-        if (await verifyUserOTP(DB, event.locals.user.id, form.data.mfa)) {
-            await setSessionAsMFAVerified(DB, event.locals.session.id);
+        if (await verifyUserOTP(db, event.locals.user.id, form.data.mfa)) {
+            await setSessionAsMFAVerified(db, event.locals.session.id);
             clearReturnPathCookie(event.cookies);
             redirect(302, returnPath);
         } else {

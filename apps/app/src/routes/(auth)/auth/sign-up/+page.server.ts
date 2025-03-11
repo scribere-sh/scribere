@@ -28,11 +28,13 @@ export const actions: Actions = {
             });
         }
 
-        if (!(await verifyEmailAddressAvailability(DB, form.data.emailAddress))) {
+        const db = DB();
+
+        if (!(await verifyEmailAddressAvailability(db, form.data.emailAddress))) {
             return setError(form, 'emailAddress', 'Email Address already in use!');
         }
 
-        if (!(await lookupHandleAvailability(DB, form.data.handle))) {
+        if (!(await lookupHandleAvailability(db, form.data.handle))) {
             return setError(form, 'handle', 'Handle already taken');
         }
 
@@ -40,7 +42,7 @@ export const actions: Actions = {
             return setError(form, 'password', 'Password is not strong enough!');
         }
 
-        const user = await DB.transaction(async (tx_db) => {
+        const user = await db.transaction(async (tx_db) => {
             const user = await createUser(tx_db, {
                 displayName: form.data.displayName,
                 handle: form.data.handle
@@ -69,7 +71,7 @@ export const actions: Actions = {
         };
 
         const sessionToken = generateSessionToken();
-        const session = await createSession(DB, sessionToken, user.id, sessionFlags);
+        const session = await createSession(db, sessionToken, user.id, sessionFlags);
         setSessionToken(event, sessionToken, session.expiresAt);
 
         redirect(302, route('/'));

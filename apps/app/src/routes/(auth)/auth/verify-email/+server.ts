@@ -18,7 +18,9 @@ export const GET: RequestHandler = async (event) => {
         });
     }
 
-    const [{ challengeArgon }] = await DB.select({
+    const db = DB();
+
+    const [{ challengeArgon }] = await db.select({
         challengeArgon: emailValidationChallengeTable.challengeTokenHash
     })
         .from(emailValidationChallengeTable)
@@ -30,11 +32,11 @@ export const GET: RequestHandler = async (event) => {
         });
     }
 
-    await DB.batch([
-        DB.delete(emailValidationChallengeTable).where(
+    await db.batch([
+        db.delete(emailValidationChallengeTable).where(
             eq(emailValidationChallengeTable.challengeRef, validationRef)
         ),
-        DB.update(emailAddressTable)
+        db.update(emailAddressTable)
             .set({
                 isValidated: true,
                 challengeRef: null

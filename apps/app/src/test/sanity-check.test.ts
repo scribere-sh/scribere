@@ -5,6 +5,10 @@ describe('Sanity Check', () => {
         const additionOfNumbers = 1 + 1;
         const expectedResult = 2;
 
+        console.log({
+            expected: expectedResult,
+            actual: additionOfNumbers
+        })
         expect(additionOfNumbers).toEqual(expectedResult);
     });
 
@@ -12,6 +16,10 @@ describe('Sanity Check', () => {
         const additionOfNumbers = 1 + 1;
         const expectedResultNotEqual = 3;
 
+        console.log({
+            expectedToNotEqual: expectedResultNotEqual,
+            actual: additionOfNumbers
+        });
         expect(additionOfNumbers).not.toEqual(expectedResultNotEqual);
     });
 });

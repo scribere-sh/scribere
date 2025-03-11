@@ -69,7 +69,8 @@ export const GET = (async (event) => {
         path: '/'
     });
     try {
-        return await DB.transaction(async (tx_db) => {
+        const db = DB();
+        return await db.transaction(async (tx_db) => {
             const tokens = await client.validateAuthorizationCode(code);
             const providerUserId = await IDENTITY_TRANSLATORS[providerKey](tokens);
 
