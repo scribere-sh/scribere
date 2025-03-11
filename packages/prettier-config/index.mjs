@@ -31,7 +31,7 @@ const config = {
         // @scribere other
         "^@scribere\\/(.*)$",
         // $auth, because it's big
-        "^\\$auth\\/.*",
+        "^\\$auth(?:\\/.*)?",
         // $ imports
         "^\\$.*$"
     ],

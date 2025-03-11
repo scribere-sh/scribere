@@ -15,6 +15,7 @@ import {
 } from '$auth/session';
 import { createUser, lookupHandleAvailability } from '$auth/user';
 
+import { DB } from '$db';
 import { signupFormSchema } from '$forms';
 import { route } from '$routes';
 
@@ -27,11 +28,11 @@ export const actions: Actions = {
             });
         }
 
-        if (!(await verifyEmailAddressAvailability(form.data.emailAddress))) {
+        if (!(await verifyEmailAddressAvailability(DB, form.data.emailAddress))) {
             return setError(form, 'emailAddress', 'Email Address already in use!');
         }
 
-        if (!(await lookupHandleAvailability(form.data.handle))) {
+        if (!(await lookupHandleAvailability(DB, form.data.handle))) {
             return setError(form, 'handle', 'Handle already taken');
         }
 
@@ -39,21 +40,26 @@ export const actions: Actions = {
             return setError(form, 'password', 'Password is not strong enough!');
         }
 
-        const user = await createUser({
-            displayName: form.data.displayName,
-            handle: form.data.handle
+        const user = await DB.transaction(async (tx_db) => {
+            const user = await createUser(tx_db, {
+                displayName: form.data.displayName,
+                handle: form.data.handle
+            });
+
+            await insertEmailAddress(tx_db, form.data.emailAddress, user.id);
+            await assignPasswordToUser(tx_db, event, user.id, form.data.password);
+
+            const challenge = await generateEmailValidation(tx_db, event, form.data.emailAddress);
+            await sendEmailValidationChallenge(
+                tx_db,
+                user.displayName,
+                form.data.emailAddress,
+                event.url,
+                challenge
+            );
+
+            return user;
         });
-
-        await insertEmailAddress(form.data.emailAddress, user.id);
-        await assignPasswordToUser(event, user.id, form.data.password);
-
-        const challenge = await generateEmailValidation(event, form.data.emailAddress);
-        await sendEmailValidationChallenge(
-            user.displayName,
-            form.data.emailAddress,
-            event.url,
-            challenge
-        );
 
         // user won't have mfa
         //
@@ -63,7 +69,7 @@ export const actions: Actions = {
         };
 
         const sessionToken = generateSessionToken();
-        const session = await createSession(sessionToken, user.id, sessionFlags);
+        const session = await createSession(DB, sessionToken, user.id, sessionFlags);
         setSessionToken(event, sessionToken, session.expiresAt);
 
         redirect(302, route('/'));

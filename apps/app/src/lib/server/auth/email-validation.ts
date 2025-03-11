@@ -1,5 +1,3 @@
-import { DB } from '../db';
-import { emailAddressTable, emailValidationChallengeTable } from '../db/tables';
 import { createArgon2id, generateTokenString, verifyArgon2id } from './cryptography';
 import { encodeHexLowerCase } from '@oslojs/encoding';
 import type { RequestEvent } from '@sveltejs/kit';
@@ -7,6 +5,8 @@ import { eq } from 'drizzle-orm';
 
 import { sendValidationEmail, type ValidateEmailProps } from '@scribere/email/validateEmail';
 
+import { type DB } from '$db';
+import { emailAddressTable, emailValidationChallengeTable } from '$db/tables';
 import { env } from '$env/dynamic/private';
 import { route } from '$routes';
 
@@ -25,6 +25,7 @@ export interface EmailAddressChallenge {
  * @param emailAddress The email address to verify and challenge
  */
 export const generateEmailValidation = async (
+    db: DB,
     event: RequestEvent,
     emailAddress: string
 ): Promise<EmailAddressChallenge> => {
@@ -33,12 +34,13 @@ export const generateEmailValidation = async (
 
     const challengeTokenArgon2id = await createArgon2id(event, challengeToken);
 
-    await DB.insert(emailValidationChallengeTable).values({
+    await db.insert(emailValidationChallengeTable).values({
         challengeRef,
         challengeTokenHash: challengeTokenArgon2id
     });
 
-    await DB.update(emailAddressTable)
+    await db
+        .update(emailAddressTable)
         .set({ challengeRef })
         .where(eq(emailAddressTable.emailAddress, emailAddress));
 
@@ -52,6 +54,7 @@ export const generateEmailValidation = async (
  * send an email validation challenge
  */
 export const sendEmailValidationChallenge = async (
+    db: DB,
     displayName: string,
     emailAddress: string,
     reqUrl: URL,
@@ -81,7 +84,8 @@ export const sendEmailValidationChallenge = async (
         const result = await sendValidationEmail(props);
         const emailRef = result.id;
 
-        await DB.update(emailValidationChallengeTable)
+        await db
+            .update(emailValidationChallengeTable)
             .set({
                 emailRef
             })
@@ -92,7 +96,7 @@ export const sendEmailValidationChallenge = async (
     }
 };
 
-export const verifyEmailValidationRequest = async (event: RequestEvent) => {
+export const verifyEmailValidationRequest = async (db: DB, event: RequestEvent) => {
     const challengeRef = event.url.searchParams.get('ref');
     const challengeToken = event.url.searchParams.get('token');
 
@@ -100,24 +104,25 @@ export const verifyEmailValidationRequest = async (event: RequestEvent) => {
         throw new Error('Validation Challenge ref and/or token not specified');
     }
 
-    const [challenge] = await DB.select({
-        challengeToken: emailValidationChallengeTable.challengeTokenHash
-    })
+    const [challenge] = await db
+        .select({
+            challengeToken: emailValidationChallengeTable.challengeTokenHash
+        })
         .from(emailValidationChallengeTable)
         .where(eq(emailValidationChallengeTable.challengeRef, challengeRef));
 
     if (await verifyArgon2id(event, challenge.challengeToken, challengeToken)) {
-        await DB.batch([
-            DB.delete(emailValidationChallengeTable).where(
-                eq(emailValidationChallengeTable.challengeRef, challengeRef)
-            ),
-            DB.update(emailAddressTable)
-                .set({
-                    challengeRef: null,
-                    isValidated: true
-                })
-                .where(eq(emailAddressTable.challengeRef, challengeRef))
-        ]);
+        await db
+            .delete(emailValidationChallengeTable)
+            .where(eq(emailValidationChallengeTable.challengeRef, challengeRef));
+
+        await db
+            .update(emailAddressTable)
+            .set({
+                challengeRef: null,
+                isValidated: true
+            })
+            .where(eq(emailAddressTable.challengeRef, challengeRef));
     } else {
         throw new Error('Email validation challenge failed');
     }

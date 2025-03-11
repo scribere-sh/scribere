@@ -3,6 +3,7 @@ import type { LayoutServerLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
 
 import { setReturnPathCookie } from '$auth';
+
 import { route } from '$routes';
 
 export const load: LayoutServerLoad = async (event) => {

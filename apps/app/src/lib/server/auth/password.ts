@@ -1,10 +1,11 @@
-import { DB } from '../db';
-import { authProviderTable } from '../db/tables';
 import { createArgon2id, verifyArgon2id } from './cryptography';
 import { sha1 } from '@oslojs/crypto/sha1';
 import { encodeHexLowerCase } from '@oslojs/encoding';
 import type { RequestEvent } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
+
+import { type DB } from '$db';
+import { authProviderTable } from '$db/tables';
 
 /**
  * FOR THE LOVE OF ALL THAT IS HOLY DONT USE THIS TO STORE PASSWORDS
@@ -38,13 +39,14 @@ export const verifyPasswordStrength = async (
 };
 
 export const assignPasswordToUser = async (
+    db: DB,
     event: RequestEvent,
     userId: string,
     password: string
 ) => {
     const passwordHash = await createPasswordHash(event, password);
 
-    await DB.insert(authProviderTable).values({
+    await db.insert(authProviderTable).values({
         userId,
         type: 'password',
         hash: passwordHash
@@ -52,11 +54,13 @@ export const assignPasswordToUser = async (
 };
 
 export const verifyPasswordOfUser = async (
+    db: DB,
     event: RequestEvent,
     userId: string,
     provided_password: string
 ) => {
-    const [password] = await DB.select({ hash: authProviderTable.hash })
+    const [password] = await db
+        .select({ hash: authProviderTable.hash })
         .from(authProviderTable)
         .where(eq(authProviderTable.userId, userId));
 

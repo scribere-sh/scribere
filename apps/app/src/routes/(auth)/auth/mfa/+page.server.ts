@@ -4,10 +4,11 @@ import { redirect } from '@sveltejs/kit';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
+import { clearReturnPathCookie, getReturnPathFromCookie } from '$auth';
 import { userHasTOTP, verifyUserOTP } from '$auth/mfa';
 import { setSessionAsMFAVerified } from '$auth/session';
 
-import { clearReturnPathCookie, getReturnPathFromCookie } from '$auth';
+import { DB } from '$db';
 import { mfaFormSchema } from '$forms';
 import { route } from '$routes';
 
@@ -26,12 +27,12 @@ export const actions: Actions = {
 
         const returnPath = getReturnPathFromCookie(event.cookies) ?? route('/');
 
-        if (!(await userHasTOTP(event.locals.user.id))) {
+        if (!(await userHasTOTP(DB, event.locals.user.id))) {
             redirect(302, returnPath);
         }
 
-        if (await verifyUserOTP(event.locals.user.id, form.data.mfa)) {
-            await setSessionAsMFAVerified(event.locals.session.id);
+        if (await verifyUserOTP(DB, event.locals.user.id, form.data.mfa)) {
+            await setSessionAsMFAVerified(DB, event.locals.session.id);
             clearReturnPathCookie(event.cookies);
             redirect(302, returnPath);
         } else {

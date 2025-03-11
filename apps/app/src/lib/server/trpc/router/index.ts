@@ -5,7 +5,6 @@ import { t, TRPCLog } from '$trpc';
 
 const router = t.router({
     account,
-
     hello_world: t.procedure
         .input(
             z

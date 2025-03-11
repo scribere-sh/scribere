@@ -1,6 +1,7 @@
 import type { RequestHandler } from './$types';
 
 import { setReturnPathCookie } from '$auth';
+
 import { generateState, OAuth2Providers, OAUTH_ACTION_NAME, STATE_COOKIE_NAME } from '$oauth';
 
 export const GET: RequestHandler = async ({ params, cookies, url }) => {

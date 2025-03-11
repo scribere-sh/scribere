@@ -1,5 +1,4 @@
 // import for tsdoc, ignore
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as Devalue from 'devalue';
 import type { QueryClient } from '@tanstack/svelte-query';
 import { httpLink } from '@trpc/client';
@@ -8,6 +7,7 @@ import { svelteQueryWrapper } from 'trpc-svelte-query-adapter';
 import { createTRPCClient, type TRPCClientInit } from 'trpc-sveltekit';
 
 import { browser } from '$app/environment';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { page } from '$app/state';
 import type { Router } from '$trpc';
 

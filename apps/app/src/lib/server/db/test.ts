@@ -1,11 +1,18 @@
-import { drizzle } from 'drizzle-orm/libsql/node';
+import { drizzle } from 'drizzle-orm/libsql';
+import { migrate } from 'drizzle-orm/libsql/migrator';
 
-export const TestDB = () => {
+export const TestDB = async () => {
     const db = drizzle({
         connection: {
             url: ':memory:'
         }
     });
 
-    db.run(`PRAGMA foreign_keys=off`);
+    await db.run('PRAGMA foreign_keys=off');
+    await migrate(db, {
+        migrationsFolder: 'drizzle'
+    });
+    await db.run('PRAGMA foreign_keys=on');
+
+    return db;
 };

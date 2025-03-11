@@ -23,6 +23,7 @@ const config = {
 
         alias: {
             $auth: 'src/lib/server/auth',
+            $client: 'src/lib/client',
             $db: 'src/lib/server/db',
             $oauth: 'src/lib/server/oauth',
             $trpc: 'src/lib/server/trpc',

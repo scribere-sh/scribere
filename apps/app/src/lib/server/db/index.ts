@@ -10,3 +10,5 @@ export const DB = drizzle({
     },
     logger: dev ? { logQuery: console.info } : undefined
 });
+
+export type DB = typeof DB | Parameters<Parameters<typeof DB.transaction>[0]>[0];

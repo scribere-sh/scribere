@@ -1,8 +1,9 @@
-import { DB } from '../db';
-import { twoFactorAuthenticationProviderTable } from '../db/tables';
 import { decodeTokenStringToBytes, generateTokenString } from './cryptography';
 import { createTOTPKeyURI, verifyTOTPWithGracePeriod } from '@oslojs/otp';
 import { and, eq } from 'drizzle-orm';
+
+import { type DB } from '$db';
+import { twoFactorAuthenticationProviderTable } from '$db/tables';
 
 export const TOTP_TYPE = 'totp';
 export const TOTP_RECOVERY_TYPE = 'totp_recovery';
@@ -27,8 +28,9 @@ const MFA_GRACE_PERIOD_SECONDS = 10;
 
 export const generateTOTPKey = generateTokenString;
 
-export const userHasTOTP = async (userId: string): Promise<boolean> => {
-    const result = await DB.select({ type: twoFactorAuthenticationProviderTable.type })
+export const userHasTOTP = async (db: DB, userId: string): Promise<boolean> => {
+    const result = await db
+        .select({ type: twoFactorAuthenticationProviderTable.type })
         .from(twoFactorAuthenticationProviderTable)
         .where(
             and(
@@ -59,6 +61,7 @@ export const verifyOTP = (key: string, digits: string) => {
 };
 
 export const enrolUserWithTOTP = async (
+    db: DB,
     userId: string,
     key: string,
     initial: string
@@ -67,7 +70,7 @@ export const enrolUserWithTOTP = async (
         return false;
     }
 
-    await DB.insert(twoFactorAuthenticationProviderTable).values({
+    await db.insert(twoFactorAuthenticationProviderTable).values({
         userId,
         type: TOTP_TYPE,
         challenge: key
@@ -76,10 +79,11 @@ export const enrolUserWithTOTP = async (
     return true;
 };
 
-export const verifyUserOTP = async (userId: string, digits: string): Promise<boolean> => {
-    const [otpChallengeLookup] = await DB.select({
-        challenge: twoFactorAuthenticationProviderTable.challenge
-    })
+export const verifyUserOTP = async (db: DB, userId: string, digits: string): Promise<boolean> => {
+    const [otpChallengeLookup] = await db
+        .select({
+            challenge: twoFactorAuthenticationProviderTable.challenge
+        })
         .from(twoFactorAuthenticationProviderTable)
         .where(
             and(

@@ -1,11 +1,12 @@
-import { DB } from '../db';
-import { sessionsTable, usersTable } from '../db/tables';
 import { generateTokenString } from './cryptography';
 import type { User } from './user';
 import { sha256 } from '@oslojs/crypto/sha2';
 import { encodeHexLowerCase } from '@oslojs/encoding';
 import type { RequestEvent } from '@sveltejs/kit';
 import { eq, lte } from 'drizzle-orm';
+
+import { type DB } from '$db';
+import { sessionsTable, usersTable } from '$db/tables';
 
 export const SESSION_TOKEN_NAME = 'session';
 
@@ -49,20 +50,22 @@ const SESSION_NULL: SessionTokenValidationResult = { session: null, user: null }
  * in and steals all of the session, the data will be useless.
  */
 export const validateSessionToken = async (
+    db: DB,
     sessionToken: string
 ): Promise<SessionTokenValidationResult> => {
     const sessionId = sessionTokenToSessionId(sessionToken);
 
-    const queryResult = await DB.select({
-        sessionId: sessionsTable.id,
-        sessionExpiry: sessionsTable.expiresAt,
-        sessionMfaVerified: sessionsTable.mfaVerified,
+    const queryResult = await db
+        .select({
+            sessionId: sessionsTable.id,
+            sessionExpiry: sessionsTable.expiresAt,
+            sessionMfaVerified: sessionsTable.mfaVerified,
 
-        userId: usersTable.id,
-        userDisplayName: usersTable.displayName,
-        userHandle: usersTable.handle,
-        userCreatedAt: usersTable.createdAt
-    })
+            userId: usersTable.id,
+            userDisplayName: usersTable.displayName,
+            userHandle: usersTable.handle,
+            userCreatedAt: usersTable.createdAt
+        })
         .from(sessionsTable)
         .innerJoin(usersTable, eq(sessionsTable.userId, usersTable.id))
         .where(eq(sessionsTable.id, sessionId));
@@ -87,14 +90,15 @@ export const validateSessionToken = async (
         };
 
         if (Date.now() >= session.expiresAt.getTime()) {
-            invalidateSession(session.id);
+            invalidateSession(db, session.id);
             return SESSION_NULL;
         }
 
         if (Date.now() >= session.expiresAt.getTime() - TIME_TO_RENEW_MS) {
             const newExpiryDate = new Date(Date.now() + TIME_TO_EXPIRE_MS);
             session.expiresAt = newExpiryDate;
-            await DB.update(sessionsTable)
+            await db
+                .update(sessionsTable)
                 .set({ expiresAt: newExpiryDate })
                 .where(eq(sessionsTable.id, session.id));
         }
@@ -106,8 +110,9 @@ export const validateSessionToken = async (
     }
 };
 
-export const setSessionAsMFAVerified = async (sessionId: string) => {
-    await DB.update(sessionsTable)
+export const setSessionAsMFAVerified = async (db: DB, sessionId: string) => {
+    await db
+        .update(sessionsTable)
         .set({
             mfaVerified: true
         })
@@ -125,6 +130,7 @@ export const generateSessionToken = generateTokenString;
  * @returns
  */
 export const createSession = async (
+    db: DB,
     sessionToken: string,
     userId: string,
     flags: SessionFlags
@@ -138,7 +144,7 @@ export const createSession = async (
         mfaVerified: flags.mfaVerified
     };
 
-    await DB.insert(sessionsTable).values({
+    await db.insert(sessionsTable).values({
         id: sessionId,
         userId,
         expiresAt: session.expiresAt,
@@ -150,16 +156,16 @@ export const createSession = async (
 // #endregion
 
 // #region Delete Session
-export const invalidateSession = async (sessionId: string) => {
-    await DB.delete(sessionsTable).where(eq(sessionsTable.id, sessionId));
+export const invalidateSession = async (db: DB, sessionId: string) => {
+    await db.delete(sessionsTable).where(eq(sessionsTable.id, sessionId));
 };
 
-export const invalidateUserSessions = async (userId: string) => {
-    await DB.delete(sessionsTable).where(eq(sessionsTable.userId, userId));
+export const invalidateUserSessions = async (db: DB, userId: string) => {
+    await db.delete(sessionsTable).where(eq(sessionsTable.userId, userId));
 };
 
-export const deleteExpiredSessions = async () => {
-    await DB.delete(sessionsTable).where(lte(sessionsTable.expiresAt, new Date()));
+export const deleteExpiredSessions = async (db: DB) => {
+    await db.delete(sessionsTable).where(lte(sessionsTable.expiresAt, new Date()));
 };
 
 export const deleteSessionToken = (event: RequestEvent) => {

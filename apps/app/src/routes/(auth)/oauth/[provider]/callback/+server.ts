@@ -4,6 +4,7 @@ import { ObjectParser } from '@pilcrowjs/object-parser';
 import type { OAuth2Tokens } from 'arctic';
 import { OAuth2RequestError } from 'arctic';
 
+import { clearReturnPathCookie, getReturnPathFromCookie } from '$auth';
 import { userHasTOTP } from '$auth/mfa';
 import {
     createSession,
@@ -14,7 +15,7 @@ import {
 } from '$auth/session';
 import { linkOAuthProviderToUser, lookupUserIdFromOAuthProvider } from '$auth/user';
 
-import { clearReturnPathCookie, getReturnPathFromCookie } from '$auth';
+import { DB } from '$db';
 import { OAuth2Providers, OAUTH_ACTION_NAME, OAUTH_SKIPS_MFA, STATE_COOKIE_NAME } from '$oauth';
 import { route } from '$routes';
 
@@ -67,58 +68,60 @@ export const GET = (async (event) => {
     event.cookies.delete(STATE_COOKIE_NAME, {
         path: '/'
     });
-
     try {
-        const tokens = await client.validateAuthorizationCode(code);
-        const providerUserId = await IDENTITY_TRANSLATORS[providerKey](tokens);
+        return await DB.transaction(async (tx_db) => {
+            const tokens = await client.validateAuthorizationCode(code);
+            const providerUserId = await IDENTITY_TRANSLATORS[providerKey](tokens);
 
-        if (!providerUserId) return new Response(null, { status: 500 });
+            if (!providerUserId) return new Response(null, { status: 500 });
 
-        if (oauthAction === 'link' && event.locals.session) {
-            const userId = event.locals.session.userId;
+            if (oauthAction === 'link' && event.locals.session) {
+                const userId = event.locals.session.userId;
 
-            await linkOAuthProviderToUser(providerUserId, event.params.provider, userId);
+                await linkOAuthProviderToUser(tx_db, providerUserId, event.params.provider, userId);
+
+                return new Response(null, {
+                    status: 302,
+                    headers: {
+                        Location: returnPath
+                    }
+                });
+            }
+
+            const localUserId = await lookupUserIdFromOAuthProvider(
+                tx_db,
+                providerUserId,
+                event.params.provider
+            );
+
+            if (!localUserId) {
+                return new Response(null, {
+                    status: 400
+                });
+            }
+
+            const userHasMFA = await userHasTOTP(tx_db, localUserId);
+
+            const sessionFlags: SessionFlags = {
+                mfaVerified: userHasMFA ? OAUTH_SKIPS_MFA : null
+            };
+
+            // if session already exists, invalidate it first
+            if (event.locals.session) await invalidateSession(tx_db, event.locals.session.id);
+
+            const sessionToken = generateSessionToken();
+            const session = await createSession(tx_db, sessionToken, localUserId, sessionFlags);
+            setSessionToken(event, sessionToken, session.expiresAt);
+
+            if (!userHasMFA) clearReturnPathCookie(event.cookies);
+            const redirectPath = userHasMFA && !OAUTH_SKIPS_MFA ? route('/auth/mfa') : returnPath;
 
             return new Response(null, {
                 status: 302,
                 headers: {
-                    Location: returnPath
+                    Location: redirectPath
                 }
             });
-        }
-
-        const localUserId = await lookupUserIdFromOAuthProvider(
-            providerUserId,
-            event.params.provider
-        );
-
-        if (!localUserId) {
-            return new Response(null, {
-                status: 400
-            });
-        }
-
-        const userHasMFA = await userHasTOTP(localUserId);
-
-        const sessionFlags: SessionFlags = {
-            mfaVerified: userHasMFA ? OAUTH_SKIPS_MFA : null
-        };
-
-        // if session already exists, invalidate it first
-        if (event.locals.session) await invalidateSession(event.locals.session.id);
-
-        const sessionToken = generateSessionToken();
-        const session = await createSession(sessionToken, localUserId, sessionFlags);
-        setSessionToken(event, sessionToken, session.expiresAt);
-
-        if (!userHasMFA) clearReturnPathCookie(event.cookies);
-        const redirectPath = userHasMFA && !OAUTH_SKIPS_MFA ? route('/auth/mfa') : returnPath;
-
-        return new Response(null, {
-            status: 302,
-            headers: {
-                Location: redirectPath
-            }
         });
     } catch (e: unknown) {
         if (e instanceof OAuth2RequestError) {

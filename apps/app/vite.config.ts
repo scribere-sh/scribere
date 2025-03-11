@@ -16,6 +16,7 @@ export default defineConfig({
     resolve: {
         alias: {
             $auth: resolve('./src/lib/server/auth'),
+            $client: resolve('./src/lib/client'),
             $db: resolve('./src/lib/server/db'),
             $oauth: resolve('./src/lib/server/oauth'),
             $trpc: resolve('./src/lib/server/trpc'),
@@ -27,6 +28,6 @@ export default defineConfig({
     },
     test: {
         outputFile: '../../reports/vitest-scribere.xml',
-        include: ['./test/**/*.test.ts']
+        include: ['./src/test/**/*.test.ts']
     }
 });

@@ -6,6 +6,7 @@ import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { z } from 'zod';
 
+import { AUTH_RETURN_PATH, clearReturnPathCookie, getReturnPathFromCookie } from '$auth';
 import { verifyArgon2id } from '$auth/cryptography';
 import { userHasTOTP } from '$auth/mfa';
 import {
@@ -15,7 +16,6 @@ import {
     setSessionToken
 } from '$auth/session';
 
-import { AUTH_RETURN_PATH, clearReturnPathCookie, getReturnPathFromCookie } from '$auth';
 import { DB } from '$db';
 import { authProviderTable, emailAddressTable, usersTable } from '$db/tables';
 import { logInFormSchema } from '$forms';
@@ -71,14 +71,14 @@ export const actions: Actions = {
             return setError(form, 'password', 'Password Incorrect');
         }
 
-        const userHasMFA = await userHasTOTP(user.id);
+        const userHasMFA = await userHasTOTP(DB, user.id);
 
         const sessionFlags: SessionFlags = {
             mfaVerified: userHasMFA ? false : null
         };
 
         const sessionToken = generateSessionToken();
-        const session = await createSession(sessionToken, user.id, sessionFlags);
+        const session = await createSession(DB, sessionToken, user.id, sessionFlags);
         setSessionToken(event, sessionToken, session.expiresAt);
 
         if (userHasMFA) {
