@@ -39,7 +39,7 @@
     <Form.Field {form} name="handleOrEmail">
         <Form.Control>
             {#snippet children({ props }: PropsObj)}
-                <Form.Label>Hande or Email Address</Form.Label>
+                <Form.Label>Handle or Email Address</Form.Label>
                 <Input
                     {...props}
                     {disabled}

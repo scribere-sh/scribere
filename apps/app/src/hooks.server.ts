@@ -57,7 +57,7 @@ const injectDBHandle: Handle = async ({ event, resolve }) => {
 /**
  * Auto-delete expired sessions every 10 minutes
  */
-setInterval(deleteExpiredSessions, 10 * 60 * 1000);
+setInterval(() => deleteExpiredSessions(DB()), 10 * 60 * 1000);
 
 export const handle: Handle = sequence(
     async ({ event, resolve }) => {

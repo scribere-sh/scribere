@@ -7,6 +7,7 @@ interface ValidateEnvFunction {
 interface ValidateEnv extends ValidateEnvFunction {
     github: ValidateEnvFunction;
     atlassian: ValidateEnvFunction;
+    google: ValidateEnvFunction;
 }
 
 /**
@@ -21,6 +22,8 @@ const validate: ValidateEnv = (...variable_names) =>
     variable_names.filter((_var) => _var in env).length === variable_names.length;
 
 validate.github = () => validate('GITHUB_CLIENT_ID', 'GITHUB_CLIENT_SECRET');
-validate.atlassian = () => validate('ATLASSIAN_CLIENT_ID', 'ATLASSIAN_CLIENT_SECRET');
+// note: disabled because atlassian are a bunch of pussies.
+validate.atlassian = () => validate('ATLASSIAN_CLIENT_ID', 'ATLASSIAN_CLIENT_SECRET') && false;
+validate.google = () => validate('GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET');
 
 export default validate;

@@ -14,6 +14,6 @@ export const atlassianFactory = (req_url: URL) => {
             env.ATLASSIAN_CLIENT_SECRET!,
             callbackURL.toString()
         ),
-        scopes: [] as string[]
+        scopes: ['read:me']
     };
 };

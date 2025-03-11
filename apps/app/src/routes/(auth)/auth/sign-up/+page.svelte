@@ -11,7 +11,7 @@
     const { data }: PageProps = $props();
 </script>
 
-<Card.Root class="flex w-96 flex-row">
+<Card.Root class="flex w-96 flex-row" id="main-content">
     <div class="w-full">
         <Card.Header>
             <Card.Title>Sign Up</Card.Title>

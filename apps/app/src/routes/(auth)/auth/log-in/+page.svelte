@@ -13,7 +13,7 @@
     const { data }: PageProps = $props();
 </script>
 
-<Card.Root class="flex flex-row">
+<Card.Root class="flex flex-row" id="main-content">
     <div class="w-96">
         <Card.Header>
             <Card.Title>Log in</Card.Title>

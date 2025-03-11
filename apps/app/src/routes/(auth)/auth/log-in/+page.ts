@@ -2,7 +2,7 @@ import type { PageLoad } from './$types';
 
 import type { Component } from 'svelte';
 
-import { Atlassian, GitHub } from '@scribere/ui/logos';
+import { GitHub, Google } from '@scribere/ui/logos';
 
 type OAuthProviderItem = {
     /**
@@ -47,13 +47,19 @@ const METHODS: OAuthProviderItem[] = [
         bg_colour: '#181717',
         text_colour: '#FEFEFE'
     },
+    // {
+    //     icon: Atlassian,
+    //     name: 'Atlassian',
+    //     id: 'atlassian',
+    //     bg_colour: '#0050D4',
+    //     text_colour: '#FEFEFE'
+    // },
     {
-        // todo replace with atlassian
-        icon: Atlassian,
-        name: 'Atlassian',
-        id: 'atlassian',
-        bg_colour: '#0050D4',
-        text_colour: '#FEFEFE'
+        icon: Google,
+        name: 'Google',
+        id: 'google',
+        bg_colour: '#FEFEFE',
+        text_colour: '#000000DD'
     }
 ];
 

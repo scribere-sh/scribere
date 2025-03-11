@@ -3,6 +3,7 @@
 
     import { Button } from '@scribere/ui/button';
     import { Toaster } from '@scribere/ui/sonner';
+    import { ThemeToggle } from '@scribere/ui/theme-toggle';
 
     import ScribereBorder from '$lib/assets/scribere-border.png';
 
@@ -28,10 +29,13 @@
         <div
             class="mx-auto flex h-full max-w-full flex-row items-center justify-between px-4 xl:max-w-screen-xl xl:px-0"
         >
-            <span class="text-sm">&copy; Scribere 2025</span>
+            <span class="text-sm">&copy;&nbsp;Scribere&nbsp;2025</span>
 
-            <!-- TODO -->
-            <Button variant="link">Legal</Button>
+            <div class="flex flex-row gap-4">
+                <!-- TODO -->
+                <Button variant="link">Legal</Button>
+                <ThemeToggle />
+            </div>
         </div>
     </footer>
 </div>

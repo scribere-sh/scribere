@@ -30,7 +30,7 @@ export const SERVERS = {
     'GET /api/assets': `/api/assets`,
     'DELETE /api/assets': `/api/assets`,
     'GET /robots.txt': `/robots.txt`,
-    'GET /auth/sign-out': `/auth/sign-out`,
+    'GET /auth/log-out': `/auth/log-out`,
     'GET /auth/verify-email': `/auth/verify-email`,
     'GET /oauth/[provider]': (params: { provider: string | number }) => {
         return `/oauth/${params['provider']}`;
@@ -182,7 +182,7 @@ export type KIT_ROUTES = {
         'GET /api/assets': never;
         'DELETE /api/assets': never;
         'GET /robots.txt': never;
-        'GET /auth/sign-out': never;
+        'GET /auth/log-out': never;
         'GET /auth/verify-email': never;
         'GET /oauth/[provider]': 'provider';
         'GET /oauth/[provider]/callback': 'provider';

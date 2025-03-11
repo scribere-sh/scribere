@@ -9,7 +9,7 @@
     const { form } = data;
 </script>
 
-<Card.Root class="w-96">
+<Card.Root class="w-96" id="main-content">
     <Card.Header>
         <Card.Title>Enter MFA Token</Card.Title>
         <Card.Description>

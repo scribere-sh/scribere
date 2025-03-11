@@ -33,7 +33,7 @@ const config = {
         // $auth, because it's big
         "^\\$auth(?:\\/.*)?",
         // $ imports
-        "^\\$.*$"
+        "^\\$.*$",
     ],
     importOrderSeparation: true,
     importOrderSortSpecifiers: true,
