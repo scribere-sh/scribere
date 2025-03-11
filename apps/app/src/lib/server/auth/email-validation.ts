@@ -62,7 +62,7 @@ export const sendEmailValidationChallenge = async (
 ) => {
     const validationUrl = reqUrl;
     validationUrl.pathname = route('GET /auth/verify-email');
-    validationUrl.searchParams.set('ref', challenge.ref);
+    validationUrl.searchParams.set('validation_reference', challenge.ref);
     validationUrl.searchParams.set('token', challenge.token);
 
     const props: ValidateEmailProps = {

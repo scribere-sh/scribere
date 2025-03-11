@@ -8,7 +8,7 @@ import { emailAddressTable, emailValidationChallengeTable } from '$db/tables';
 import { route } from '$routes';
 
 export const GET: RequestHandler = async (event) => {
-    const validationRef = event.url.searchParams.get('ref');
+    const validationRef = event.url.searchParams.get('validation_reference');
     const validationToken = event.url.searchParams.get('token');
 
     if (!validationRef || !validationToken) {
