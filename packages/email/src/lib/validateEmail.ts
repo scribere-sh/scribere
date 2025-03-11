@@ -20,11 +20,10 @@ export interface EmailSendResult {
     id: string;
 }
 
-const template = Handlebars.compile(EmailValidationTemplate);
-
 export const renderValidationEmail = (
     props: Pick<ValidateEmailProps, 'to' | 'validationUrl'>
 ): string => {
+    const template = Handlebars.compile(EmailValidationTemplate);
     return template(props);
 };
 
