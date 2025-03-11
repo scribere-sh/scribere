@@ -8,7 +8,8 @@ import { authMiddleware } from '$trpc/middleware';
 
 const router = t.router({
     loadCurrentUserProfile: t.procedure.use(authMiddleware).query(async ({ ctx }) => {
-        const [user] = await DB.select().from(usersTable).where(eq(usersTable.id, ctx.user.id));
+        const db = DB();
+        const [user] = await db.select().from(usersTable).where(eq(usersTable.id, ctx.user.id));
 
         if (!user) {
             throw new TRPCError({

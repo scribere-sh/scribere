@@ -6,14 +6,15 @@ import { env } from '$env/dynamic/private';
 let cacheDB: LibSQLDatabase;
 
 export const DB = () => {
-    if (!cacheDB) cacheDB = drizzle({
-        connection: {
-            url: env.TURSO_URL,
-            authToken: env.TURSO_AUTH_TOKEN
-        },
-        logger: dev ? { logQuery: console.info } : undefined
-    }); 
+    if (!cacheDB)
+        cacheDB = drizzle({
+            connection: {
+                url: env.TURSO_URL,
+                authToken: env.TURSO_AUTH_TOKEN
+            },
+            logger: dev ? { logQuery: console.info } : undefined
+        });
     return cacheDB;
-}
+};
 
-export type DB = LibSQLDatabase | Parameters<Parameters<LibSQLDatabase["transaction"]>[0]>[0];
+export type DB = LibSQLDatabase | Parameters<Parameters<LibSQLDatabase['transaction']>[0]>[0];

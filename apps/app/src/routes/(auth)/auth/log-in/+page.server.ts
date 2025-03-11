@@ -35,17 +35,19 @@ export const actions: Actions = {
 
         let user;
         if (z.string().email().safeParse(form.data.handleOrEmail).success) {
-            const [maybeUser] = await db.select({
-                id: emailAddressTable.userId
-            })
+            const [maybeUser] = await db
+                .select({
+                    id: emailAddressTable.userId
+                })
                 .from(emailAddressTable)
                 .where(eq(emailAddressTable.emailAddress, form.data.handleOrEmail));
 
             user = maybeUser;
         } else {
-            const [maybeUser] = await db.select({
-                id: usersTable.id
-            })
+            const [maybeUser] = await db
+                .select({
+                    id: usersTable.id
+                })
                 .from(usersTable)
                 .where(eq(usersTable.handle, form.data.handleOrEmail));
 
@@ -56,7 +58,8 @@ export const actions: Actions = {
             return setError(form, 'handleOrEmail', 'User not found');
         }
 
-        const [authProvider] = await db.select({ hash: authProviderTable.hash })
+        const [authProvider] = await db
+            .select({ hash: authProviderTable.hash })
             .from(authProviderTable)
             .where(
                 and(eq(authProviderTable.userId, user.id), eq(authProviderTable.type, 'password'))

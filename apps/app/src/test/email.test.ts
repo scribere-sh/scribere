@@ -38,7 +38,7 @@ describe('Email Validation', () => {
             createdAt: undefined
         };
 
-        console.log({ expectedUserValue })
+        console.log({ expectedUserValue });
         expect(userQueryExceptDate).toEqual(expectedUserValue);
 
         const expectedEmailValue = {
@@ -48,7 +48,7 @@ describe('Email Validation', () => {
             challengeRef: null
         };
 
-        console.log({ expectedEmailValue })
+        console.log({ expectedEmailValue });
         expect(emailQuery).toEqual(expectedEmailValue);
     });
 });

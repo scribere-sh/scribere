@@ -8,7 +8,7 @@ describe('Sanity Check', () => {
         console.log({
             expected: expectedResult,
             actual: additionOfNumbers
-        })
+        });
         expect(additionOfNumbers).toEqual(expectedResult);
     });
 

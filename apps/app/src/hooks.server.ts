@@ -10,6 +10,7 @@ import {
     validateSessionToken
 } from '$auth/session';
 
+import { DB } from '$db';
 import { TRPC_PATH } from '$trpc-client';
 import { createContext } from '$trpc/context';
 import router from '$trpc/router';
@@ -34,7 +35,7 @@ const validateSessionHandle: Handle = async ({ event, resolve }) => {
         return resolve(event);
     }
 
-    const { session, user } = await validateSessionToken(token);
+    const { session, user } = await validateSessionToken(DB(), token);
     if (session !== null) {
         setSessionToken(event, token, session.expiresAt);
     } else {
