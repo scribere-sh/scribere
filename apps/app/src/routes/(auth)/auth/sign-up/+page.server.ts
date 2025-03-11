@@ -15,7 +15,6 @@ import {
 } from '$auth/session';
 import { createUser, lookupHandleAvailability } from '$auth/user';
 
-import { DB } from '$db';
 import { signupFormSchema } from '$forms';
 import { route } from '$routes';
 
@@ -28,13 +27,11 @@ export const actions: Actions = {
             });
         }
 
-        const db = DB();
-
-        if (!(await verifyEmailAddressAvailability(db, form.data.emailAddress))) {
+        if (!(await verifyEmailAddressAvailability(event.locals.DB, form.data.emailAddress))) {
             return setError(form, 'emailAddress', 'Email Address already in use!');
         }
 
-        if (!(await lookupHandleAvailability(db, form.data.handle))) {
+        if (!(await lookupHandleAvailability(event.locals.DB, form.data.handle))) {
             return setError(form, 'handle', 'Handle already taken');
         }
 
@@ -42,7 +39,7 @@ export const actions: Actions = {
             return setError(form, 'password', 'Password is not strong enough!');
         }
 
-        const user = await db.transaction(async (tx_db) => {
+        const user = await event.locals.DB.transaction(async (tx_db) => {
             const user = await createUser(tx_db, {
                 displayName: form.data.displayName,
                 handle: form.data.handle
@@ -71,7 +68,7 @@ export const actions: Actions = {
         };
 
         const sessionToken = generateSessionToken();
-        const session = await createSession(db, sessionToken, user.id, sessionFlags);
+        const session = await createSession(event.locals.DB, sessionToken, user.id, sessionFlags);
         setSessionToken(event, sessionToken, session.expiresAt);
 
         redirect(302, route('/'));

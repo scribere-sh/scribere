@@ -16,7 +16,6 @@ import {
     setSessionToken
 } from '$auth/session';
 
-import { DB } from '$db';
 import { authProviderTable, emailAddressTable, usersTable } from '$db/tables';
 import { logInFormSchema } from '$forms';
 import { OAuth2Providers } from '$oauth';
@@ -31,23 +30,19 @@ export const actions: Actions = {
             });
         }
 
-        const db = DB();
-
         let user;
         if (z.string().email().safeParse(form.data.handleOrEmail).success) {
-            const [maybeUser] = await db
-                .select({
-                    id: emailAddressTable.userId
-                })
+            const [maybeUser] = await event.locals.DB.select({
+                id: emailAddressTable.userId
+            })
                 .from(emailAddressTable)
                 .where(eq(emailAddressTable.emailAddress, form.data.handleOrEmail));
 
             user = maybeUser;
         } else {
-            const [maybeUser] = await db
-                .select({
-                    id: usersTable.id
-                })
+            const [maybeUser] = await event.locals.DB.select({
+                id: usersTable.id
+            })
                 .from(usersTable)
                 .where(eq(usersTable.handle, form.data.handleOrEmail));
 
@@ -58,8 +53,7 @@ export const actions: Actions = {
             return setError(form, 'handleOrEmail', 'User not found');
         }
 
-        const [authProvider] = await db
-            .select({ hash: authProviderTable.hash })
+        const [authProvider] = await event.locals.DB.select({ hash: authProviderTable.hash })
             .from(authProviderTable)
             .where(
                 and(eq(authProviderTable.userId, user.id), eq(authProviderTable.type, 'password'))
@@ -76,14 +70,14 @@ export const actions: Actions = {
             return setError(form, 'password', 'Password Incorrect');
         }
 
-        const userHasMFA = await userHasTOTP(db, user.id);
+        const userHasMFA = await userHasTOTP(event.locals.DB, user.id);
 
         const sessionFlags: SessionFlags = {
             mfaVerified: userHasMFA ? false : null
         };
 
         const sessionToken = generateSessionToken();
-        const session = await createSession(db, sessionToken, user.id, sessionFlags);
+        const session = await createSession(event.locals.DB, sessionToken, user.id, sessionFlags);
         setSessionToken(event, sessionToken, session.expiresAt);
 
         if (userHasMFA) {

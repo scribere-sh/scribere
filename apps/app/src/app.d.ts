@@ -1,4 +1,5 @@
 import type { Fetcher, R2Bucket } from '@cloudflare/workers-types';
+import type { LibSQLDatabase } from 'drizzle-orm/libsql';
 
 import type { Session } from '$auth/session';
 import type { User } from '$auth/user';
@@ -10,6 +11,8 @@ declare global {
         // interface Error {}
         interface Locals {
             R2: R2Bucket;
+            DB: LibSQLDatabase;
+
             session: Session | null;
             user: User | null;
         }

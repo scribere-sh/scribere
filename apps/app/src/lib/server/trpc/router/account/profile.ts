@@ -1,15 +1,15 @@
 import { TRPCError } from '@trpc/server';
 import { eq } from 'drizzle-orm';
 
-import { DB } from '$db';
 import { usersTable } from '$db/tables';
 import { t } from '$trpc';
 import { authMiddleware } from '$trpc/middleware';
 
 const router = t.router({
     loadCurrentUserProfile: t.procedure.use(authMiddleware).query(async ({ ctx }) => {
-        const db = DB();
-        const [user] = await db.select().from(usersTable).where(eq(usersTable.id, ctx.user.id));
+        const [user] = await ctx.locals.DB.select()
+            .from(usersTable)
+            .where(eq(usersTable.id, ctx.user.id));
 
         if (!user) {
             throw new TRPCError({

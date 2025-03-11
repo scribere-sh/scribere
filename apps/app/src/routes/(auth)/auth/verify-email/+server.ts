@@ -4,7 +4,6 @@ import { eq } from 'drizzle-orm';
 
 import { verifyArgon2id } from '$auth/cryptography';
 
-import { DB } from '$db';
 import { emailAddressTable, emailValidationChallengeTable } from '$db/tables';
 import { route } from '$routes';
 
@@ -18,12 +17,9 @@ export const GET: RequestHandler = async (event) => {
         });
     }
 
-    const db = DB();
-
-    const [{ challengeArgon }] = await db
-        .select({
-            challengeArgon: emailValidationChallengeTable.challengeTokenHash
-        })
+    const [{ challengeArgon }] = await event.locals.DB.select({
+        challengeArgon: emailValidationChallengeTable.challengeTokenHash
+    })
         .from(emailValidationChallengeTable)
         .where(eq(emailValidationChallengeTable.challengeRef, validationRef));
 
@@ -33,12 +29,11 @@ export const GET: RequestHandler = async (event) => {
         });
     }
 
-    await db.batch([
-        db
-            .delete(emailValidationChallengeTable)
-            .where(eq(emailValidationChallengeTable.challengeRef, validationRef)),
-        db
-            .update(emailAddressTable)
+    await event.locals.DB.batch([
+        event.locals.DB.delete(emailValidationChallengeTable).where(
+            eq(emailValidationChallengeTable.challengeRef, validationRef)
+        ),
+        event.locals.DB.update(emailAddressTable)
             .set({
                 isValidated: true,
                 challengeRef: null

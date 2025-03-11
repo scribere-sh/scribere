@@ -15,7 +15,6 @@ import {
 } from '$auth/session';
 import { linkOAuthProviderToUser, lookupUserIdFromOAuthProvider } from '$auth/user';
 
-import { DB } from '$db';
 import { OAuth2Providers, OAUTH_ACTION_NAME, OAUTH_SKIPS_MFA, STATE_COOKIE_NAME } from '$oauth';
 import { route } from '$routes';
 
@@ -69,8 +68,7 @@ export const GET = (async (event) => {
         path: '/'
     });
     try {
-        const db = DB();
-        return await db.transaction(async (tx_db) => {
+        return await event.locals.DB.transaction(async (tx_db) => {
             const tokens = await client.validateAuthorizationCode(code);
             const providerUserId = await IDENTITY_TRANSLATORS[providerKey](tokens);
 

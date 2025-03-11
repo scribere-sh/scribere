@@ -35,7 +35,7 @@ const validateSessionHandle: Handle = async ({ event, resolve }) => {
         return resolve(event);
     }
 
-    const { session, user } = await validateSessionToken(DB(), token);
+    const { session, user } = await validateSessionToken(event.locals.DB, token);
     if (session !== null) {
         setSessionToken(event, token, session.expiresAt);
     } else {
@@ -45,7 +45,13 @@ const validateSessionHandle: Handle = async ({ event, resolve }) => {
     event.locals.session = session;
     event.locals.user = user;
 
-    return resolve(event);
+    return await resolve(event);
+};
+
+const injectDBHandle: Handle = async ({ event, resolve }) => {
+    event.locals.DB = DB();
+
+    return await resolve(event);
 };
 
 /**
@@ -65,6 +71,7 @@ export const handle: Handle = sequence(
         event.locals.R2 = event.platform!.env.R2;
         return resolve(event);
     },
+    injectDBHandle,
     validateSessionHandle,
     apiRequireAuthHandle,
     createTRPCHandle({ router, createContext, url: TRPC_PATH })
