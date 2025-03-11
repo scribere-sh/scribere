@@ -17,13 +17,24 @@ export const GET: RequestHandler = async (event) => {
         });
     }
 
-    const [{ challengeArgon }] = await event.locals.DB.select({
+    const [challenge] = await event.locals.DB.select({
         challengeArgon: emailValidationChallengeTable.challengeTokenHash
     })
         .from(emailValidationChallengeTable)
         .where(eq(emailValidationChallengeTable.challengeRef, validationRef));
 
-    if (!(await verifyArgon2id(event, challengeArgon, validationToken))) {
+    if (!challenge) {
+        console.log('no challenge found');
+        return new Response(null, {
+            status: 302,
+            headers: {
+                Location: route('/')
+            }
+        });
+    }
+
+    if (!(await verifyArgon2id(event, challenge.challengeArgon, validationToken))) {
+        console.log('email verification challenge invalid');
         return new Response(null, {
             status: 400
         });
@@ -40,6 +51,8 @@ export const GET: RequestHandler = async (event) => {
             })
             .where(eq(emailAddressTable.challengeRef, validationRef))
     ]);
+
+    console.log('email verification successful, records updated');
 
     return new Response(null, {
         status: 302,
