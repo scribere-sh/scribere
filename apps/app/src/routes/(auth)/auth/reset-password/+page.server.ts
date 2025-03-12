@@ -5,10 +5,13 @@ import { eq } from 'drizzle-orm';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
+import { sendPasswordResetAlertEmail } from '@scribere/email/alertPasswortReset';
+
 import { updateUserPassword } from '$auth/password';
 import { validatePasswordResetRefTokenPair } from '$auth/reset-password';
 
-import { passwordResetChallengeTable } from '$db/tables';
+import { emailAddressTable, passwordResetChallengeTable, usersTable } from '$db/tables';
+import { env } from '$env/dynamic/private';
 import { resetPasswordFormSchema } from '$forms';
 import { route } from '$routes';
 
@@ -42,9 +45,18 @@ export const actions: Actions = {
 
         console.log('valid challenge');
 
-        const [user] = await event.locals.DB.select({ id: passwordResetChallengeTable.userId })
+        const [user] = await event.locals.DB.select({
+            id: passwordResetChallengeTable.userId,
+            displayName: usersTable.displayName,
+            emailAddress: emailAddressTable.emailAddress
+        })
             .from(passwordResetChallengeTable)
-            .where(eq(passwordResetChallengeTable.challengeRef, form.data.challengeRef));
+            .where(eq(passwordResetChallengeTable.challengeRef, form.data.challengeRef))
+            .innerJoin(usersTable, eq(passwordResetChallengeTable.userId, usersTable.id))
+            .innerJoin(
+                emailAddressTable,
+                eq(passwordResetChallengeTable.userId, emailAddressTable.userId)
+            );
 
         if (!user) {
             console.log('no user found');
@@ -59,8 +71,32 @@ export const actions: Actions = {
         );
 
         console.log('updated');
+        console.log('alert sending');
 
-        redirect(302, route('/auth/sign-in'));
+        await sendPasswordResetAlertEmail({
+            apiKey: env.RESEND_API_KEY,
+            from: {
+                name: env.SENDER_NAME,
+                email: env.SENDER_EMAIL
+            },
+            to: {
+                name: user.displayName,
+                email: user.emailAddress
+            }
+        });
+
+        console.log('alert sent');
+
+        event.cookies.set('message', 'password-changed', {
+            path: '/',
+            httpOnly: true,
+            sameSite: 'lax',
+            // eslint-disable-next-line turbo/no-undeclared-env-vars
+            secure: import.meta.env.PROD,
+            maxAge: 60
+        });
+
+        redirect(303, route('/auth/sign-in'));
     }
 };
 

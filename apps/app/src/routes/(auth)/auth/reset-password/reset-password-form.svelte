@@ -14,14 +14,14 @@
     let {
         form: _form,
         challengeRef,
-        challengeToken
+        challengeToken,
+        disabled = $bindable(false)
     }: {
         form: PageData['form'];
         challengeRef: PageData['challengeRef'];
         challengeToken: PageData['challengeToken'];
+        disabled: boolean;
     } = $props();
-
-    let disabled = $state(false);
 
     const form = superForm(_form, {
         validators: zodClient(resetPasswordFormSchema),

@@ -13,11 +13,12 @@ export const GET: RequestHandler = async (event) => {
         httpOnly: true,
         sameSite: 'lax',
         // eslint-disable-next-line turbo/no-undeclared-env-vars
-        secure: import.meta.env.PROD
+        secure: import.meta.env.PROD,
+        maxAge: 60
     });
 
     return new Response(null, {
-        status: 302,
+        status: 303,
         headers: {
             Location: route('/auth/sign-in')
         }

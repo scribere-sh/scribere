@@ -11,9 +11,13 @@ export const load: LayoutServerLoad = ({ cookies, locals }) => {
         path: '/'
     });
 
-    if (locals.user && locals.session) {
+    if (
+        locals.user &&
+        locals.session &&
+        (locals.session.mfaVerified === null || locals.session.mfaVerified === true)
+    ) {
         // why are we logging in again?
-        redirect(302, route('/'));
+        redirect(303, route('/'));
     }
 
     return {

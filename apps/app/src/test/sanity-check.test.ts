@@ -1,7 +1,9 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, test } from 'vitest';
+
+import { generateMFARecoveryCode } from '$auth/mfa';
 
 describe('Sanity Check', () => {
-    it('should add numbers correctly', () => {
+    test('add numbers correctly', () => {
         const additionOfNumbers = 1 + 1;
         const expectedResult = 2;
 
@@ -12,7 +14,7 @@ describe('Sanity Check', () => {
         expect(additionOfNumbers).toEqual(expectedResult);
     });
 
-    it('should follow the laws of mathematics', () => {
+    test('follow the laws of mathematics', () => {
         const additionOfNumbers = 1 + 1;
         const expectedResultNotEqual = 3;
 
@@ -21,5 +23,12 @@ describe('Sanity Check', () => {
             actual: additionOfNumbers
         });
         expect(additionOfNumbers).not.toEqual(expectedResultNotEqual);
+    });
+
+    test('generate a cryptographically random key', () => {
+        const key = generateMFARecoveryCode();
+        console.log(key);
+
+        expect(true);
     });
 });

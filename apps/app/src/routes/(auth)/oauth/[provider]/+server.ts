@@ -56,7 +56,7 @@ export const GET: RequestHandler = async ({ params, cookies, url }) => {
     }
 
     return new Response(null, {
-        status: 302,
+        status: 303,
         headers: {
             Location: authURL.toString()
         }

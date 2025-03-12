@@ -11,13 +11,13 @@
     import { signupFormSchema } from '$forms';
     import type { PropsObj } from '$util';
 
-    const {
-        form: _form
+    let {
+        form: _form,
+        disabled = $bindable(false)
     }: {
         form: PageData['form'];
+        disabled: boolean;
     } = $props();
-
-    let disabled = $state(false);
 
     const form = superForm(_form, {
         validators: zodClient(signupFormSchema),

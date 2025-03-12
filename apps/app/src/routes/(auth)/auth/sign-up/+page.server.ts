@@ -64,9 +64,7 @@ export const actions: Actions = {
             return user;
         });
 
-        // user won't have mfa
-        //
-        // it'd be set to true off the get to anyway
+        // user won't have mfa to start
         const sessionFlags: SessionFlags = {
             mfaVerified: null
         };
@@ -75,13 +73,13 @@ export const actions: Actions = {
         const session = await createSession(event.locals.DB, sessionToken, user.id, sessionFlags);
         setSessionToken(event, sessionToken, session.expiresAt);
 
-        redirect(302, route('/'));
+        redirect(303, route('/'));
     }) satisfies Action
 };
 
 export const load: PageServerLoad = async ({ locals }) => {
     if (!!locals.session && !!locals.user) {
-        redirect(302, route('/'));
+        redirect(303, route('/'));
     }
 
     return {

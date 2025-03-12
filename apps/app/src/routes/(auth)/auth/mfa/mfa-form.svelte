@@ -5,8 +5,10 @@
     import { superForm } from 'sveltekit-superforms';
     import { zodClient } from 'sveltekit-superforms/adapters';
 
+    import * as Accordion from '@scribere/ui/accordion';
     import * as Form from '@scribere/ui/form';
     import * as InputOTP from '@scribere/ui/input-otp';
+    import { Input } from '@scribere/ui/input';
 
     import { mfaFormSchema } from '$forms';
     import type { PropsObj } from '$util';
@@ -56,5 +58,29 @@
         </Form.Control>
         <Form.FieldErrors />
     </Form.Field>
+
+    <Accordion.Root type="single" class="w-full overflow-x-visible">
+        <Accordion.Item class="border-b-0">
+            <Accordion.Trigger>Lost access to MFA?</Accordion.Trigger>
+            <Accordion.Content class="px-1">
+                <Form.Field {form} name="recoveryCode">
+                    <Form.Control>
+                        {#snippet children({ props }: PropsObj)}
+                            <Form.Label>Recovery Code</Form.Label>
+                            <Input
+                                type="password"
+                                placeholder="**************************"
+                                bind:value={$formData.recoveryCode}
+                                {disabled}
+                                {...props}
+                            />
+                        {/snippet}
+                    </Form.Control>
+                    <Form.FieldErrors />
+                </Form.Field>
+            </Accordion.Content>
+        </Accordion.Item>
+    </Accordion.Root>
+
     <Form.Button class="mt-4 w-full">Submit</Form.Button>
 </form>

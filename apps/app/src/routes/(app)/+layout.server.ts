@@ -12,10 +12,10 @@ export const load: LayoutServerLoad = async (event) => {
     }
 
     if (!event.locals.session || !event.locals.user) {
-        redirect(302, route('/auth/sign-in'));
+        redirect(303, route('/auth/sign-in'));
     }
 
     if (event.locals.session.mfaVerified === false) {
-        redirect(302, route('/auth/mfa'));
+        redirect(303, route('/auth/mfa'));
     }
 };

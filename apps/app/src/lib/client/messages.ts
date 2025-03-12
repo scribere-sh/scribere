@@ -6,7 +6,11 @@ export interface UserActionMessage {
 export const MESSAGES: Record<string, UserActionMessage> = {
     'logged-out': {
         kind: 'success',
-        message: 'Logged Out!'
+        message: 'Successfully Signed Out!'
+    },
+    'password-changed': {
+        kind: 'success',
+        message: 'Successfully Changed Password!'
     }
 } as const;
 

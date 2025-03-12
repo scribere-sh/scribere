@@ -1,6 +1,6 @@
 import { createArgon2id, generateTokenString, verifyArgon2id } from './cryptography';
 import type { RequestEvent } from '@sveltejs/kit';
-import { eq, lt } from 'drizzle-orm';
+import { eq, lte } from 'drizzle-orm';
 
 import { type ResetPasswordProps, sendResetPasswordEmail } from '@scribere/email/resetPassword';
 
@@ -100,5 +100,5 @@ export const sendPasswordResetEmail = async (
 };
 
 export const deleteExpiredChallenges = async (db: DB) => {
-    await db.delete(passwordResetChallengeTable).where(lt(passwordResetChallengeTable, Date.now()));
+    await db.delete(passwordResetChallengeTable).where(lte(passwordResetChallengeTable.expiresAt, new Date()));
 };

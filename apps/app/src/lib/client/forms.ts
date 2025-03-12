@@ -32,7 +32,8 @@ export const signupFormSchema = z.object({
 export type SignupFormSchema = typeof signupFormSchema;
 
 export const mfaFormSchema = z.object({
-    mfa: z.string().length(6)
+    mfa: z.string().optional(),
+    recoveryCode: z.string().optional()
 });
 
 export type MFAFormSchema = typeof mfaFormSchema;

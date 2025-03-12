@@ -1,11 +1,20 @@
-import { decodeTokenStringToBytes, generateTokenString } from './cryptography';
+import {
+    createArgon2id,
+    decodeTokenStringToBytes,
+    generateTokenBytes,
+    generateTokenString,
+    verifyArgon2id
+} from './cryptography';
+import { encodeBase32UpperCaseNoPadding } from '@oslojs/encoding';
 import { createTOTPKeyURI, verifyTOTPWithGracePeriod } from '@oslojs/otp';
+import type { RequestEvent } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 
 import { type DB } from '$db';
 import { twoFactorAuthenticationProviderTable } from '$db/tables';
 
 export const TOTP_TYPE = 'totp';
+
 export const TOTP_RECOVERY_TYPE = 'totp_recovery';
 
 const ISSUER = 'Scribere';
@@ -97,4 +106,60 @@ export const verifyUserOTP = async (db: DB, userId: string, digits: string): Pro
     }
 
     return verifyOTP(otpChallengeLookup.challenge, digits);
+};
+
+export const generateMFARecoveryCode = () => encodeBase32UpperCaseNoPadding(generateTokenBytes(16));
+
+export const setRecoveryCodeForUser = async (
+    db: DB,
+    event: RequestEvent,
+    userId: string,
+    code: string
+) => {
+    db.insert(twoFactorAuthenticationProviderTable).values({
+        userId,
+        type: TOTP_RECOVERY_TYPE,
+        challenge: await createArgon2id(event, code)
+    });
+};
+
+export const verifyRecoveryCode = async (
+    db: DB,
+    event: RequestEvent,
+    userId: string,
+    code: string
+) => {
+    const [challenge] = await db
+        .select({ argon: twoFactorAuthenticationProviderTable.challenge })
+        .from(twoFactorAuthenticationProviderTable)
+        .where(
+            and(
+                eq(twoFactorAuthenticationProviderTable.userId, userId),
+                eq(twoFactorAuthenticationProviderTable.type, TOTP_RECOVERY_TYPE)
+            )
+        );
+
+    if (!challenge) return false;
+
+    return await verifyArgon2id(event, challenge.argon, code);
+};
+
+export const resetUserTOTP = async (db: DB, userId: string) => {
+    await db
+        .delete(twoFactorAuthenticationProviderTable)
+        .where(
+            and(
+                eq(twoFactorAuthenticationProviderTable.type, TOTP_TYPE),
+                eq(twoFactorAuthenticationProviderTable.userId, userId)
+            )
+        );
+
+    await db
+        .delete(twoFactorAuthenticationProviderTable)
+        .where(
+            and(
+                eq(twoFactorAuthenticationProviderTable.type, TOTP_RECOVERY_TYPE),
+                eq(twoFactorAuthenticationProviderTable.userId, userId)
+            )
+        );
 };

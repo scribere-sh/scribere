@@ -80,7 +80,7 @@ export const GET: RequestHandler = async (event) => {
                 await linkOAuthProviderToUser(tx_db, providerUserId, event.params.provider, userId);
 
                 return new Response(null, {
-                    status: 302,
+                    status: 303,
                     headers: {
                         Location: returnPath
                     }
@@ -116,7 +116,7 @@ export const GET: RequestHandler = async (event) => {
             const redirectPath = userHasMFA && !OAUTH_SKIPS_MFA ? route('/auth/mfa') : returnPath;
 
             return new Response(null, {
-                status: 302,
+                status: 303,
                 headers: {
                     Location: redirectPath
                 }

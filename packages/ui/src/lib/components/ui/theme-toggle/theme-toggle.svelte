@@ -19,7 +19,7 @@
     <!-- Theme Button -->
     <DropdownMenu.Trigger
         class={buttonVariants({
-            variant: 'outline',
+            variant: 'ghost',
             size: 'icon'
         })}
     >

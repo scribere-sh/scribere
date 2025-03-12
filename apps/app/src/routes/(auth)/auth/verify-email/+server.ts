@@ -26,7 +26,7 @@ export const GET: RequestHandler = async (event) => {
     if (!challenge) {
         console.log('no challenge found');
         return new Response(null, {
-            status: 302,
+            status: 303,
             headers: {
                 Location: route('/')
             }
@@ -55,7 +55,7 @@ export const GET: RequestHandler = async (event) => {
     console.log('email verification successful, records updated');
 
     return new Response(null, {
-        status: 302,
+        status: 303,
         headers: {
             Location: route('/')
         }

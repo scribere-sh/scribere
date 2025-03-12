@@ -119,6 +119,15 @@ export const setSessionAsMFAVerified = async (db: DB, sessionId: string) => {
         })
         .where(eq(sessionsTable.id, sessionId));
 };
+
+export const setSessionAsMFANullified = async (db: DB, sessionId: string) => {
+    await db
+        .update(sessionsTable)
+        .set({
+            mfaVerified: null
+        })
+        .where(eq(sessionsTable.id, sessionId));
+};
 // #endregion
 
 export const generateSessionToken = generateTokenString;

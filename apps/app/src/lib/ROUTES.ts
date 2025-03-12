@@ -16,7 +16,6 @@ export const PAGES = {
     '/debug/editor': `/debug/editor`,
     '/auth/forgot-password': `/auth/forgot-password`,
     '/auth/mfa': `/auth/mfa`,
-    '/auth/recovery-code': `/auth/recovery-code`,
     '/auth/reset-password': `/auth/reset-password`,
     '/auth/sign-in': `/auth/sign-in`,
     '/auth/sign-up': `/auth/sign-up`
@@ -175,7 +174,6 @@ export type KIT_ROUTES = {
         '/debug/editor': never;
         '/auth/forgot-password': never;
         '/auth/mfa': never;
-        '/auth/recovery-code': never;
         '/auth/reset-password': never;
         '/auth/sign-in': never;
         '/auth/sign-up': never;

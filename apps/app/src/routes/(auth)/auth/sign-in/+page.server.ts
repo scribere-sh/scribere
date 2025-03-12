@@ -81,11 +81,11 @@ export const actions: Actions = {
         setSessionToken(event, sessionToken, session.expiresAt);
 
         if (userHasMFA) {
-            redirect(302, route('/auth/mfa'));
+            redirect(303, route('/auth/mfa'));
         } else {
             const returnPath = getReturnPathFromCookie(event.cookies);
             clearReturnPathCookie(event.cookies);
-            redirect(302, returnPath ?? route('/'));
+            redirect(303, returnPath ?? route('/'));
         }
     }
 };

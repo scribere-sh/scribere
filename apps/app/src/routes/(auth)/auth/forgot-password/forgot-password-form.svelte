@@ -13,13 +13,13 @@
 
     let {
         form: _form,
-        success = $bindable(false)
+        success = $bindable(false),
+        disabled = $bindable(false)
     }: {
         form: PageData['form'];
         success: boolean;
+        disabled: boolean;
     } = $props();
-
-    let disabled = $state(false);
 
     const form = superForm(_form, {
         validators: zodClient(forgotPasswordFormSchema),
