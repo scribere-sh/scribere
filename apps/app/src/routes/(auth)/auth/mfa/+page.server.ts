@@ -21,7 +21,7 @@ export const actions: Actions = {
         }
 
         if (!event.locals.session || !event.locals.user) {
-            redirect(302, route('/auth/log-in'));
+            redirect(302, route('/auth/sign-in'));
         }
 
         const returnPath = getReturnPathFromCookie(event.cookies) ?? route('/');
@@ -42,7 +42,7 @@ export const actions: Actions = {
 
 export const load: PageServerLoad = async ({ locals }) => {
     if (!locals.session || !locals.user) {
-        redirect(302, route('/auth/log-in'));
+        redirect(302, route('/auth/sign-in'));
     }
 
     if (locals.session.mfaVerified === null) {

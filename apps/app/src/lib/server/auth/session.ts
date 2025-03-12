@@ -37,6 +37,7 @@ export interface Session extends SessionFlags {
 export type SessionTokenValidationResult =
     | { session: Session; user: User }
     | { session: null; user: null };
+
 const SESSION_NULL: SessionTokenValidationResult = { session: null, user: null };
 
 // #region Validate Session

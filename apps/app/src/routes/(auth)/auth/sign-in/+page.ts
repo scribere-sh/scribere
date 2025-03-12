@@ -63,7 +63,7 @@ const METHODS: OAuthProviderItem[] = [
     }
 ];
 
-export const load: PageLoad = (event) => {
+export const load: PageLoad = async (event) => {
     return {
         methods: METHODS,
         // also load server data

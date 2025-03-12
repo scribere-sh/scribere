@@ -16,14 +16,14 @@
         "!dist/**/*.spec.*"
     ],
     "exports": {
-        "./validateEmail": {
-            "types": "./dist/validateEmail.d.ts",
-            "default": "./dist/validateEmail.js"
+        ".": {
+            "types": "./dist/index.d.ts",
+            "svelte": "./dist/index.js",
+            "default": "./dist/index.js"
         },
-        "./templates/*": {
-            "types": "./dist/templates/*.d.ts",
-            "svelte": "./dist/templates/*.svelte",
-            "default": "./dist/templates/*.js"
+        "./*": {
+            "types": "./dist/*.d.ts",
+            "default": "./dist/*.js"
         }
     },
     "devDependencies": {

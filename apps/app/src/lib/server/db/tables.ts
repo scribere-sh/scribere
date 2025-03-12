@@ -105,6 +105,16 @@ export const emailValidationChallengeTable = sqliteTable('email_verification_req
     challengeTokenHash: text().notNull()
 });
 
+export const passwordResetChallengeTable = sqliteTable('password_reset_challenges', {
+    emailRef: text(),
+    challengeRef: text().notNull(),
+    challengeToken: text().notNull(),
+    userId: text()
+        .notNull()
+        .references(() => usersTable.id),
+    expiresAt: integer({ mode: 'timestamp' }).notNull()
+});
+
 export const sessionsTable = sqliteTable('sessions', {
     id: text().primaryKey().notNull(),
 

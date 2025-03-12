@@ -2,6 +2,7 @@ import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { createTRPCHandle } from 'trpc-sveltekit';
 
+import { deleteExpiredChallenges } from '$auth/reset-password';
 import {
     deleteExpiredSessions,
     deleteSessionToken,
@@ -10,6 +11,7 @@ import {
     validateSessionToken
 } from '$auth/session';
 
+import { building } from '$app/environment';
 import { DB } from '$db';
 import { TRPC_PATH } from '$trpc-client';
 import { createContext } from '$trpc/context';
@@ -57,7 +59,25 @@ const injectDBHandle: Handle = async ({ event, resolve }) => {
 /**
  * Auto-delete expired sessions every 10 minutes
  */
-setInterval(() => deleteExpiredSessions(DB()), 10 * 60 * 1000);
+setInterval(
+    async () => {
+        const db = DB();
+
+        await deleteExpiredSessions(db);
+        await deleteExpiredChallenges(db);
+    },
+    10 * 60 * 1000
+);
+
+// because this is serverless, we can't guarantee it'll run long
+// enough for the interval to run, so we improvise and run on
+// service startup.
+if (!building) {
+    const db = DB();
+
+    deleteExpiredSessions(db);
+    deleteExpiredChallenges(db);
+}
 
 export const handle: Handle = sequence(
     async ({ event, resolve }) => {

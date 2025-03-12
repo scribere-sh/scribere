@@ -27,6 +27,10 @@ export const actions: Actions = {
             });
         }
 
+        if (form.data.password !== form.data.passwordConfirm) {
+            return setError(form, 'passwordConfirm', 'Passwords do not match');
+        }
+
         if (!(await verifyEmailAddressAvailability(event.locals.DB, form.data.emailAddress))) {
             return setError(form, 'emailAddress', 'Email Address already in use!');
         }

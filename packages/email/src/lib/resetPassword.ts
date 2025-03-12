@@ -1,11 +1,11 @@
-import EmailValidationTemplate from './templates/emailValidateTemplate.mustache?raw';
+import ResetEmailTemplate from './templates/resetPasswordTemplate.mustache?raw';
 import Mustache from 'mustache';
 
 import type { EmailSendResult } from '$lib';
 
-export interface ValidateEmailProps {
+export interface ResetPasswordProps {
     apiKey: string;
-    validationUrl: string;
+    resetUrl: string;
 
     from: {
         name: string;
@@ -18,20 +18,20 @@ export interface ValidateEmailProps {
     };
 }
 
-export const renderValidationEmail = (
-    props: Pick<ValidateEmailProps, 'to' | 'validationUrl'>
-): string => {
-    return Mustache.render(EmailValidationTemplate, props);
+export const renderResetPasswordEmail = (props: Pick<ResetPasswordProps, 'to' | 'resetUrl'>) => {
+    return Mustache.render(ResetEmailTemplate, props);
 };
 
-export const sendValidationEmail = async (props: ValidateEmailProps): Promise<EmailSendResult> => {
+export const sendResetPasswordEmail = async (
+    props: ResetPasswordProps
+): Promise<EmailSendResult> => {
     const { apiKey, from, to } = props;
 
-    const emailText = renderValidationEmail(props);
+    const emailText = renderResetPasswordEmail(props);
     const payload = {
         from: `${from.name} <${from.email}>`,
         to: to.email,
-        subject: 'Verify your email',
+        subject: 'Reset your Password',
 
         html: emailText
     };

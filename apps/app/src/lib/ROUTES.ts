@@ -14,10 +14,11 @@ export const PAGES = {
     '/account/settings': `/account/settings`,
     '/debug': `/debug`,
     '/debug/editor': `/debug/editor`,
-    '/auth/log-in': `/auth/log-in`,
+    '/auth/forgot-password': `/auth/forgot-password`,
     '/auth/mfa': `/auth/mfa`,
     '/auth/recovery-code': `/auth/recovery-code`,
     '/auth/reset-password': `/auth/reset-password`,
+    '/auth/sign-in': `/auth/sign-in`,
     '/auth/sign-up': `/auth/sign-up`
 };
 
@@ -30,7 +31,7 @@ export const SERVERS = {
     'GET /api/assets': `/api/assets`,
     'DELETE /api/assets': `/api/assets`,
     'GET /robots.txt': `/robots.txt`,
-    'GET /auth/log-out': `/auth/log-out`,
+    'GET /auth/sign-out': `/auth/sign-out`,
     'GET /auth/verify-email': `/auth/verify-email`,
     'GET /oauth/[provider]': (params: { provider: string | number }) => {
         return `/oauth/${params['provider']}`;
@@ -44,8 +45,10 @@ export const SERVERS = {
  * ACTIONS
  */
 export const ACTIONS = {
-    'default /auth/log-in': `/auth/log-in`,
+    'default /auth/forgot-password': `/auth/forgot-password`,
     'default /auth/mfa': `/auth/mfa`,
+    'default /auth/reset-password': `/auth/reset-password`,
+    'default /auth/sign-in': `/auth/sign-in`,
     'default /auth/sign-up': `/auth/sign-up`
 };
 
@@ -170,10 +173,11 @@ export type KIT_ROUTES = {
         '/account/settings': never;
         '/debug': never;
         '/debug/editor': never;
-        '/auth/log-in': never;
+        '/auth/forgot-password': never;
         '/auth/mfa': never;
         '/auth/recovery-code': never;
         '/auth/reset-password': never;
+        '/auth/sign-in': never;
         '/auth/sign-up': never;
     };
     SERVERS: {
@@ -182,14 +186,16 @@ export type KIT_ROUTES = {
         'GET /api/assets': never;
         'DELETE /api/assets': never;
         'GET /robots.txt': never;
-        'GET /auth/log-out': never;
+        'GET /auth/sign-out': never;
         'GET /auth/verify-email': never;
         'GET /oauth/[provider]': 'provider';
         'GET /oauth/[provider]/callback': 'provider';
     };
     ACTIONS: {
-        'default /auth/log-in': never;
+        'default /auth/forgot-password': never;
         'default /auth/mfa': never;
+        'default /auth/reset-password': never;
+        'default /auth/sign-in': never;
         'default /auth/sign-up': never;
     };
     LINKS: Record<string, never>;

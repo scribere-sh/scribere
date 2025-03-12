@@ -21,7 +21,7 @@ import { route } from '$routes';
 const IDENTITY_TRANSLATORS: Record<string, (tokens: OAuth2Tokens) => Promise<string>> = {
     github: async (tokens) => {
         const request = new Request('https://api.github.com/user');
-        request.headers.set('Authorization', `Bearer ${tokens.refreshToken()}`);
+        request.headers.set('Authorization', `Bearer ${tokens.accessToken()}`);
 
         const userResponse = await fetch(request);
         const userJson = await userResponse.json();
@@ -37,7 +37,7 @@ const IDENTITY_TRANSLATORS: Record<string, (tokens: OAuth2Tokens) => Promise<str
     }
 };
 
-export const GET = (async (event) => {
+export const GET: RequestHandler = async (event) => {
     const state = event.url.searchParams.get('state');
     const code = event.url.searchParams.get('code');
     const storedState = event.cookies.get(STATE_COOKIE_NAME);
@@ -134,4 +134,4 @@ export const GET = (async (event) => {
             });
         }
     }
-}) satisfies RequestHandler;
+};

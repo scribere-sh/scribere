@@ -1,13 +1,37 @@
 <script lang="ts">
     import AuthContainer from './auth-container.svelte';
+    import { onMount } from 'svelte';
+    import { toast } from 'svelte-sonner';
 
     import { Button } from '@scribere/ui/button';
     import { Toaster } from '@scribere/ui/sonner';
     import { ThemeToggle } from '@scribere/ui/theme-toggle';
 
+    import { MESSAGES } from '$client/messages';
     import ScribereBorder from '$lib/assets/scribere-border.png';
 
-    const { children } = $props();
+    const { data, children } = $props();
+
+    onMount(() => {
+        if (data.message) {
+            const msg = MESSAGES[data.message];
+            let toastKind;
+
+            switch (msg.kind) {
+                case 'success':
+                    toastKind = toast.success;
+                    break;
+                case 'error':
+                    toastKind = toast.error;
+                    break;
+                default:
+                    toastKind = toast.info;
+                    break;
+            }
+
+            toastKind(msg.message);
+        }
+    });
 </script>
 
 <Toaster richColors position="bottom-center" />

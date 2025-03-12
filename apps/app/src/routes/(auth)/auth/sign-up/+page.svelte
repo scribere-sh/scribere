@@ -23,5 +23,5 @@
 </Card.Root>
 
 <div class="mt-6 flex flex-col gap-3">
-    <Button variant="link" href={route('/auth/log-in')}>Log In</Button>
+    <Button variant="link" href={route('/auth/sign-in')}>Log In</Button>
 </div>

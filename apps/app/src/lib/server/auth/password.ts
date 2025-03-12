@@ -2,7 +2,7 @@ import { createArgon2id, verifyArgon2id } from './cryptography';
 import { sha1 } from '@oslojs/crypto/sha1';
 import { encodeHexLowerCase } from '@oslojs/encoding';
 import type { RequestEvent } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 
 import { type DB } from '$db';
 import { authProviderTable } from '$db/tables';
@@ -57,7 +57,7 @@ export const verifyPasswordOfUser = async (
     db: DB,
     event: RequestEvent,
     userId: string,
-    provided_password: string
+    providedPassword: string
 ) => {
     const [password] = await db
         .select({ hash: authProviderTable.hash })
@@ -68,7 +68,7 @@ export const verifyPasswordOfUser = async (
         return false;
     }
 
-    return await verifyArgon2id(event, password.hash, provided_password);
+    return await verifyArgon2id(event, password.hash, providedPassword);
 };
 
 export const createPasswordHash = async (event: RequestEvent, password: string) => {
@@ -77,8 +77,22 @@ export const createPasswordHash = async (event: RequestEvent, password: string) 
 
 export const validatePassword = async (
     event: RequestEvent,
-    stored_hash: string,
+    storedHash: string,
     password: string
 ) => {
-    return await verifyArgon2id(event, stored_hash, password);
+    return await verifyArgon2id(event, storedHash, password);
+};
+
+export const updateUserPassword = async (
+    db: DB,
+    event: RequestEvent,
+    userId: string,
+    newPassword: string
+) => {
+    await db
+        .update(authProviderTable)
+        .set({
+            hash: await createArgon2id(event, newPassword)
+        })
+        .where(and(eq(authProviderTable.type, 'password'), eq(authProviderTable.userId, userId)));
 };

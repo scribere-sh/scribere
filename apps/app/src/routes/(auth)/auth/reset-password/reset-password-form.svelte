@@ -8,19 +8,23 @@
     import * as Form from '@scribere/ui/form';
     import { Input } from '@scribere/ui/input';
 
-    import { logInFormSchema } from '$forms';
+    import { resetPasswordFormSchema } from '$forms';
     import type { PropsObj } from '$util';
 
-    const {
-        form: _form
+    let {
+        form: _form,
+        challengeRef,
+        challengeToken
     }: {
         form: PageData['form'];
+        challengeRef: PageData['challengeRef'];
+        challengeToken: PageData['challengeToken'];
     } = $props();
 
     let disabled = $state(false);
 
     const form = superForm(_form, {
-        validators: zodClient(logInFormSchema),
+        validators: zodClient(resetPasswordFormSchema),
         onResult: ({ result }) => {
             if (!['redirect'].includes(result.type)) disabled = false;
             if (result.type === 'error') {
@@ -36,36 +40,39 @@
 </script>
 
 <form method="POST" use:enhance class="w-full">
-    <Form.Field {form} name="handleOrEmail">
-        <Form.Control>
-            {#snippet children({ props }: PropsObj)}
-                <Form.Label>Handle or Email Address</Form.Label>
-                <Input
-                    {...props}
-                    {disabled}
-                    placeholder="example@contoso.com / john.doe123"
-                    bind:value={$formData.handleOrEmail}
-                />
-            {/snippet}
-        </Form.Control>
-        <Form.FieldErrors />
-    </Form.Field>
+    <input type="hidden" name="challengeRef" value={challengeRef} />
+    <input type="hidden" name="challengeToken" value={challengeToken} />
 
-    <Form.Field {form} name="password">
+    <Form.Field {form} name="newPassword">
         <Form.Control>
             {#snippet children({ props }: PropsObj)}
-                <Form.Label>Password</Form.Label>
+                <Form.Label>New Password</Form.Label>
                 <Input
-                    {...props}
-                    {disabled}
-                    placeholder="***********"
                     type="password"
-                    bind:value={$formData.password}
+                    placeholder="**********"
+                    bind:value={$formData.newPassword}
+                    {disabled}
+                    {...props}
+                />
+            {/snippet}
+        </Form.Control>
+        <Form.FieldErrors />
+    </Form.Field>
+    <Form.Field {form} name="newPasswordConfirm">
+        <Form.Control>
+            {#snippet children({ props }: PropsObj)}
+                <Form.Label>Confirm New Password</Form.Label>
+                <Input
+                    type="password"
+                    placeholder="**********"
+                    bind:value={$formData.newPasswordConfirm}
+                    {disabled}
+                    {...props}
                 />
             {/snippet}
         </Form.Control>
         <Form.FieldErrors />
     </Form.Field>
 
-    <Form.Button {disabled} class="mt-4 w-full">Log In</Form.Button>
+    <Form.Button {disabled} class="mt-4 w-full">Reset</Form.Button>
 </form>

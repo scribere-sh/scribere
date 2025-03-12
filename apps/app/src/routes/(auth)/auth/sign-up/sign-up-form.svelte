@@ -46,6 +46,7 @@
                     {...props}
                     {disabled}
                     placeholder="John Doe"
+                    required
                     bind:value={$formData.displayName}
                 />
             {/snippet}
@@ -61,6 +62,7 @@
                     {...props}
                     {disabled}
                     placeholder="john.doe202"
+                    required
                     bind:value={$formData.handle}
                 />
             {/snippet}
@@ -76,6 +78,7 @@
                     {...props}
                     {disabled}
                     placeholder="example@contoso.com"
+                    required
                     bind:value={$formData.emailAddress}
                 />
             {/snippet}
@@ -92,7 +95,25 @@
                     {disabled}
                     placeholder="********"
                     type="password"
+                    required
                     bind:value={$formData.password}
+                />
+            {/snippet}
+        </Form.Control>
+        <Form.FieldErrors />
+    </Form.Field>
+
+    <Form.Field {form} name="passwordConfirm">
+        <Form.Control>
+            {#snippet children({ props }: PropsObj)}
+                <Form.Label>Confirm Password</Form.Label>
+                <Input
+                    {...props}
+                    {disabled}
+                    placeholder="********"
+                    type="password"
+                    required
+                    bind:value={$formData.passwordConfirm}
                 />
             {/snippet}
         </Form.Control>
