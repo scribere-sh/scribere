@@ -42,7 +42,7 @@
 </script>
 
 <Tooltip.Provider delayDuration={250}>
-    <div class="flex h-screen w-screen flex-col items-center justify-center">
+    <div class="flex h-minus-header w-screen flex-col items-center justify-center">
         <div class="flex h-72 flex-row items-center justify-center gap-4 py-4">
             {#each ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'] as variant (variant)}
                 <Tooltip.Root>

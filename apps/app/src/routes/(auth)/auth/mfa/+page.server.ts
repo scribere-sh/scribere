@@ -51,6 +51,14 @@ export const actions: Actions = {
             ) {
                 await resetUserTOTP(event.locals.DB, event.locals.user.id);
                 await setSessionAsMFANullified(event.locals.DB, event.locals.session.id);
+                event.cookies.set('message', 'reset-mfa', {
+                    path: '/',
+                    httpOnly: true,
+                    sameSite: 'lax',
+                    // eslint-disable-next-line turbo/no-undeclared-env-vars
+                    secure: import.meta.env.PROD,
+                    maxAge: 60
+                });
 
                 passed = true;
             } else {

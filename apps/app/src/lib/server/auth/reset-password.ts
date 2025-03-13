@@ -100,5 +100,7 @@ export const sendPasswordResetEmail = async (
 };
 
 export const deleteExpiredChallenges = async (db: DB) => {
-    await db.delete(passwordResetChallengeTable).where(lte(passwordResetChallengeTable.expiresAt, new Date()));
+    await db
+        .delete(passwordResetChallengeTable)
+        .where(lte(passwordResetChallengeTable.expiresAt, new Date()));
 };

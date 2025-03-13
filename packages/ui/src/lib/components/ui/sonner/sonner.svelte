@@ -1,12 +1,16 @@
+<script lang="ts" module>
+    export const TOAST_DURATION_MS = 5000;
+</script>
+
 <script lang="ts">
-    import { mode } from 'mode-watcher';
+    import { mode, systemPrefersMode } from 'mode-watcher';
     import { Toaster as Sonner, type ToasterProps as SonnerProps } from 'svelte-sonner';
 
     let restProps: SonnerProps = $props();
 </script>
 
 <Sonner
-    theme={$mode}
+    theme={$mode ?? $systemPrefersMode}
     class="toaster group"
     toastOptions={{
         classes: {
@@ -14,7 +18,8 @@
             description: 'group-[.toast]:text-muted-foreground',
             actionButton: 'group-[.toast]:bg-primary group-[.toast]:text-primary-foreground',
             cancelButton: 'group-[.toast]:bg-muted group-[.toast]:text-muted-foreground'
-        }
+        },
+        duration: TOAST_DURATION_MS
     }}
     {...restProps}
 />

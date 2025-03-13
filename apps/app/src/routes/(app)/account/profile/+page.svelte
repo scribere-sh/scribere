@@ -45,7 +45,7 @@
                     <Card.Title>
                         <span class="text-2xl">{data.displayName}</span>
                     </Card.Title>
-                    <Card.Description>Your Profile</Card.Description>
+                    <Card.Description>@{data.handle}</Card.Description>
                 {:else}
                     <span class="text-2xl text-destructive-text">Failed to fetch profile</span>
                 {/if}

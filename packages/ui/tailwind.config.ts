@@ -5,7 +5,7 @@ import { fontFamily } from 'tailwindcss/defaultTheme';
 const config: Config = {
     darkMode: ['class'],
     content: [
-        './src/**/*.{html,js,svelte,ts}',
+        'src/**/*.{html,js,svelte,ts}',
         // i hate this as much as you do
         // but it works perfectly
         'node_modules/@scribere/*/dist/**/*.{html,js,svelte,ts}'
@@ -20,6 +20,14 @@ const config: Config = {
             }
         },
         extend: {
+            height: {
+                header: 'var(--header-height)',
+                footer: 'var(--footer-height)',
+                'minus-header': 'calc(100vh - var(--header-height))',
+                'minus-footer': 'calc(100vh - var(--footer-height))',
+                'minus-header-footer':
+                    'calc(100vh - calc(var(--header-height) + var(--footer-height)))'
+            },
             colors: {
                 border: 'hsl(var(--border) / <alpha-value>)',
                 input: 'hsl(var(--input) / <alpha-value>)',

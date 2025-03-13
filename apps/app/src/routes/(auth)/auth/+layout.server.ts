@@ -2,25 +2,31 @@ import type { LayoutServerLoad } from './$types';
 
 import { redirect } from '@sveltejs/kit';
 
-import { MESSAGE_VARIANTS } from '$client/messages';
+import { AUTH_MESSAGE_VARIANTS } from '$client/messages';
 import { route } from '$routes';
 
 export const load: LayoutServerLoad = ({ cookies, locals }) => {
     const message = cookies.get('message');
-    cookies.delete('message', {
-        path: '/'
-    });
+    if (message)
+        cookies.delete('message', {
+            path: '/'
+        });
 
     if (
         locals.user &&
         locals.session &&
-        (locals.session.mfaVerified === null || locals.session.mfaVerified === true)
+        // mfa can be true, false, or null
+        //
+        // true = MFA Available and Verified
+        // false = MFA Available but not Verified
+        // null = MFA Unavailable
+        locals.session.mfaVerified !== false
     ) {
         // why are we logging in again?
         redirect(303, route('/'));
     }
 
     return {
-        message: MESSAGE_VARIANTS.includes(message ?? '') ? message : undefined
+        message: AUTH_MESSAGE_VARIANTS.includes(message ?? '') ? message : undefined
     };
 };

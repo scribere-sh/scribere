@@ -18,7 +18,7 @@ const config = {
     ],
 
     // tailwind
-    tailwindFunctions: ["cn"],
+    tailwindFunctions: ["cn", "tv"],
 
     // import sorter
     importOrder: [
