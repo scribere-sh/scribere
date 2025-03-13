@@ -3,6 +3,7 @@ import type { RequestHandler } from './$types';
 import { setReturnPathCookie } from '$auth';
 
 import { generateState, OAuth2Providers, OAUTH_ACTION_NAME, STATE_COOKIE_NAME } from '$oauth';
+import { route } from '$routes';
 
 export const GET: RequestHandler = async ({ params, cookies, url }) => {
     const validProviders = OAuth2Providers.validProviders;
@@ -19,7 +20,10 @@ export const GET: RequestHandler = async ({ params, cookies, url }) => {
 
     if (!validProviders.includes(params.provider)) {
         return new Response(null, {
-            status: 400
+            status: 303,
+            headers: {
+                Location: route('/auth/sign-in')
+            }
         });
     }
 
