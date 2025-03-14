@@ -24,15 +24,19 @@
     let spinnerState: SpinnerState = $state('loading');
     let value = $state(current);
 
+    let inputDisabled = $state(false);
+
     const mutation = rpc.account.settings.updateDisplayName.createMutation({
         onSuccess: ({ displayName }) => {
             spinnerState = 'complete';
             current = displayName;
+            inputDisabled = false;
             value = current;
             utils.account.profile.invalidate();
         },
         onError: () => {
             spinnerState = 'error';
+            inputDisabled = false;
         }
     });
 
@@ -41,6 +45,7 @@
             const value = event.target.value.trim();
             if (value === current || value.length === 0) return;
 
+            inputDisabled = true;
             spinnerState = 'loading';
             $mutation.mutate({ displayName: event.target.value });
         } else {
@@ -53,7 +58,7 @@
     <Label for={uid}>Display Name</Label>
 
     <div class="mt-2 flex w-full flex-row items-center gap-2">
-        <Input id={uid} placeholder={current} bind:value onkeyup={debounce(submitUpdates, 1000)} />
+        <Input id={uid} placeholder={current} bind:value disabled={inputDisabled} onkeyup={debounce(submitUpdates, 1000)} />
 
         <div class="grid w-12 place-content-end">
             {#if !$mutation.isIdle}

@@ -24,15 +24,19 @@
     let spinnerState: SpinnerState = $state('loading');
     let value = $state(current);
 
+    let inputDisabled = $state(false);
+
     const mutation = rpc.account.settings.updateHandle.createMutation({
         onSuccess: ({ handle }) => {
             spinnerState = 'complete';
             current = handle;
             value = current;
+            inputDisabled = false;
             utils.account.profile.invalidate();
         },
         onError: () => {
             spinnerState = 'error';
+            inputDisabled = false;
         }
     });
 
@@ -41,6 +45,7 @@
             const value = event.target.value.trim();
             if (value === current || value.length === 0) return;
 
+            inputDisabled = true;
             spinnerState = 'loading';
             $mutation.mutate({ handle: event.target.value });
         } else {
@@ -56,6 +61,7 @@
         &#64<Input
             id={uid}
             placeholder={current}
+            disabled={inputDisabled}
             bind:value
             onkeyup={debounce(submitUpdates, 1000)}
         />
