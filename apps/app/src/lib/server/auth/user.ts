@@ -74,13 +74,8 @@ export const linkOAuthProviderToUser = async (
     });
 };
 
-export const unlinkOAuthProviderFromUser = async (
-    db: DB,
-    provider: string,
-    userId: string
-) => {
-    await db.delete(authProviderTable).where(and(
-        eq(authProviderTable.userId, userId),
-        eq(authProviderTable.type, provider)
-    ));
-}
+export const unlinkOAuthProviderFromUser = async (db: DB, provider: string, userId: string) => {
+    await db
+        .delete(authProviderTable)
+        .where(and(eq(authProviderTable.userId, userId), eq(authProviderTable.type, provider)));
+};

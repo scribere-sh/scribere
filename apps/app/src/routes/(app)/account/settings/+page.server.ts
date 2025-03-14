@@ -3,10 +3,10 @@ import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 
 import { AUTH_RETURN_PATH } from '$auth';
+import { unlinkOAuthProviderFromUser } from '$auth/user';
 
 import { ALL_OAUTH_PROVIDERS, OAuth2Providers, OAUTH_ACTION_NAME } from '$oauth';
 import { route } from '$routes';
-import { unlinkOAuthProviderFromUser } from '$auth/user';
 
 export const actions: Actions = {
     'link-oauth': async (event) => {
@@ -43,7 +43,6 @@ export const actions: Actions = {
         const provider = formData.get('provider')?.toString();
         if (!provider) return fail(400);
 
-        
         unlinkOAuthProviderFromUser(event.locals.DB, provider, event.locals.user!.id);
     }
 };

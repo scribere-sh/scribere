@@ -89,7 +89,12 @@
         <Card.Content>
             <h1 class="mb-12 text-3xl">Account Settings</h1>
 
-            <section class="[scroll-margin-top:calc(var(--header-height)+2rem)]" id="profile" title="Profile" use:scrollspy.spy>
+            <section
+                class="[scroll-margin-top:calc(var(--header-height)+2rem)]"
+                id="profile"
+                title="Profile"
+                use:scrollspy.spy
+            >
                 {@render SectionTitle('Profile')}
 
                 <UpdateDisplayNameForm
@@ -101,13 +106,23 @@
                 <UpdateHandle current={$profileQuery.data?.handle ?? '...'} {utils} {rpc} />
             </section>
 
-            <section class="[scroll-margin-top:calc(var(--header-height)+2rem)] h-screen" id="password-and-mfa" title="Password & MFA" use:scrollspy.spy>
+            <section
+                class="h-screen [scroll-margin-top:calc(var(--header-height)+2rem)]"
+                id="password-and-mfa"
+                title="Password & MFA"
+                use:scrollspy.spy
+            >
                 {@render SectionTitle('Password & MFA')}
 
                 REEEEEEEALLY LONG SECTION
             </section>
 
-            <section class="[scroll-margin-top:calc(var(--header-height)+2rem)]" id="oauth-connections" title="OAuth Connections" use:scrollspy.spy>
+            <section
+                class="[scroll-margin-top:calc(var(--header-height)+2rem)]"
+                id="oauth-connections"
+                title="OAuth Connections"
+                use:scrollspy.spy
+            >
                 {@render SectionTitle('OAuth Connections')}
 
                 {#each METHODS as method (method.id)}
@@ -116,9 +131,9 @@
                     {@const isActive = data.activeMethods.includes(method.id)}
 
                     <div
-                        class="flex h-24 flex-row items-center border-b border-border last:border-b-0 px-6"
+                        class="flex h-24 flex-row items-center border-b border-border px-6 last:border-b-0"
                     >
-                        <div class="grid h-full place-items-center mr-6">
+                        <div class="mr-6 grid h-full place-items-center">
                             <method.icon />
                         </div>
 
@@ -126,11 +141,19 @@
                             {method.name}
                         </div>
 
-
-                        <form method="POST" class="mr-12" action={isLinked ? "?/unlink-oauth" : "?/link-oauth"}>
+                        <form
+                            method="POST"
+                            class="mr-12"
+                            action={isLinked ? '?/unlink-oauth' : '?/link-oauth'}
+                        >
                             <input type="hidden" name="provider" value={method.id} />
-                            <Button class="w-24" variant={isLinked ? 'destructive' : 'default'} type="submit" disabled={!(isActive || isLinked)}>
-                                {isLinked ? "Unlink" : "Link"}
+                            <Button
+                                class="w-24"
+                                variant={isLinked ? 'destructive' : 'default'}
+                                type="submit"
+                                disabled={!(isActive || isLinked)}
+                            >
+                                {isLinked ? 'Unlink' : 'Link'}
                             </Button>
                         </form>
                     </div>

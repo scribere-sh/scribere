@@ -10,7 +10,7 @@
     import * as InputOTP from '@scribere/ui/input-otp';
     import { Input } from '@scribere/ui/input';
 
-    import { mfaFormSchema } from '$client';
+    import { mfaFormSchema } from '$client/forms';
     import type { PropsObj } from '$util';
 
     const { form: _form }: Pick<PageData, 'form'> = $props();

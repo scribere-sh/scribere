@@ -76,11 +76,16 @@ export const GET: RequestHandler = async (event) => {
 
         if (oauthAction === 'link' && event.locals.session) {
             const userId = event.locals.session.userId;
-    
-            await linkOAuthProviderToUser(event.locals.DB, providerUserId, event.params.provider, userId);
-    
+
+            await linkOAuthProviderToUser(
+                event.locals.DB,
+                providerUserId,
+                event.params.provider,
+                userId
+            );
+
             console.log('redirecting');
-            
+
             return new Response(null, {
                 status: 303,
                 headers: {
@@ -101,7 +106,6 @@ export const GET: RequestHandler = async (event) => {
             });
         }
 
-
         return await event.locals.DB.transaction(async (tx_db) => {
             const userHasMFA = await userHasTOTP(tx_db, localUserId);
 
@@ -109,7 +113,7 @@ export const GET: RequestHandler = async (event) => {
                 mfaVerified: userHasMFA ? OAUTH_SKIPS_MFA : null
             };
 
-            // if session already exists, invalidate it first 
+            // if session already exists, invalidate it first
             if (event.locals.session) await invalidateSession(tx_db, event.locals.session.id);
 
             const sessionToken = generateSessionToken();
