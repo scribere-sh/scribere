@@ -48,7 +48,7 @@
         "zod": "^3.24.2"
     },
     "devDependencies": {
-        "@cloudflare/workers-types": "4.20250303.0",
+        "@cloudflare/workers-types": "4.20250312.0",
         "@scribere/eslint-config": "workspace:*",
         "@scribere/prettier-config": "workspace:*",
         "@scribere/typescript-config": "workspace:*",
@@ -73,6 +73,6 @@
         "vite": "^6.2.1",
         "vite-plugin-kit-routes": "~0.8.3",
         "vitest": "^3.0.8",
-        "wrangler": "^3.112.0"
+        "wrangler": "^4.0.0"
     }
 }

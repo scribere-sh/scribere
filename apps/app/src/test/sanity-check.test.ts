@@ -14,7 +14,7 @@ describe('Sanity Check', () => {
         expect(additionOfNumbers).toEqual(expectedResult);
     });
 
-    test('follow the laws of mathematics', () => {
+    test.fails('follow the laws of mathematics', () => {
         const additionOfNumbers = 1 + 1;
         const expectedResultNotEqual = 3;
 
@@ -22,7 +22,7 @@ describe('Sanity Check', () => {
             expectedToNotEqual: expectedResultNotEqual,
             actual: additionOfNumbers
         });
-        expect(additionOfNumbers).not.toEqual(expectedResultNotEqual);
+        expect(additionOfNumbers).toEqual(expectedResultNotEqual);
     });
 
     test('generate a cryptographically random key', () => {

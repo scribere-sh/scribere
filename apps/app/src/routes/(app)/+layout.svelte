@@ -10,6 +10,7 @@
 
     import { openAppMessage } from '$client/messages';
     import ProfileDropDown from '$lib/components/profile-drop-down.svelte';
+    import { route } from '$routes';
 
     let { children, data }: LayoutProps = $props();
 
@@ -23,7 +24,7 @@
 <QueryClientProvider client={data.queryClient}>
     <Header.Root>
         <Header.Content>
-            <h1 class="text-3xl">Scribere</h1>
+            <a class="text-3xl no-underline text-primary hover:underline" href={route('/')}>Scribere</a>
 
             <ProfileDropDown user={data.user} />
         </Header.Content>

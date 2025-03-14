@@ -12,7 +12,7 @@ export {
     //
     buttonVariants,
     //
-    type ButtonProps as Props,
-    type ButtonSize as Size,
-    type ButtonVariant as Variant
+    type ButtonProps,
+    type ButtonSize,
+    type ButtonVariant
 };

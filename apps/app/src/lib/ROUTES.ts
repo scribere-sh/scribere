@@ -29,7 +29,6 @@ export const SERVERS = {
     'PUT /api/assets': `/api/assets`,
     'GET /api/assets': `/api/assets`,
     'DELETE /api/assets': `/api/assets`,
-    'GET /robots.txt': `/robots.txt`,
     'GET /auth/sign-out': `/auth/sign-out`,
     'GET /auth/verify-email': `/auth/verify-email`,
     'GET /oauth/[provider]': (params: { provider: string | number }) => {
@@ -37,7 +36,8 @@ export const SERVERS = {
     },
     'GET /oauth/[provider]/callback': (params: { provider: string | number }) => {
         return `/oauth/${params['provider']}/callback`;
-    }
+    },
+    'GET /robots.txt': `/robots.txt`
 };
 
 /**
@@ -183,11 +183,11 @@ export type KIT_ROUTES = {
         'PUT /api/assets': never;
         'GET /api/assets': never;
         'DELETE /api/assets': never;
-        'GET /robots.txt': never;
         'GET /auth/sign-out': never;
         'GET /auth/verify-email': never;
         'GET /oauth/[provider]': 'provider';
         'GET /oauth/[provider]/callback': 'provider';
+        'GET /robots.txt': never;
     };
     ACTIONS: {
         'default /auth/forgot-password': never;

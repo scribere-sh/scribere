@@ -1,12 +1,10 @@
 <script lang="ts">
     import type { PageProps } from './$types';
 
-    import Edit from 'lucide-svelte/icons/edit';
     import X from 'lucide-svelte/icons/x';
 
     import * as Avatar from '@scribere/ui/avatar';
     import * as Card from '@scribere/ui/card';
-    import { Button } from '@scribere/ui/button';
     import { Skeleton } from '@scribere/ui/skeleton';
 
     const { data }: PageProps = $props();
@@ -50,17 +48,10 @@
                     <span class="text-2xl text-destructive-text">Failed to fetch profile</span>
                 {/if}
             </div>
-            <div class="grid h-full place-items-center px-4">
-                <Button
-                    variant="outline"
-                    disabled={!$profileQuery.isSuccess}
-                    onclick={() => alert('nah')}
-                >
-                    <Edit /> Edit Profile
-                </Button>
-            </div>
         </Card.Header>
     </div>
+
+    
     <Card.Content>HEHEHEA</Card.Content>
 
     <!-- TODO: add tags so people can be tagged maybe? -->

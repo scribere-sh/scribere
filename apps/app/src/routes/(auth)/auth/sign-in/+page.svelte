@@ -10,6 +10,7 @@
     import { cn } from '@scribere/ui/utils';
 
     import { route } from '$routes';
+    import { METHODS } from '$client/oauth-methods';
 
     const { data }: PageProps = $props();
 
@@ -50,7 +51,7 @@
         </div>
 
         <div class="flex w-96 flex-col justify-center gap-4 p-6">
-            {#each data.methods as method (method.id)}
+            {#each METHODS as method (method.id)}
                 {@const methodDisabled = !data.useableProviders.includes(method.id)}
                 <Button
                     class={cn(

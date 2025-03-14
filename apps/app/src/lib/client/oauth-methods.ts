@@ -1,10 +1,8 @@
-import type { PageLoad } from './$types';
-
 import type { Component } from 'svelte';
 
 import { GitHub, Google } from '@scribere/ui/logos';
 
-type OAuthProviderItem = {
+export type OAuthProviderItem = {
     /**
      * The Icon to the rendered in the button
      *
@@ -39,7 +37,7 @@ type OAuthProviderItem = {
     text_colour: string;
 };
 
-const METHODS: OAuthProviderItem[] = [
+export const METHODS: OAuthProviderItem[] = [
     {
         icon: GitHub,
         name: 'GitHub',
@@ -62,11 +60,3 @@ const METHODS: OAuthProviderItem[] = [
         text_colour: '#000000DD'
     }
 ];
-
-export const load: PageLoad = async (event) => {
-    return {
-        methods: METHODS,
-        // also load server data
-        ...event.data
-    };
-};
