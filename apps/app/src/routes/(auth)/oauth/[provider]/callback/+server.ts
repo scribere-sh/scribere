@@ -67,45 +67,49 @@ export const GET: RequestHandler = async (event) => {
     event.cookies.delete(STATE_COOKIE_NAME, {
         path: '/'
     });
+
     try {
+        const tokens = await client.validateAuthorizationCode(code);
+        const providerUserId = await IDENTITY_TRANSLATORS[providerKey](tokens);
+
+        if (!providerUserId) return new Response(null, { status: 500 });
+
+        if (oauthAction === 'link' && event.locals.session) {
+            const userId = event.locals.session.userId;
+    
+            await linkOAuthProviderToUser(event.locals.DB, providerUserId, event.params.provider, userId);
+    
+            console.log('redirecting');
+            
+            return new Response(null, {
+                status: 303,
+                headers: {
+                    Location: returnPath
+                }
+            });
+        }
+
+        const localUserId = await lookupUserIdFromOAuthProvider(
+            event.locals.DB,
+            providerUserId,
+            event.params.provider
+        );
+
+        if (!localUserId) {
+            return new Response(null, {
+                status: 400
+            });
+        }
+
+
         return await event.locals.DB.transaction(async (tx_db) => {
-            const tokens = await client.validateAuthorizationCode(code);
-            const providerUserId = await IDENTITY_TRANSLATORS[providerKey](tokens);
-
-            if (!providerUserId) return new Response(null, { status: 500 });
-
-            if (oauthAction === 'link' && event.locals.session) {
-                const userId = event.locals.session.userId;
-
-                await linkOAuthProviderToUser(tx_db, providerUserId, event.params.provider, userId);
-
-                return new Response(null, {
-                    status: 303,
-                    headers: {
-                        Location: returnPath
-                    }
-                });
-            }
-
-            const localUserId = await lookupUserIdFromOAuthProvider(
-                tx_db,
-                providerUserId,
-                event.params.provider
-            );
-
-            if (!localUserId) {
-                return new Response(null, {
-                    status: 400
-                });
-            }
-
             const userHasMFA = await userHasTOTP(tx_db, localUserId);
 
             const sessionFlags: SessionFlags = {
                 mfaVerified: userHasMFA ? OAUTH_SKIPS_MFA : null
             };
 
-            // if session already exists, invalidate it first
+            // if session already exists, invalidate it first 
             if (event.locals.session) await invalidateSession(tx_db, event.locals.session.id);
 
             const sessionToken = generateSessionToken();

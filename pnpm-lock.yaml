@@ -20,9 +20,6 @@ importers:
 
   apps/app:
     dependencies:
-      '@beyonk/svelte-scrollspy':
-        specifier: ^2.1.2
-        version: 2.1.2
       '@kitql/helpers':
         specifier: ~0.8.12
         version: 0.8.12
@@ -102,7 +99,7 @@ importers:
       '@cloudflare/workers-types':
         specifier: 4.20250312.0
         version: 4.20250312.0
-      '@lucide/svelte/':
+      '@lucide/svelte':
         specifier: ^0.479.0
         version: 0.479.0(svelte@5.22.6)
       '@scribere/eslint-config':
@@ -205,6 +202,9 @@ importers:
         specifier: '5'
         version: 5.22.6
     devDependencies:
+      '@lucide/svelte':
+        specifier: ^0.479.0
+        version: 0.479.0(svelte@5.22.6)
       '@scribere/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
@@ -235,9 +235,6 @@ importers:
       eslint:
         specifier: ^9.22.0
         version: 9.22.0(jiti@2.4.2)
-      lucide-svelte:
-        specifier: ^0.479.0
-        version: 0.479.0(svelte@5.22.6)
       prettier:
         specifier: ^3.5.3
         version: 3.5.3
@@ -366,7 +363,7 @@ importers:
         specifier: '5'
         version: 5.22.6
     devDependencies:
-      '@lucide/svelte/':
+      '@lucide/svelte':
         specifier: ^0.479.0
         version: 0.479.0(svelte@5.22.6)
       '@scribere/eslint-config':
@@ -506,9 +503,6 @@ packages:
   '@babel/types@7.26.9':
     resolution: {integrity: sha512-Y3IR1cRnOxOCDvMmNiym7XpXQ93iGDDPHx+Zj+NM+rg0fBaShfQLkg+hKPaZCEvg5N/LeCo4+Rj/i3FuJsIQaw==}
     engines: {node: '>=6.9.0'}
-
-  '@beyonk/svelte-scrollspy@2.1.2':
-    resolution: {integrity: sha512-B/c4KqmBoc130AScB9CoMvMHGoGAVVHCbkm0ppGYCayhygHQCMSJPa+ck233QP25lvhP6qjsut73KiWD6QSDeQ==}
 
   '@cloudflare/kv-asset-handler@0.4.0':
     resolution: {integrity: sha512-+tv3z+SPp+gqTIcImN9o0hqE9xyfQjI1XD9pL6NuKjua9B1y7mNYv0S9cP+QEbA4ppVgGZEmKOvHX5G5Ei1CVA==}
@@ -1429,7 +1423,7 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@lucide/svelte/@0.479.0':
+  '@lucide/svelte@0.479.0':
     resolution: {integrity: sha512-k/JaO8FHvmK7GLCy9vibA7O1a9nCtlfIs0tU/yYlmkqykVEvz9NRFkpR8g2kbsc79uFVz0Q2tjnRC09vd9AxmA==}
     peerDependencies:
       svelte: ^5
@@ -2530,9 +2524,6 @@ packages:
   inline-style-parser@0.2.4:
     resolution: {integrity: sha512-0aO8FkhNZlj/ZIbNi7Lxxr12obT7cL1moPfE4tg1LkX7LlLfC6DeX4l2ZEud1ukP9jNQyNnfzQVqwbwmAATY4Q==}
 
-  intersection-observer@0.7.0:
-    resolution: {integrity: sha512-Id0Fij0HsB/vKWGeBe9PxeY45ttRiBmhFyyt/geBdDHBYNctMRTE3dC1U3ujzz3lap+hVXlEcVaB56kZP/eEUg==}
-
   is-arrayish@0.3.2:
     resolution: {integrity: sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==}
 
@@ -2674,11 +2665,6 @@ packages:
 
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
-
-  lucide-svelte@0.479.0:
-    resolution: {integrity: sha512-epCj6WL86ykxg7oCQTmPEth5e11pwJUzIfG9ROUsWsTP+WPtb3qat+VmAjfx/r4TRW7memTFcbTPvMrZvKthqw==}
-    peerDependencies:
-      svelte: ^3 || ^4 || ^5.0.0-next.42
 
   magic-string@0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
@@ -3739,10 +3725,6 @@ snapshots:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
 
-  '@beyonk/svelte-scrollspy@2.1.2':
-    dependencies:
-      intersection-observer: 0.7.0
-
   '@cloudflare/kv-asset-handler@0.4.0':
     dependencies:
       mime: 3.0.0
@@ -4347,7 +4329,7 @@ snapshots:
   '@libsql/win32-x64-msvc@0.4.7':
     optional: true
 
-  '@lucide/svelte/@0.479.0(svelte@5.22.6)':
+  '@lucide/svelte@0.479.0(svelte@5.22.6)':
     dependencies:
       svelte: 5.22.6
 
@@ -5469,8 +5451,6 @@ snapshots:
 
   inline-style-parser@0.2.4: {}
 
-  intersection-observer@0.7.0: {}
-
   is-arrayish@0.3.2:
     optional: true
 
@@ -5601,10 +5581,6 @@ snapshots:
       tslib: 2.8.1
 
   lru-cache@10.4.3: {}
-
-  lucide-svelte@0.479.0(svelte@5.22.6):
-    dependencies:
-      svelte: 5.22.6
 
   magic-string@0.30.17:
     dependencies:

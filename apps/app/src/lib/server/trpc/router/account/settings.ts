@@ -1,18 +1,27 @@
 import { TRPCError } from '@trpc/server';
-import { and, eq, not } from 'drizzle-orm';
+import { and, eq, inArray, not } from 'drizzle-orm';
 import { z } from 'zod';
 
 import { displayNameSchema, handleSchema } from '$client/forms/parts';
-import { usersTable } from '$db/tables';
+import { authProviderTable, usersTable } from '$db/tables';
+import { ALL_OAUTH_PROVIDERS } from '$oauth';
 import { t, TRPCLog } from '$trpc';
 import { authMiddleware } from '$trpc/middleware';
 
 const router = t.router({
-    loadCurrentUserSettings: t.procedure.use(authMiddleware).query(async ({ ctx }) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const userId = ctx.user.id;
+    loadOAuthSettings: t.procedure.use(authMiddleware).query(async ({ ctx }) => {
+        const methods = await ctx.locals.DB.select({ id: authProviderTable.type })
+            .from(authProviderTable)
+            .where(
+                and(
+                    inArray(authProviderTable.type, ALL_OAUTH_PROVIDERS),
+                    eq(authProviderTable.userId, ctx.locals.user!.id)
+                )
+            );
 
-        return null;
+        return {
+            oauthMethods: methods.map(({ id }) => id)
+        };
     }),
 
     updateDisplayName: t.procedure

@@ -13,6 +13,7 @@
     import { cn } from '@scribere/ui/utils';
 
     import { page } from '$app/stores';
+    import { METHODS } from '$client/oauth-methods';
     import { createScrollSpy } from '$client/scrollspy';
     import { trpc } from '$client/trpc';
 
@@ -22,6 +23,7 @@
     const utils = rpc.createUtils();
 
     const profileQuery = data.userProfileQuery();
+    const settingsQuery = data.userOAuthSettings();
 
     const scrollspy = createScrollSpy({ rootMargin: '-50% 0px' });
 </script>
@@ -66,16 +68,16 @@
 
         <Separator />
 
-        <nav class="sticky top-32 w-full p-6">
+        <nav class="sticky top-[var(--header-height)] w-full p-6">
             {#each $scrollspy.targets as section (section.id)}
                 {@const isActive = $scrollspy.isActive(section)}
                 <Button
                     href={`#${section.id}`}
-                    variant={isActive ? 'default' : 'ghost'}
+                    variant={isActive === true ? 'default' : 'ghost'}
                     size="dropdown"
                     class={cn('w-full')}
                 >
-                    {section.getAttribute('title') ?? 'Unititled'}
+                    {section.getAttribute('title') ?? 'Untitled'}
                 </Button>
             {/each}
         </nav>
@@ -85,9 +87,9 @@
 
     <main class="w-full">
         <Card.Content>
-            <h1 class="text-3xl mb-6">Account Settings</h1>
+            <h1 class="mb-12 text-3xl">Account Settings</h1>
 
-            <section id="profile" title="Profile" use:scrollspy.spy>
+            <section class="[scroll-margin-top:calc(var(--header-height)+2rem)]" id="profile" title="Profile" use:scrollspy.spy>
                 {@render SectionTitle('Profile')}
 
                 <UpdateDisplayNameForm
@@ -99,8 +101,40 @@
                 <UpdateHandle current={$profileQuery.data?.handle ?? '...'} {utils} {rpc} />
             </section>
 
-            <section id="password" title="Password" use:scrollspy.spy>
-                {@render SectionTitle('Password')}
+            <section class="[scroll-margin-top:calc(var(--header-height)+2rem)] h-screen" id="password-and-mfa" title="Password & MFA" use:scrollspy.spy>
+                {@render SectionTitle('Password & MFA')}
+
+                REEEEEEEALLY LONG SECTION
+            </section>
+
+            <section class="[scroll-margin-top:calc(var(--header-height)+2rem)]" id="oauth-connections" title="OAuth Connections" use:scrollspy.spy>
+                {@render SectionTitle('OAuth Connections')}
+
+                {#each METHODS as method (method.id)}
+                    {@const isLinked =
+                        $settingsQuery.data?.oauthMethods.includes(method.id) ?? false}
+                    {@const isActive = data.activeMethods.includes(method.id)}
+
+                    <div
+                        class="flex h-24 flex-row items-center border-b border-border last:border-b-0 px-6"
+                    >
+                        <div class="grid h-full place-items-center mr-6">
+                            <method.icon />
+                        </div>
+
+                        <div class="w-full">
+                            {method.name}
+                        </div>
+
+
+                        <form method="POST" class="mr-12" action={isLinked ? "?/unlink-oauth" : "?/link-oauth"}>
+                            <input type="hidden" name="provider" value={method.id} />
+                            <Button class="w-24" variant={isLinked ? 'destructive' : 'default'} type="submit" disabled={!(isActive || isLinked)}>
+                                {isLinked ? "Unlink" : "Link"}
+                            </Button>
+                        </form>
+                    </div>
+                {/each}
             </section>
         </Card.Content>
     </main>

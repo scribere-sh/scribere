@@ -22,13 +22,13 @@
 
     const uid = $props.id();
     let spinnerState: SpinnerState = $state('loading');
-    let value = $state('');
+    let value = $state(current);
 
     const mutation = rpc.account.settings.updateHandle.createMutation({
         onSuccess: ({ handle }) => {
             spinnerState = 'complete';
             current = handle;
-            value = '';
+            value = current;
             utils.account.profile.invalidate();
         },
         onError: () => {
@@ -69,9 +69,9 @@
 
     <div class="mt-2 h-3">
         {#if $mutation.error}
-            <div in:fly={{ y: -10 }} class="mb-2 mt-2 text-xs font-medium text-destructive-text"
-                >{$mutation.error.message}</div
-            >
+            <div in:fly={{ y: -10 }} class="mb-2 mt-2 text-xs font-medium text-destructive-text">
+                {$mutation.error.message}
+            </div>
         {/if}
     </div>
 </div>

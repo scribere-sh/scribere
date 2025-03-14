@@ -44,6 +44,8 @@ export const SERVERS = {
  * ACTIONS
  */
 export const ACTIONS = {
+    'link-oauth /account/settings': `/account/settings?/link-oauth`,
+    'unlink-oauth /account/settings': `/account/settings?/unlink-oauth`,
     'default /auth/forgot-password': `/auth/forgot-password`,
     'default /auth/mfa': `/auth/mfa`,
     'default /auth/reset-password': `/auth/reset-password`,
@@ -190,6 +192,8 @@ export type KIT_ROUTES = {
         'GET /robots.txt': never;
     };
     ACTIONS: {
+        'link-oauth /account/settings': never;
+        'unlink-oauth /account/settings': never;
         'default /auth/forgot-password': never;
         'default /auth/mfa': never;
         'default /auth/reset-password': never;

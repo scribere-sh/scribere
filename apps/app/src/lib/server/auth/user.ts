@@ -63,16 +63,24 @@ export const linkOAuthProviderToUser = async (
         .where(and(eq(authProviderTable.userId, userId), eq(authProviderTable.type, provider)));
 
     if (existentRecord) {
-        if (existentRecord.providerId === providerId) {
-            return;
-        } else {
-            throw new Error('user must unlink this provider first');
-        }
+        throw new Error('user must unlink this provider first');
     }
 
+    console.log('inserting new value');
     await db.insert(authProviderTable).values({
         type: provider,
         ref: providerId,
         userId
     });
 };
+
+export const unlinkOAuthProviderFromUser = async (
+    db: DB,
+    provider: string,
+    userId: string
+) => {
+    await db.delete(authProviderTable).where(and(
+        eq(authProviderTable.userId, userId),
+        eq(authProviderTable.type, provider)
+    ));
+}

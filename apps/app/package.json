@@ -21,7 +21,6 @@
         "node": "23.8.0"
     },
     "dependencies": {
-        "@beyonk/svelte-scrollspy": "^2.1.2",
         "@kitql/helpers": "~0.8.12",
         "@libsql/client": "~0.14.0",
         "@oslojs/binary": "^1.0.0",
