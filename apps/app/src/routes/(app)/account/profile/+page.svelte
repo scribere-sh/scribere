@@ -1,11 +1,15 @@
 <script lang="ts">
     import type { PageProps } from './$types';
 
-    import X from 'lucide-svelte/icons/x';
+    import Edit from '@lucide/svelte/icons/edit';
+    import X from '@lucide/svelte/icons/x';
 
     import * as Avatar from '@scribere/ui/avatar';
     import * as Card from '@scribere/ui/card';
+    import { Button } from '@scribere/ui/button';
     import { Skeleton } from '@scribere/ui/skeleton';
+
+    import { route } from '$routes';
 
     const { data }: PageProps = $props();
 
@@ -48,10 +52,14 @@
                     <span class="text-2xl text-destructive-text">Failed to fetch profile</span>
                 {/if}
             </div>
+            <div>
+                <Button variant="outline" href={route('/account/settings')}>
+                    <Edit />&nbsp;Edit Profile
+                </Button>
+            </div>
         </Card.Header>
     </div>
 
-    
     <Card.Content>HEHEHEA</Card.Content>
 
     <!-- TODO: add tags so people can be tagged maybe? -->

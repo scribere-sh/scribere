@@ -9,8 +9,8 @@
     import { Separator } from '@scribere/ui/separator';
     import { cn } from '@scribere/ui/utils';
 
-    import { route } from '$routes';
     import { METHODS } from '$client/oauth-methods';
+    import { route } from '$routes';
 
     const { data }: PageProps = $props();
 

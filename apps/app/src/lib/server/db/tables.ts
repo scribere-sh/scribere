@@ -16,7 +16,7 @@ export const usersTable = sqliteTable('users', {
      * The handle name of the user, this will have a restricted character set (i.e. /[a-z0-9.-]/) and will
      * be used for mentioning (discord style).
      */
-    handle: text().notNull(),
+    handle: text().notNull().unique(),
 
     /**
      * The date and time this account was created

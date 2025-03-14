@@ -8,7 +8,7 @@
     import * as Form from '@scribere/ui/form';
     import { Input } from '@scribere/ui/input';
 
-    import { logInFormSchema } from '$forms';
+    import { logInFormSchema } from '$client';
     import type { PropsObj } from '$util';
 
     let {

@@ -1,6 +1,6 @@
 <script lang="ts">
+    import Dot from '@lucide/svelte/icons/dot';
     import type { WithElementRef } from 'bits-ui';
-    import Dot from 'lucide-svelte/icons/dot';
     import type { HTMLAttributes } from 'svelte/elements';
 
     let {

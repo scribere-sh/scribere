@@ -8,7 +8,7 @@ import { clearReturnPathCookie, getReturnPathFromCookie } from '$auth';
 import { resetUserTOTP, userHasTOTP, verifyRecoveryCode, verifyUserOTP } from '$auth/mfa';
 import { setSessionAsMFANullified, setSessionAsMFAVerified } from '$auth/session';
 
-import { mfaFormSchema } from '$forms';
+import { mfaFormSchema } from '$client/forms';
 import { route } from '$routes';
 
 export const actions: Actions = {

@@ -6,8 +6,8 @@ import { zod } from 'sveltekit-superforms/adapters';
 
 import { generateAndSaveResetChallenge, sendPasswordResetEmail } from '$auth/reset-password';
 
+import { forgotPasswordFormSchema } from '$client/forms';
 import { emailAddressTable, usersTable } from '$db/tables';
-import { forgotPasswordFormSchema } from '$forms';
 
 export const actions: Actions = {
     default: async (event) => {

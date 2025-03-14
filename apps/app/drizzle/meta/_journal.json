@@ -15,6 +15,13 @@
             "when": 1741751688242,
             "tag": "0001_typical_paladin",
             "breakpoints": true
+        },
+        {
+            "idx": 2,
+            "version": "6",
+            "when": 1741931630896,
+            "tag": "0002_crazy_zaladane",
+            "breakpoints": true
         }
     ]
 }

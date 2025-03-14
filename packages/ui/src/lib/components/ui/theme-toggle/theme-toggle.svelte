@@ -1,7 +1,7 @@
 <script lang="ts">
-    import Moon from 'lucide-svelte/icons/moon';
-    import Settings from 'lucide-svelte/icons/settings';
-    import Sun from 'lucide-svelte/icons/sun';
+    import Moon from '@lucide/svelte/icons/moon';
+    import Settings from '@lucide/svelte/icons/settings';
+    import Sun from '@lucide/svelte/icons/sun';
     import { resetMode, setMode } from 'mode-watcher';
 
     import * as DropdownMenu from '$lib/components/ui/dropdown-menu';

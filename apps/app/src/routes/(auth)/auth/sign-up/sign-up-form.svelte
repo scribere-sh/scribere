@@ -8,7 +8,7 @@
     import * as Form from '@scribere/ui/form';
     import { Input } from '@scribere/ui/input';
 
-    import { signupFormSchema } from '$forms';
+    import { signupFormSchema } from '$client';
     import type { PropsObj } from '$util';
 
     let {

@@ -10,9 +10,9 @@ import { sendPasswordResetAlertEmail } from '@scribere/email/alertPasswortReset'
 import { updateUserPassword } from '$auth/password';
 import { validatePasswordResetRefTokenPair } from '$auth/reset-password';
 
+import { resetPasswordFormSchema } from '$client/forms';
 import { emailAddressTable, passwordResetChallengeTable, usersTable } from '$db/tables';
 import { env } from '$env/dynamic/private';
-import { resetPasswordFormSchema } from '$forms';
 import { route } from '$routes';
 
 export const actions: Actions = {

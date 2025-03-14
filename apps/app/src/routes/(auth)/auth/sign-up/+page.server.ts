@@ -15,7 +15,7 @@ import {
 } from '$auth/session';
 import { createUser, lookupHandleAvailability } from '$auth/user';
 
-import { signupFormSchema } from '$forms';
+import { signupFormSchema } from '$client/forms';
 import { route } from '$routes';
 
 export const actions: Actions = {

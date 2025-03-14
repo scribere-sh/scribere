@@ -95,12 +95,27 @@ const config: Config = {
                 'caret-blink': {
                     '0%,70%,100%': { opacity: '1' },
                     '20%,50%': { opacity: '0' }
+                },
+                'spinner-stroke': {
+                    '0%': {
+                        'stroke-dasharray': '1px, 200px',
+                        'stroke-dashoffset': '0'
+                    },
+                    '50%': {
+                        'stroke-dasharray': '100px, 200px',
+                        'stroke-dashoffset': '-15px'
+                    },
+                    '100%': {
+                        'stroke-dasharray': '1px, 200px',
+                        'stroke-dashoffset': '-126px'
+                    }
                 }
             },
             animation: {
                 'accordion-down': 'accordion-down 0.2s ease-out',
                 'accordion-up': 'accordion-up 0.2s ease-out',
-                'caret-blink': 'caret-blink 1.25s ease-out infinite'
+                'caret-blink': 'caret-blink 1.25s ease-out infinite',
+                'spinner-stroke': 'spinner-stroke 1.5s 0s linear infinite normal running'
             }
         }
     },

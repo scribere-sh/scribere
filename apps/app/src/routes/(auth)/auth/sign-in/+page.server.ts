@@ -16,8 +16,8 @@ import {
     setSessionToken
 } from '$auth/session';
 
+import { logInFormSchema } from '$client/forms';
 import { authProviderTable, emailAddressTable, usersTable } from '$db/tables';
-import { logInFormSchema } from '$forms';
 import { OAuth2Providers } from '$oauth';
 import { route } from '$routes';
 

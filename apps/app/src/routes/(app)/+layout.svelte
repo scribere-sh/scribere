@@ -24,9 +24,11 @@
 <QueryClientProvider client={data.queryClient}>
     <Header.Root>
         <Header.Content>
-            <a class="text-3xl no-underline text-primary hover:underline" href={route('/')}>Scribere</a>
+            <a class="text-3xl text-primary no-underline hover:underline" href={route('/')}
+                >Scribere</a
+            >
 
-            <ProfileDropDown user={data.user} />
+            <ProfileDropDown />
         </Header.Content>
     </Header.Root>
 

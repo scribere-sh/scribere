@@ -2,7 +2,7 @@
     import type { PageProps } from './$types';
 
     import ForgotPasswordForm from './forgot-password-form.svelte';
-    import Check from 'lucide-svelte/icons/check';
+    import Check from '@lucide/svelte/icons/check';
     import { fly } from 'svelte/transition';
 
     import * as Card from '@scribere/ui/card';

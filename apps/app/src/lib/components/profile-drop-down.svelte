@@ -1,39 +1,39 @@
 <script lang="ts">
-    import LogOut from 'lucide-svelte/icons/log-out';
-    import Settings from 'lucide-svelte/icons/settings';
-    import User from 'lucide-svelte/icons/user';
+    import LogOut from '@lucide/svelte/icons/log-out';
+    import Settings from '@lucide/svelte/icons/settings';
+    import User from '@lucide/svelte/icons/user';
 
     import * as Avatar from '@scribere/ui/avatar';
     import * as DropdownMenu from '@scribere/ui/dropdown-menu';
     import { Button } from '@scribere/ui/button';
 
-    import type { User as UserType } from '$auth/user';
-
+    import { page } from '$app/stores';
+    import { trpc } from '$client/trpc';
     import { route } from '$routes';
 
-    interface ProfileDropdownProps {
-        user: UserType;
-    }
-
-    const { user }: ProfileDropdownProps = $props();
-
-    const displayInitials = user.displayName
-        .split(' ')
-        .map((s) => s[0])
-        .join('');
+    const displayInitials = (s: string) => {
+        return s
+            .split(' ')
+            .map((s) => s[0])
+            .join('')
+            .substring(0, 3);
+    };
 
     const close = () => {
         open = false;
     };
 
     let open = $state(false);
+
+    const rpc = trpc($page);
+    const currentUserProfile = rpc.account.profile.loadCurrentUserProfile.createQuery();
 </script>
 
 <DropdownMenu.Root bind:open>
     <DropdownMenu.Trigger>
         <Avatar.Root>
             <Avatar.Fallback>
-                {displayInitials}
+                {displayInitials($currentUserProfile.data?.displayName ?? '. .')}
             </Avatar.Fallback>
         </Avatar.Root>
     </DropdownMenu.Trigger>
@@ -42,12 +42,14 @@
             <div class="flex flex-row justify-start">
                 <Avatar.Root class="mr-4 aspect-square">
                     <Avatar.Fallback>
-                        {displayInitials}
+                        {displayInitials($currentUserProfile.data?.displayName ?? '. .')}
                     </Avatar.Fallback>
                 </Avatar.Root>
                 <div>
-                    <div>{user.displayName}</div>
-                    <div class="text-sm text-muted-foreground">@{user.handle}</div>
+                    <div>{$currentUserProfile.data?.displayName ?? 'Loading'}</div>
+                    <div class="text-sm text-muted-foreground"
+                        >@{$currentUserProfile.data?.handle ?? 'Loading'}</div
+                    >
                 </div>
             </div>
         </DropdownMenu.Label>

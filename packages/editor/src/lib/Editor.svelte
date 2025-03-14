@@ -1,8 +1,8 @@
 <script lang="ts">
     import { exitCodeBlockKeymap, inputRulesPlugin } from './rules';
     import { schema } from './schema';
-    import Bold from 'lucide-svelte/icons/bold';
-    import Italic from 'lucide-svelte/icons/italic';
+    import Bold from '@lucide/svelte/icons/bold';
+    import Italic from '@lucide/svelte/icons/italic';
     import { baseKeymap, toggleMark } from 'prosemirror-commands';
     import { history, redo, undo } from 'prosemirror-history';
     import { keymap } from 'prosemirror-keymap';
