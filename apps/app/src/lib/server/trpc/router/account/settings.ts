@@ -3,24 +3,32 @@ import { and, eq, inArray, not } from 'drizzle-orm';
 import { z } from 'zod';
 
 import { displayNameSchema, handleSchema } from '$client/forms/parts';
-import { authProviderTable, usersTable } from '$db/tables';
+import { authProviderTable, twoFactorAuthenticationProviderTable, usersTable } from '$db/tables';
 import { ALL_OAUTH_PROVIDERS } from '$oauth';
 import { t, TRPCLog } from '$trpc';
 import { authMiddleware } from '$trpc/middleware';
+import { TOTP_TYPE } from '$auth/mfa';
 
 const router = t.router({
-    loadOAuthSettings: t.procedure.use(authMiddleware).query(async ({ ctx }) => {
-        const methods = await ctx.locals.DB.select({ id: authProviderTable.type })
+    loadAuthSettings: t.procedure.use(authMiddleware).query(async ({ ctx }) => {
+        const oauthMethods = await ctx.locals.DB.select({ id: authProviderTable.type })
             .from(authProviderTable)
             .where(
                 and(
-                    inArray(authProviderTable.type, ALL_OAUTH_PROVIDERS),
-                    eq(authProviderTable.userId, ctx.locals.user!.id)
+                    eq(authProviderTable.userId, ctx.locals.user!.id),
+                    inArray(authProviderTable.type, ALL_OAUTH_PROVIDERS)
                 )
             );
 
+        const mfaMethods = await ctx.locals.DB.select({ type: twoFactorAuthenticationProviderTable.type }).from(twoFactorAuthenticationProviderTable)
+        .where(and(
+            eq(twoFactorAuthenticationProviderTable.userId, ctx.locals.user!.id),
+            inArray(twoFactorAuthenticationProviderTable.type, [TOTP_TYPE])
+        ))
+
         return {
-            oauthMethods: methods.map(({ id }) => id)
+            oauthMethods: oauthMethods.map(({ id }) => id),
+            mfaMethods: mfaMethods.map(({type}) => type)
         };
     }),
 

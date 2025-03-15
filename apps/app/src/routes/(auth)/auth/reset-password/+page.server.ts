@@ -25,7 +25,9 @@ export const actions: Actions = {
         }
 
         if (form.data.newPassword !== form.data.newPasswordConfirm) {
-            return setError(form, 'newPassword', 'New passwords do not match');
+            setError(form, 'newPassword', 'New passwords do not match');
+            setError(form, 'newPasswordConfirm', 'New passwords do not match');
+            return fail(400, { form });
         }
 
         console.log('passwords match');

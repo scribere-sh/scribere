@@ -46,3 +46,11 @@ export const resetPasswordFormSchema = z.object({
 });
 
 export type ResetPasswordFormSchema = typeof resetPasswordFormSchema;
+
+export const resetPasswordAccountSettingsSchema = z.object({
+    currentPassword: passwordSchema,
+    newPassword: passwordSchema,
+    confirmNewPassword: passwordSchema
+});
+
+export type ResetPasswordAccountSettingsSchema = typeof resetPasswordAccountSettingsSchema;

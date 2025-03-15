@@ -3,6 +3,8 @@
 
     import UpdateDisplayNameForm from './update-display-name.svelte';
     import UpdateHandle from './update-handle.svelte';
+    import UpdatePasswordForm from './update-password-form.svelte';
+    import MFA from './mfa.svelte';
     import X from '@lucide/svelte/icons/x';
 
     import * as Avatar from '@scribere/ui/avatar';
@@ -29,10 +31,10 @@
 </script>
 
 {#snippet SectionTitle(title: string)}
-    <h1 class="mb-6 text-xl">{title}</h1>
+    <h1 class="mb-6 text-2xl">{title}</h1>
 {/snippet}
 
-<Card.Root class="max-w-screen mx-auto mt-32 flex w-1/2 min-w-[60rem] flex-row">
+<Card.Root class="max-w-screen mx-auto my-32 flex w-1/2 min-w-[60rem] flex-row">
     <aside class="w-96">
         <div class="flex aspect-square w-full flex-col items-center justify-center gap-2">
             <Avatar.Root class="size-32">
@@ -90,7 +92,7 @@
             <h1 class="mb-12 text-3xl">Account Settings</h1>
 
             <section
-                class="[scroll-margin-top:calc(var(--header-height)+2rem)]"
+                class="[scroll-margin-top:calc(var(--header-height)+2rem)] mb-4"
                 id="profile"
                 title="Profile"
                 use:scrollspy.spy
@@ -107,14 +109,16 @@
             </section>
 
             <section
-                class="h-screen [scroll-margin-top:calc(var(--header-height)+2rem)]"
+                class="[scroll-margin-top:calc(var(--header-height)+2rem)] mb-4"
                 id="password-and-mfa"
                 title="Password & MFA"
                 use:scrollspy.spy
             >
                 {@render SectionTitle('Password & MFA')}
 
-                REEEEEEEALLY LONG SECTION
+                <UpdatePasswordForm form={data.updatePasswordForm} />
+
+                <MFA />
             </section>
 
             <section
@@ -151,9 +155,9 @@
                                 class="w-24"
                                 variant={isLinked ? 'destructive' : 'default'}
                                 type="submit"
-                                disabled={!(isActive || isLinked)}
+                                disabled={!(isActive || isLinked) || $settingsQuery.isLoading}
                             >
-                                {isLinked ? 'Unlink' : 'Link'}
+                                {$settingsQuery.isLoading ? '...' : isLinked ? 'Unlink' : 'Link'}
                             </Button>
                         </form>
                     </div>

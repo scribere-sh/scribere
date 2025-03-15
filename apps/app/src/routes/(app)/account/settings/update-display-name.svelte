@@ -58,7 +58,13 @@
     <Label for={uid}>Display Name</Label>
 
     <div class="mt-2 flex w-full flex-row items-center gap-2">
-        <Input id={uid} placeholder={current} bind:value disabled={inputDisabled} onkeyup={debounce(submitUpdates, 1000)} />
+        <Input
+            id={uid}
+            placeholder={current}
+            bind:value
+            disabled={inputDisabled}
+            onkeyup={debounce(submitUpdates, 1000)}
+        />
 
         <div class="grid w-12 place-content-end">
             {#if !$mutation.isIdle}
