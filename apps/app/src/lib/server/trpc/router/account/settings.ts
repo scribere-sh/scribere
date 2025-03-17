@@ -4,10 +4,24 @@ import { renderSVG } from 'uqr';
 import { z } from 'zod';
 
 import { generateTokenString } from '$auth/cryptography';
-import { enrolUserWithTOTP, generateMFARecoveryCode, generateTOTPEnrollmentURL, setRecoveryCodeForUser, TOTP_RECOVERY_TYPE, TOTP_TYPE, userHasTOTP, verifyOTP } from '$auth/mfa';
+import {
+    enrolUserWithTOTP,
+    generateMFARecoveryCode,
+    generateTOTPEnrollmentURL,
+    setRecoveryCodeForUser,
+    TOTP_RECOVERY_TYPE,
+    TOTP_TYPE,
+    userHasTOTP,
+    verifyOTP
+} from '$auth/mfa';
 
 import { displayNameSchema, handleSchema } from '$client/forms/parts';
-import { authProviderTable, twoFactorAuthenticationProviderTable, usersTable } from '$db/tables';
+import {
+    authProviderTable,
+    sessionsTable,
+    twoFactorAuthenticationProviderTable,
+    usersTable
+} from '$db/tables';
 import { ALL_OAUTH_PROVIDERS } from '$oauth';
 import { t, TRPCLog } from '$trpc';
 import { authMiddleware } from '$trpc/middleware';
@@ -135,22 +149,27 @@ const router = t.router({
 
     enrolUserInTOTP: t.procedure
         .use(authMiddleware)
-        .input(z.object({
-            key: z.string().nonempty().max(250),
-            initialCode: z.string().length(6).regex(/^[0-9]{6}$/i)
-        }))
+        .input(
+            z.object({
+                key: z.string().nonempty().max(250),
+                initialCode: z
+                    .string()
+                    .length(6)
+                    .regex(/^[0-9]{6}$/i)
+            })
+        )
         .mutation(async ({ ctx, input }) => {
-            if (await userHasTOTP(ctx.locals.DB, ctx.session.userId)) {
+            if (await userHasTOTP(ctx.session.userId)) {
                 throw new TRPCError({
-                    code: "CONFLICT",
-                    message: "User is already enrolled with MFA"
+                    code: 'CONFLICT',
+                    message: 'User is already enrolled with MFA'
                 });
             }
 
             if (!verifyOTP(input.key, input.initialCode)) {
                 throw new TRPCError({
-                    code: "BAD_REQUEST",
-                    message: "Incorrect MFA Code"
+                    code: 'BAD_REQUEST',
+                    message: 'Incorrect MFA Code'
                 });
             }
 
@@ -159,21 +178,11 @@ const router = t.router({
             const recoveryCode = await ctx.locals.DB.transaction(async (tx_db) => {
                 const recoveryCode = generateMFARecoveryCode();
 
-                await setRecoveryCodeForUser(
-                    tx_db,
-                    ctx,
-                    ctx.session.userId,
-                    recoveryCode
-                );
+                await setRecoveryCodeForUser(ctx.session.userId, recoveryCode, tx_db);
 
-                await enrolUserWithTOTP(
-                    tx_db,
-                    ctx.session.userId,
-                    input.key,
-                    input.initialCode
-                );
+                await enrolUserWithTOTP(ctx.session.userId, input.key, input.initialCode, tx_db);
 
-                return recoveryCode
+                return recoveryCode;
             });
 
             return {
@@ -181,14 +190,27 @@ const router = t.router({
             };
         }),
 
-    unenrolUserFromTOTP: t.procedure.mutation(async ({ctx}) => {
-        await ctx.locals.DB.delete(twoFactorAuthenticationProviderTable).where(and(
-            eq( twoFactorAuthenticationProviderTable.userId, ctx.session!.userId),
-            inArray(twoFactorAuthenticationProviderTable.type, [
-                TOTP_TYPE,
-                TOTP_RECOVERY_TYPE
-            ])
-        ));
+    unenrolUserFromTOTP: t.procedure.mutation(async ({ ctx }) => {
+        await ctx.locals.DB.transaction(async (tx_db) => {
+            await tx_db
+                .delete(twoFactorAuthenticationProviderTable)
+                .where(
+                    and(
+                        eq(twoFactorAuthenticationProviderTable.userId, ctx.session!.userId),
+                        inArray(twoFactorAuthenticationProviderTable.type, [
+                            TOTP_TYPE,
+                            TOTP_RECOVERY_TYPE
+                        ])
+                    )
+                );
+
+            await tx_db
+                .update(sessionsTable)
+                .set({
+                    mfaVerified: null
+                })
+                .where(eq(sessionsTable.userId, ctx.locals.session!.userId));
+        });
     })
     // #endregion
 });

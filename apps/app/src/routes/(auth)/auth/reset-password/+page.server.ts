@@ -34,8 +34,6 @@ export const actions: Actions = {
 
         if (
             !(await validatePasswordResetRefTokenPair(
-                event.locals.DB,
-                event,
                 form.data.challengeRef,
                 form.data.challengeToken
             ))
@@ -67,10 +65,12 @@ export const actions: Actions = {
 
         console.log('found user');
 
-        await updateUserPassword(event.locals.DB, event, user.id, form.data.newPassword);
-        await event.locals.DB.delete(passwordResetChallengeTable).where(
-            eq(passwordResetChallengeTable.challengeRef, form.data.challengeRef)
-        );
+        await event.locals.DB.transaction(async (tx_db) => {
+            await updateUserPassword(user.id, form.data.newPassword, tx_db);
+            await tx_db
+                .delete(passwordResetChallengeTable)
+                .where(eq(passwordResetChallengeTable.challengeRef, form.data.challengeRef));
+        });
 
         console.log('updated');
         console.log('alert sending');
@@ -110,14 +110,7 @@ export const load: PageServerLoad = async (event) => {
         error(400);
     }
 
-    if (
-        !(await validatePasswordResetRefTokenPair(
-            event.locals.DB,
-            event,
-            challengeRef,
-            challengeToken
-        ))
-    ) {
+    if (!(await validatePasswordResetRefTokenPair(challengeRef, challengeToken))) {
         error(401);
     }
 

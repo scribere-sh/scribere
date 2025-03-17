@@ -37,11 +37,11 @@ const validateSessionHandle: Handle = async ({ event, resolve }) => {
         return resolve(event);
     }
 
-    const { session, user } = await validateSessionToken(event.locals.DB, token);
+    const { session, user } = await validateSessionToken(token);
     if (session !== null) {
-        setSessionToken(event, token, session.expiresAt);
+        setSessionToken(token, session.expiresAt);
     } else {
-        deleteSessionToken(event);
+        deleteSessionToken();
     }
 
     event.locals.session = session;
@@ -62,9 +62,10 @@ const injectDBHandle: Handle = async ({ event, resolve }) => {
 setInterval(
     async () => {
         const db = DB();
-
-        await deleteExpiredSessions(db);
-        await deleteExpiredChallenges(db);
+        await db.transaction(async (tx_db) => {
+            await deleteExpiredSessions(tx_db);
+            await deleteExpiredChallenges(tx_db);
+        });
     },
     10 * 60 * 1000
 );
@@ -74,9 +75,10 @@ setInterval(
 // service startup.
 if (!building) {
     const db = DB();
-
-    deleteExpiredSessions(db);
-    deleteExpiredChallenges(db);
+    await db.transaction(async (tx_db) => {
+        await deleteExpiredSessions(tx_db);
+        await deleteExpiredChallenges(tx_db);
+    });
 }
 
 export const handle: Handle = sequence(

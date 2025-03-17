@@ -2,10 +2,10 @@ import { generateTokenString } from './cryptography';
 import type { User } from './user';
 import { sha256 } from '@oslojs/crypto/sha2';
 import { encodeHexLowerCase } from '@oslojs/encoding';
-import type { RequestEvent } from '@sveltejs/kit';
 import { eq, lte } from 'drizzle-orm';
 
-import { type DB } from '$db';
+import { getRequestEvent } from '$app/server';
+import { type TX } from '$db';
 import { sessionsTable, usersTable } from '$db/tables';
 
 export const SESSION_TOKEN_NAME = 'session';
@@ -51,9 +51,12 @@ const SESSION_NULL: SessionTokenValidationResult = { session: null, user: null }
  * in and steals all of the session, the data will be useless.
  */
 export const validateSessionToken = async (
-    db: DB,
-    sessionToken: string
+    sessionToken: string,
+    tx_db?: TX
 ): Promise<SessionTokenValidationResult> => {
+    const { locals } = getRequestEvent();
+    const db = tx_db ?? locals.DB;
+
     const sessionId = sessionTokenToSessionId(sessionToken);
 
     const queryResult = await db
@@ -91,7 +94,7 @@ export const validateSessionToken = async (
         };
 
         if (Date.now() >= session.expiresAt.getTime()) {
-            invalidateSession(db, session.id);
+            invalidateSession(session.id, tx_db);
             return SESSION_NULL;
         }
 
@@ -111,7 +114,10 @@ export const validateSessionToken = async (
     }
 };
 
-export const setSessionAsMFAVerified = async (db: DB, sessionId: string) => {
+export const setSessionAsMFAVerified = async (sessionId: string, tx_db?: TX) => {
+    const { locals } = getRequestEvent();
+    const db = tx_db ?? locals.DB;
+
     await db
         .update(sessionsTable)
         .set({
@@ -120,7 +126,10 @@ export const setSessionAsMFAVerified = async (db: DB, sessionId: string) => {
         .where(eq(sessionsTable.id, sessionId));
 };
 
-export const setSessionAsMFANullified = async (db: DB, sessionId: string) => {
+export const setSessionAsMFANullified = async (sessionId: string, tx_db?: TX) => {
+    const { locals } = getRequestEvent();
+    const db = tx_db ?? locals.DB;
+
     await db
         .update(sessionsTable)
         .set({
@@ -140,11 +149,14 @@ export const generateSessionToken = generateTokenString;
  * @returns
  */
 export const createSession = async (
-    db: DB,
     sessionToken: string,
     userId: string,
-    flags: SessionFlags
+    flags: SessionFlags,
+    tx_db?: TX
 ): Promise<Session> => {
+    const { locals } = getRequestEvent();
+    const db = tx_db ?? locals.DB;
+
     const sessionId = sessionTokenToSessionId(sessionToken);
 
     const session: Session = {
@@ -166,20 +178,31 @@ export const createSession = async (
 // #endregion
 
 // #region Delete Session
-export const invalidateSession = async (db: DB, sessionId: string) => {
+export const invalidateSession = async (sessionId: string, tx_db?: TX) => {
+    const { locals } = getRequestEvent();
+    const db = tx_db ?? locals.DB;
+
     await db.delete(sessionsTable).where(eq(sessionsTable.id, sessionId));
 };
 
-export const invalidateUserSessions = async (db: DB, userId: string) => {
+export const invalidateUserSessions = async (userId: string, tx_db?: TX) => {
+    const { locals } = getRequestEvent();
+    const db = tx_db ?? locals.DB;
+
     await db.delete(sessionsTable).where(eq(sessionsTable.userId, userId));
 };
 
-export const deleteExpiredSessions = async (db: DB) => {
+export const deleteExpiredSessions = async (tx_db?: TX) => {
+    const { locals } = getRequestEvent();
+    const db = tx_db ?? locals.DB;
+
     await db.delete(sessionsTable).where(lte(sessionsTable.expiresAt, new Date()));
 };
 
-export const deleteSessionToken = (event: RequestEvent) => {
-    event.cookies.set(SESSION_TOKEN_NAME, '', {
+export const deleteSessionToken = () => {
+    const { cookies } = getRequestEvent();
+
+    cookies.set(SESSION_TOKEN_NAME, '', {
         httpOnly: true,
         path: '/',
         // eslint-disable-next-line turbo/no-undeclared-env-vars
@@ -191,8 +214,10 @@ export const deleteSessionToken = (event: RequestEvent) => {
 // #endregion
 
 // #region Set Tokens
-export const setSessionToken = (event: RequestEvent, sessionToken: string, expiresAt: Date) => {
-    event.cookies.set(SESSION_TOKEN_NAME, sessionToken, {
+export const setSessionToken = (sessionToken: string, expiresAt: Date) => {
+    const { cookies } = getRequestEvent();
+
+    cookies.set(SESSION_TOKEN_NAME, sessionToken, {
         httpOnly: true,
         path: '/',
         // eslint-disable-next-line turbo/no-undeclared-env-vars

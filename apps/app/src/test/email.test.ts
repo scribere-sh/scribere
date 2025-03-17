@@ -10,45 +10,47 @@ import { TestDB } from '$db/test';
 describe('Email Validation', () => {
     test('Email Address assigned to user should create records', async () => {
         const testDB = await TestDB();
+        await testDB.transaction(async (tx_db) => {
+            const testUser = {
+                displayName: 'Test Display Name',
+                handle: 'test_handle'
+            };
 
-        const testUser = {
-            displayName: 'Test Display Name',
-            handle: 'test_handle'
-        };
+            const testEmailAddress = 'testEmail@test.com';
 
-        const testEmailAddress = 'testEmail@test.com';
+            const testUserInserted = await createUser(testUser, tx_db);
+            await insertEmailAddress(testEmailAddress, testUserInserted.id);
 
-        const testUserInserted = await createUser(testDB, testUser);
-        await insertEmailAddress(testDB, testEmailAddress, testUserInserted.id);
-
-        const [[userQuery], [emailQuery]] = await testDB.batch([
-            testDB.select().from(usersTable).where(eq(usersTable.id, testUserInserted.id)),
-            testDB
+            const [userQuery] = await tx_db
+                .select()
+                .from(usersTable)
+                .where(eq(usersTable.id, testUserInserted.id));
+            const [emailQuery] = await tx_db
                 .select()
                 .from(emailAddressTable)
-                .where(eq(emailAddressTable.userId, testUserInserted.id))
-        ]);
+                .where(eq(emailAddressTable.userId, testUserInserted.id));
 
-        const expectedUserValue = {
-            id: testUserInserted.id,
-            ...testUser
-        };
-        const userQueryExceptDate = {
-            ...userQuery,
-            createdAt: undefined
-        };
+            const expectedUserValue = {
+                id: testUserInserted.id,
+                ...testUser
+            };
+            const userQueryExceptDate = {
+                ...userQuery,
+                createdAt: undefined
+            };
 
-        console.log({ expectedUserValue });
-        expect(userQueryExceptDate).toEqual(expectedUserValue);
+            console.log({ expectedUserValue });
+            expect(userQueryExceptDate).toEqual(expectedUserValue);
 
-        const expectedEmailValue = {
-            userId: testUserInserted.id,
-            emailAddress: testEmailAddress,
-            isValidated: false,
-            challengeRef: null
-        };
+            const expectedEmailValue = {
+                userId: testUserInserted.id,
+                emailAddress: testEmailAddress,
+                isValidated: false,
+                challengeRef: null
+            };
 
-        console.log({ expectedEmailValue });
-        expect(emailQuery).toEqual(expectedEmailValue);
+            console.log({ expectedEmailValue });
+            expect(emailQuery).toEqual(expectedEmailValue);
+        });
     });
 });

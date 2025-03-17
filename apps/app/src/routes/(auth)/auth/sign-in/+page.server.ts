@@ -66,25 +66,25 @@ export const actions: Actions = {
             });
         }
 
-        if (!(await verifyArgon2id(event, authProvider.hash, form.data.password))) {
+        if (!(await verifyArgon2id(authProvider.hash, form.data.password))) {
             return setError(form, 'password', 'Password Incorrect');
         }
 
-        const userHasMFA = await userHasTOTP(event.locals.DB, user.id);
+        const userHasMFA = await userHasTOTP(user.id);
 
         const sessionFlags: SessionFlags = {
             mfaVerified: userHasMFA ? false : null
         };
 
         const sessionToken = generateSessionToken();
-        const session = await createSession(event.locals.DB, sessionToken, user.id, sessionFlags);
-        setSessionToken(event, sessionToken, session.expiresAt);
+        const session = await createSession(sessionToken, user.id, sessionFlags);
+        setSessionToken(sessionToken, session.expiresAt);
 
         if (userHasMFA) {
             redirect(303, route('/auth/mfa'));
         } else {
-            const returnPath = getReturnPathFromCookie(event.cookies);
-            clearReturnPathCookie(event.cookies);
+            const returnPath = getReturnPathFromCookie();
+            clearReturnPathCookie();
             redirect(303, returnPath ?? route('/'));
         }
     }

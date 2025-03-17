@@ -1,20 +1,17 @@
 <script lang="ts">
     import Check from '@lucide/svelte/icons/check';
+    import Copy from '@lucide/svelte/icons/copy';
     import X from '@lucide/svelte/icons/x';
-    import Copy from '@lucide/svelte/icons/copy'
-    
-
     import { derived, writable } from 'svelte/store';
 
     import * as AlertDialog from '@scribere/ui/alert-dialog';
-    import { Button, buttonVariants } from '@scribere/ui/button';
-    import {Checkbox} from '@scribere/ui/checkbox';
-    import {Label} from '@scribere/ui/label';
-    
     import * as InputOTP from '@scribere/ui/input-otp';
+    import { Button, buttonVariants } from '@scribere/ui/button';
+    import { Checkbox } from '@scribere/ui/checkbox';
+    import { Input } from '@scribere/ui/input';
+    import { Label } from '@scribere/ui/label';
 
     import type { trpc } from '$client/trpc';
-    import { Input } from '@scribere/ui/input';
 
     const {
         rpc,
@@ -44,7 +41,7 @@
         undefined,
         derived([dialogOpen], ([$dialogOpen]) => ({
             enabled: $dialogOpen,
-            refetchOnMount: false,
+            refetchOnMount: false
         }))
     );
 
@@ -54,7 +51,7 @@
             recoveryCodeCopied = false;
         },
         onError: () => {
-            initialCodeValue = "";
+            initialCodeValue = '';
         }
     });
 
@@ -97,19 +94,19 @@
                         <X />
                     </Button>
                 </div>
-                <AlertDialog.Description>Scan the QRCode and enter the code to enrol</AlertDialog.Description>
+                <AlertDialog.Description
+                    >Scan the QRCode and enter the code to enrol</AlertDialog.Description
+                >
             </AlertDialog.Header>
-            
+
             {#if $enrolmentQuery.isSuccess}
-            {@const queryData = $enrolmentQuery.data}
-                <div class="w-[80%] aspect-square mx-auto my-2">
+                {@const queryData = $enrolmentQuery.data}
+                <div class="mx-auto my-2 aspect-square w-[80%]">
                     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                     {@html queryData.QRCode}
                 </div>
 
-                <AlertDialog.Description>
-                    Enter the Code Below
-                </AlertDialog.Description>
+                <AlertDialog.Description>Enter the Code Below</AlertDialog.Description>
 
                 <InputOTP.Root class="mx-auto" maxlength={6} bind:value={initialCodeValue}>
                     {#snippet children({ cells })}
@@ -126,20 +123,24 @@
                         </InputOTP.Group>
                     {/snippet}
                 </InputOTP.Root>
-                
+
                 <div class="mt-2 h-3">
                     {#if $enrolmentMutation.error}
                         {$enrolmentMutation.error.message}
                     {/if}
                 </div>
 
-                <Button class="w-full" disabled={initialCodeValue.length < 6} onclick={() => {
-                    if (initialCodeValue.length !== 6) return;
-                    $enrolmentMutation.mutate({
-                        key: queryData.TOTPKey,
-                        initialCode: initialCodeValue
-                    });
-                }}>Submit Code & Enrol</Button>
+                <Button
+                    class="w-full"
+                    disabled={initialCodeValue.length < 6}
+                    onclick={() => {
+                        if (initialCodeValue.length !== 6) return;
+                        $enrolmentMutation.mutate({
+                            key: queryData.TOTPKey,
+                            initialCode: initialCodeValue
+                        });
+                    }}>Submit Code & Enrol</Button
+                >
             {/if}
         {:else}
             {@const mutationData = $enrolmentMutation.data}
@@ -148,16 +149,22 @@
                 <div class="inline-flex items-center justify-between">
                     <AlertDialog.Title>Recovery Key</AlertDialog.Title>
                 </div>
-                <AlertDialog.Description>This is your recovery key incase you lose access to MFA, don't lose it.</AlertDialog.Description>
+                <AlertDialog.Description
+                    >This is your recovery key incase you lose access to MFA, don't lose it.</AlertDialog.Description
+                >
             </AlertDialog.Header>
 
-            <div class="w-[80%] flex flex-row mx-auto gap-4">
+            <div class="mx-auto flex w-[80%] flex-row gap-4">
                 <Input disabled class="w-full" value={mutationData.recoveryCode} />
-                <Button size="icon" variant="ghost" onclick={() => {
-                    navigator.clipboard.writeText(mutationData.recoveryCode).then(() => {
-                        recoveryCodeCopied = true;
-                    })
-                }}>
+                <Button
+                    size="icon"
+                    variant="ghost"
+                    onclick={() => {
+                        navigator.clipboard.writeText(mutationData.recoveryCode).then(() => {
+                            recoveryCodeCopied = true;
+                        });
+                    }}
+                >
                     {#if recoveryCodeCopied}
                         <Check class="text-green-500" />
                     {:else}
@@ -166,8 +173,12 @@
                 </Button>
             </div>
 
-            <div class="w-[80%] mx-auto my-4">
-                <Checkbox id={`${uid}-confirmation`} bind:checked={recoveryKeyConfirmationChecked} aria-labelledby="terms-label" />
+            <div class="mx-auto my-4 w-[80%]">
+                <Checkbox
+                    id={`${uid}-confirmation`}
+                    bind:checked={recoveryKeyConfirmationChecked}
+                    aria-labelledby="terms-label"
+                />
                 <Label
                     id="terms-label"
                     for={`${uid}-confirmation`}
@@ -177,14 +188,16 @@
                 </Label>
             </div>
 
-            <Button class="w-full" disabled={!recoveryKeyConfirmationChecked} onclick={() => {
-                $dialogOpen = false;
-            }}>
+            <Button
+                class="w-full"
+                disabled={!recoveryKeyConfirmationChecked}
+                onclick={() => {
+                    $dialogOpen = false;
+                }}
+            >
                 Done
             </Button>
         {/if}
-
-
     </AlertDialog.Content>
 </AlertDialog.Root>
 
@@ -204,12 +217,13 @@
             </AlertDialog.Description>
         </AlertDialog.Header>
         <AlertDialog.Footer>
-            <AlertDialog.Cancel>
-                No, Keep it on
-            </AlertDialog.Cancel>
-            <AlertDialog.Action class={buttonVariants({ variant: "destructive" })} onclick={() => {
-                $unenrolmentMutation.mutate()
-            }}>
+            <AlertDialog.Cancel>No, Keep it on</AlertDialog.Cancel>
+            <AlertDialog.Action
+                class={buttonVariants({ variant: 'destructive' })}
+                onclick={() => {
+                    $unenrolmentMutation.mutate();
+                }}
+            >
                 Yes, It's annoying
             </AlertDialog.Action>
         </AlertDialog.Footer>

@@ -47,7 +47,7 @@ export const actions: Actions = {
         const provider = formData.get('provider')?.toString();
         if (!provider) return fail(400);
 
-        unlinkOAuthProviderFromUser(event.locals.DB, provider, event.locals.user!.id);
+        unlinkOAuthProviderFromUser(provider, event.locals.user!.id);
     },
 
     'update-password': async (event) => {
@@ -67,25 +67,11 @@ export const actions: Actions = {
             });
         }
 
-        if (
-            !(await verifyPasswordOfUser(
-                event.locals.DB,
-                event,
-                event.locals.user!.id,
-                form.data.currentPassword
-            ))
-        ) {
+        if (!(await verifyPasswordOfUser(event.locals.user!.id, form.data.currentPassword))) {
             return setError(form, 'currentPassword', 'Password incorrect');
         }
 
-        if (
-            await verifyPasswordOfUser(
-                event.locals.DB,
-                event,
-                event.locals.user!.id,
-                form.data.newPassword
-            )
-        ) {
+        if (await verifyPasswordOfUser(event.locals.user!.id, form.data.newPassword)) {
             setError(form, 'newPassword', 'Password is the same as old password');
             setError(form, 'confirmNewPassword', 'Password is the same as old password');
 
@@ -95,7 +81,7 @@ export const actions: Actions = {
         }
 
         await event.locals.DB.transaction(async (tx_db) => {
-            await assignPasswordToUser(tx_db, event, event.locals.user!.id, form.data.newPassword);
+            await assignPasswordToUser(event.locals.user!.id, form.data.newPassword, tx_db);
         });
     }
 };

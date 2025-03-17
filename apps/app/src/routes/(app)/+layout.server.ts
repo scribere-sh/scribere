@@ -9,7 +9,7 @@ import { route } from '$routes';
 
 export const load: LayoutServerLoad = async (event) => {
     if (!event.locals.session || !event.locals.user) {
-        setReturnPathCookie(event.cookies, event.url.pathname);
+        setReturnPathCookie(event.url.pathname);
     }
 
     if (!event.locals.session || !event.locals.user) {

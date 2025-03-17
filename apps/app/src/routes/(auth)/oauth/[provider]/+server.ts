@@ -45,7 +45,7 @@ export const GET: RequestHandler = async ({ params, cookies, url }) => {
     });
 
     if (returnPath) {
-        setReturnPathCookie(cookies, returnPath);
+        setReturnPathCookie(returnPath);
     }
 
     if (oauthAction) {

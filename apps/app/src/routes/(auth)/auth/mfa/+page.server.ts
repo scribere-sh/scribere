@@ -32,25 +32,18 @@ export const actions: Actions = {
             redirect(303, route('/auth/sign-in'));
         }
 
-        const returnPath = getReturnPathFromCookie(event.cookies) ?? route('/');
+        const returnPath = getReturnPathFromCookie() ?? route('/');
 
-        if (!(await userHasTOTP(event.locals.DB, event.locals.user.id))) {
+        if (!(await userHasTOTP(event.locals.user.id))) {
             redirect(303, returnPath);
         }
 
         let passed = false;
 
         if (form.data.recoveryCode) {
-            if (
-                await verifyRecoveryCode(
-                    event.locals.DB,
-                    event,
-                    event.locals.user.id,
-                    form.data.recoveryCode
-                )
-            ) {
-                await resetUserTOTP(event.locals.DB, event.locals.user.id);
-                await setSessionAsMFANullified(event.locals.DB, event.locals.session.id);
+            if (await verifyRecoveryCode(event.locals.user.id, form.data.recoveryCode)) {
+                await resetUserTOTP(event.locals.user.id);
+                await setSessionAsMFANullified(event.locals.session.id);
                 event.cookies.set('message', 'reset-mfa', {
                     path: '/',
                     httpOnly: true,
@@ -67,7 +60,7 @@ export const actions: Actions = {
         }
 
         if (!passed && form.data.mfa) {
-            if (await verifyUserOTP(event.locals.DB, event.locals.user.id, form.data.mfa)) {
+            if (await verifyUserOTP(event.locals.user.id, form.data.mfa)) {
                 passed = true;
             } else {
                 return setError(form, 'mfa', 'Incorrect 2FA Token');
@@ -76,8 +69,8 @@ export const actions: Actions = {
 
         // somewhat redundant check, but better safe than sorry
         if (passed) {
-            await setSessionAsMFAVerified(event.locals.DB, event.locals.session.id);
-            clearReturnPathCookie(event.cookies);
+            await setSessionAsMFAVerified(event.locals.session.id);
+            clearReturnPathCookie();
             redirect(303, returnPath);
         }
     }

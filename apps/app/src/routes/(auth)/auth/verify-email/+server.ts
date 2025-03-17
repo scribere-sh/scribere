@@ -33,7 +33,7 @@ export const GET: RequestHandler = async (event) => {
         });
     }
 
-    if (!(await verifyArgon2id(event, challenge.challengeArgon, validationToken))) {
+    if (!(await verifyArgon2id(challenge.challengeArgon, validationToken))) {
         console.log('email verification challenge invalid');
         return new Response(null, {
             status: 400

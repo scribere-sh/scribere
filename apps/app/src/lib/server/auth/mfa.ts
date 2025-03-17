@@ -7,10 +7,10 @@ import {
 } from './cryptography';
 import { encodeBase32UpperCaseNoPadding } from '@oslojs/encoding';
 import { createTOTPKeyURI, verifyTOTPWithGracePeriod } from '@oslojs/otp';
-import type { RequestEvent } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 
-import { type DB } from '$db';
+import { getRequestEvent } from '$app/server';
+import { type TX } from '$db';
 import { twoFactorAuthenticationProviderTable } from '$db/tables';
 
 export const TOTP_TYPE = 'totp';
@@ -37,7 +37,10 @@ const MFA_GRACE_PERIOD_SECONDS = 10;
 
 export const generateTOTPKey = generateTokenString;
 
-export const userHasTOTP = async (db: DB, userId: string): Promise<boolean> => {
+export const userHasTOTP = async (userId: string, tx_db?: TX): Promise<boolean> => {
+    const { locals } = getRequestEvent();
+    const db = tx_db ?? locals.DB;
+
     const result = await db
         .select({ type: twoFactorAuthenticationProviderTable.type })
         .from(twoFactorAuthenticationProviderTable)
@@ -70,11 +73,14 @@ export const verifyOTP = (key: string, digits: string) => {
 };
 
 export const enrolUserWithTOTP = async (
-    db: DB,
     userId: string,
     key: string,
-    initial: string
+    initial: string,
+    tx_db?: TX
 ): Promise<boolean> => {
+    const { locals } = getRequestEvent();
+    const db = tx_db ?? locals.DB;
+
     if (!verifyOTP(key, initial)) {
         return false;
     }
@@ -88,7 +94,14 @@ export const enrolUserWithTOTP = async (
     return true;
 };
 
-export const verifyUserOTP = async (db: DB, userId: string, digits: string): Promise<boolean> => {
+export const verifyUserOTP = async (
+    userId: string,
+    digits: string,
+    tx_db?: TX
+): Promise<boolean> => {
+    const { locals } = getRequestEvent();
+    const db = tx_db ?? locals.DB;
+
     const [otpChallengeLookup] = await db
         .select({
             challenge: twoFactorAuthenticationProviderTable.challenge
@@ -110,25 +123,21 @@ export const verifyUserOTP = async (db: DB, userId: string, digits: string): Pro
 
 export const generateMFARecoveryCode = () => encodeBase32UpperCaseNoPadding(generateTokenBytes(16));
 
-export const setRecoveryCodeForUser = async (
-    db: DB,
-    event: RequestEvent,
-    userId: string,
-    code: string
-) => {
+export const setRecoveryCodeForUser = async (userId: string, code: string, tx_db?: TX) => {
+    const { locals } = getRequestEvent();
+    const db = tx_db ?? locals.DB;
+
     db.insert(twoFactorAuthenticationProviderTable).values({
         userId,
         type: TOTP_RECOVERY_TYPE,
-        challenge: await createArgon2id(event, code)
+        challenge: await createArgon2id(code)
     });
 };
 
-export const verifyRecoveryCode = async (
-    db: DB,
-    event: RequestEvent,
-    userId: string,
-    code: string
-) => {
+export const verifyRecoveryCode = async (userId: string, code: string, tx_db?: TX) => {
+    const { locals } = getRequestEvent();
+    const db = tx_db ?? locals.DB;
+
     const [challenge] = await db
         .select({ argon: twoFactorAuthenticationProviderTable.challenge })
         .from(twoFactorAuthenticationProviderTable)
@@ -141,10 +150,13 @@ export const verifyRecoveryCode = async (
 
     if (!challenge) return false;
 
-    return await verifyArgon2id(event, challenge.argon, code);
+    return await verifyArgon2id(challenge.argon, code);
 };
 
-export const resetUserTOTP = async (db: DB, userId: string) => {
+export const resetUserTOTP = async (userId: string, tx_db?: TX) => {
+    const { locals } = getRequestEvent();
+    const db = tx_db ?? locals.DB;
+
     await db
         .delete(twoFactorAuthenticationProviderTable)
         .where(

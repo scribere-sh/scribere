@@ -138,7 +138,12 @@
             >
                 {@render SectionTitle('Multi-Factor Authentication')}
 
-                <MFA {rpc} {utils} currentlyEnrolled={($settingsQuery.data?.mfaMethods ?? []).includes('totp')} isError={$isError} />
+                <MFA
+                    {rpc}
+                    {utils}
+                    currentlyEnrolled={($settingsQuery.data?.mfaMethods ?? []).includes('totp')}
+                    isError={$isError}
+                />
             </section>
 
             <section

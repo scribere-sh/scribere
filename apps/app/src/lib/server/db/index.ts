@@ -17,4 +17,5 @@ export const DB = () => {
     return cacheDB;
 };
 
-export type DB = LibSQLDatabase | Parameters<Parameters<LibSQLDatabase['transaction']>[0]>[0];
+export type DB = LibSQLDatabase;
+export type TX = Parameters<Parameters<LibSQLDatabase['transaction']>[0]>[0];

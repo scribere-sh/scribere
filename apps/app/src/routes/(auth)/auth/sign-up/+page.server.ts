@@ -31,34 +31,36 @@ export const actions: Actions = {
             return setError(form, 'passwordConfirm', 'Passwords do not match');
         }
 
-        if (!(await verifyEmailAddressAvailability(event.locals.DB, form.data.emailAddress))) {
+        if (!(await verifyEmailAddressAvailability(form.data.emailAddress))) {
             return setError(form, 'emailAddress', 'Email Address already in use!');
         }
 
-        if (!(await lookupHandleAvailability(event.locals.DB, form.data.handle))) {
+        if (!(await lookupHandleAvailability(form.data.handle))) {
             return setError(form, 'handle', 'Handle already taken');
         }
 
-        if (!(await verifyPasswordStrength(form.data.password, event))) {
+        if (!(await verifyPasswordStrength(form.data.password))) {
             return setError(form, 'password', 'Password is not strong enough!');
         }
 
         const user = await event.locals.DB.transaction(async (tx_db) => {
-            const user = await createUser(tx_db, {
-                displayName: form.data.displayName,
-                handle: form.data.handle
-            });
+            const user = await createUser(
+                {
+                    displayName: form.data.displayName,
+                    handle: form.data.handle
+                },
+                tx_db
+            );
 
-            await insertEmailAddress(tx_db, form.data.emailAddress, user.id);
-            await assignPasswordToUser(tx_db, event, user.id, form.data.password);
+            await insertEmailAddress(form.data.emailAddress, user.id, tx_db);
+            await assignPasswordToUser(user.id, form.data.password, tx_db);
 
-            const challenge = await generateEmailValidation(tx_db, event, form.data.emailAddress);
+            const challenge = await generateEmailValidation(form.data.emailAddress, tx_db);
             await sendEmailValidationChallenge(
-                tx_db,
                 user.displayName,
                 form.data.emailAddress,
-                event.url,
-                challenge
+                challenge,
+                tx_db
             );
 
             return user;
@@ -70,8 +72,8 @@ export const actions: Actions = {
         };
 
         const sessionToken = generateSessionToken();
-        const session = await createSession(event.locals.DB, sessionToken, user.id, sessionFlags);
-        setSessionToken(event, sessionToken, session.expiresAt);
+        const session = await createSession(sessionToken, user.id, sessionFlags);
+        setSessionToken(sessionToken, session.expiresAt);
 
         redirect(303, route('/'));
     }) satisfies Action

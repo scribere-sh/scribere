@@ -29,15 +29,14 @@ export const actions: Actions = {
         if (!user) return;
 
         await event.locals.DB.transaction(async (tx_db) => {
-            const generated = await generateAndSaveResetChallenge(tx_db, event, user.id);
+            const generated = await generateAndSaveResetChallenge(user.id, tx_db);
 
             await sendPasswordResetEmail(
-                tx_db,
-                event.url,
                 form.data.email,
                 user.displayName,
                 generated.ref,
-                generated.token
+                generated.token,
+                tx_db
             );
         });
     }

@@ -1,7 +1,7 @@
 import { decodeBase32IgnorePadding, encodeBase32LowerCaseNoPadding } from '@oslojs/encoding';
-import type { RequestEvent } from '@sveltejs/kit';
 
 import { dev } from '$app/environment';
+import { getRequestEvent } from '$app/server';
 import { env } from '$env/dynamic/private';
 
 export const generateTokenBytes = (length: number = 32) => {
@@ -19,7 +19,13 @@ export const decodeTokenStringToBytes = (token: string): Uint8Array => {
     return decodeBase32IgnorePadding(token);
 };
 
-export const createArgon2id = async (event: RequestEvent, data: string): Promise<string> => {
+export const createArgon2id = async (data: string): Promise<string> => {
+    const {
+        fetch,
+        platform,
+        request: { signal }
+    } = getRequestEvent();
+
     const body = {
         password: data,
         options: {
@@ -37,14 +43,14 @@ export const createArgon2id = async (event: RequestEvent, data: string): Promise
         const headers = new Headers();
         headers.set(k, v);
 
-        response = await event.fetch(`https://${env.DEV_AUTH_ARGON2_DOMAIN}/hash`, {
+        response = await fetch(`https://${env.DEV_AUTH_ARGON2_DOMAIN}/hash`, {
             method: 'POST',
             body: JSON.stringify(body),
             headers,
-            signal: event.request?.signal
+            signal
         });
     } else {
-        response = await event.platform!.env.ARGON2.fetch('http://internal/hash', {
+        response = await platform!.env.ARGON2.fetch('http://internal/hash', {
             method: 'POST',
             body: JSON.stringify(body)
         });
@@ -63,11 +69,13 @@ export const createArgon2id = async (event: RequestEvent, data: string): Promise
     }
 };
 
-export const verifyArgon2id = async (
-    event: RequestEvent,
-    saved: string,
-    data: string
-): Promise<boolean> => {
+export const verifyArgon2id = async (saved: string, data: string): Promise<boolean> => {
+    const {
+        fetch,
+        platform,
+        request: { signal }
+    } = getRequestEvent();
+
     const body = {
         password: data,
         hash: saved
@@ -81,14 +89,14 @@ export const verifyArgon2id = async (
         const headers = new Headers();
         headers.set(k, v);
 
-        response = await event.fetch(`https://${env.DEV_AUTH_ARGON2_DOMAIN}/verify`, {
+        response = await fetch(`https://${env.DEV_AUTH_ARGON2_DOMAIN}/verify`, {
             method: 'POST',
             body: JSON.stringify(body),
             headers,
-            signal: event.request?.signal
+            signal: signal
         });
     } else {
-        response = await event.platform!.env.ARGON2.fetch('http://internal/verify', {
+        response = await platform!.env.ARGON2.fetch('http://internal/verify', {
             method: 'POST',
             body: JSON.stringify(body)
         });

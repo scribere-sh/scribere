@@ -1,10 +1,10 @@
 import { createArgon2id, verifyArgon2id } from './cryptography';
 import { sha1 } from '@oslojs/crypto/sha1';
 import { encodeHexLowerCase } from '@oslojs/encoding';
-import type { RequestEvent } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 
-import { type DB } from '$db';
+import { getRequestEvent } from '$app/server';
+import { type TX } from '$db';
 import { authProviderTable } from '$db/tables';
 
 /**
@@ -17,10 +17,9 @@ import { authProviderTable } from '$db/tables';
  */
 const sha1Password = (pw: string) => encodeHexLowerCase(sha1(new TextEncoder().encode(pw)));
 
-export const verifyPasswordStrength = async (
-    password: string,
-    { fetch }: RequestEvent
-): Promise<boolean> => {
+export const verifyPasswordStrength = async (password: string): Promise<boolean> => {
+    const { fetch } = getRequestEvent();
+
     // todo: check string length?
     // it's done already in the form
 
@@ -38,13 +37,11 @@ export const verifyPasswordStrength = async (
     return found === undefined;
 };
 
-export const assignPasswordToUser = async (
-    db: DB,
-    event: RequestEvent,
-    userId: string,
-    password: string
-) => {
-    const passwordHash = await createPasswordHash(event, password);
+export const assignPasswordToUser = async (userId: string, password: string, tx_db?: TX) => {
+    const { locals } = getRequestEvent();
+    const db = tx_db ?? locals.DB;
+
+    const passwordHash = await createArgon2id(password);
 
     await db
         .delete(authProviderTable)
@@ -58,11 +55,13 @@ export const assignPasswordToUser = async (
 };
 
 export const verifyPasswordOfUser = async (
-    db: DB,
-    event: RequestEvent,
     userId: string,
-    providedPassword: string
+    providedPassword: string,
+    tx_db?: TX
 ) => {
+    const { locals } = getRequestEvent();
+    const db = tx_db ?? locals.DB;
+
     const [password] = await db
         .select({ hash: authProviderTable.hash })
         .from(authProviderTable)
@@ -72,31 +71,21 @@ export const verifyPasswordOfUser = async (
         return false;
     }
 
-    return await verifyArgon2id(event, password.hash, providedPassword);
+    return await verifyArgon2id(password.hash, providedPassword);
 };
 
-export const createPasswordHash = async (event: RequestEvent, password: string) => {
-    return await createArgon2id(event, password);
+export const validatePassword = async (storedHash: string, password: string) => {
+    return await verifyArgon2id(storedHash, password);
 };
 
-export const validatePassword = async (
-    event: RequestEvent,
-    storedHash: string,
-    password: string
-) => {
-    return await verifyArgon2id(event, storedHash, password);
-};
+export const updateUserPassword = async (userId: string, newPassword: string, tx_db?: TX) => {
+    const { locals } = getRequestEvent();
+    const db = tx_db ?? locals.DB;
 
-export const updateUserPassword = async (
-    db: DB,
-    event: RequestEvent,
-    userId: string,
-    newPassword: string
-) => {
     await db
         .update(authProviderTable)
         .set({
-            hash: await createArgon2id(event, newPassword)
+            hash: await createArgon2id(newPassword)
         })
         .where(and(eq(authProviderTable.type, 'password'), eq(authProviderTable.userId, userId)));
 };

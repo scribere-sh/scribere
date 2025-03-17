@@ -1,6 +1,7 @@
 import { eq } from 'drizzle-orm';
 
-import { type DB } from '$db';
+import { getRequestEvent } from '$app/server';
+import { type TX } from '$db';
 import { emailAddressTable } from '$db/tables';
 
 /**
@@ -11,7 +12,10 @@ import { emailAddressTable } from '$db/tables';
  *
  * @param emailAddress The email address to add
  */
-export const insertEmailAddress = async (db: DB, emailAddress: string, userId: string) => {
+export const insertEmailAddress = async (emailAddress: string, userId: string, tx_db?: TX) => {
+    const { locals } = getRequestEvent();
+    const db = tx_db ?? locals.DB;
+
     await db.insert(emailAddressTable).values({
         userId,
         emailAddress,
@@ -24,12 +28,16 @@ export const insertEmailAddress = async (db: DB, emailAddress: string, userId: s
  * Verify that the email address is available
  */
 export const verifyEmailAddressAvailability = async (
-    db: DB,
-    emailAddress: string
+    emailAddress: string,
+    tx_db?: TX
 ): Promise<boolean> => {
+    const { locals } = getRequestEvent();
+    const db = tx_db ?? locals.DB;
+
     const query = await db
         .select({ emailAddress: emailAddressTable.emailAddress })
         .from(emailAddressTable)
         .where(eq(emailAddressTable.emailAddress, emailAddress));
+
     return query.length === 0;
 };

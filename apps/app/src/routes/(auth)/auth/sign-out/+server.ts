@@ -5,9 +5,9 @@ import { deleteSessionToken, invalidateSession } from '$auth/session';
 import { route } from '$routes';
 
 export const GET: RequestHandler = async (event) => {
-    if (event.locals.session) await invalidateSession(event.locals.DB, event.locals.session.id);
+    if (event.locals.session) await invalidateSession(event.locals.session.id);
 
-    deleteSessionToken(event);
+    deleteSessionToken();
     event.cookies.set('message', 'logged-out', {
         path: '/',
         httpOnly: true,

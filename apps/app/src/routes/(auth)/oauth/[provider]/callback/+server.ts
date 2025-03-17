@@ -43,7 +43,7 @@ export const GET: RequestHandler = async (event) => {
     const storedState = event.cookies.get(STATE_COOKIE_NAME);
 
     const oauthAction = event.cookies.get(OAUTH_ACTION_NAME);
-    const returnPath = getReturnPathFromCookie(event.cookies) ?? route('/');
+    const returnPath = getReturnPathFromCookie() ?? route('/');
 
     if (!state || !code || state !== storedState) {
         return new Response(null, {
@@ -77,12 +77,7 @@ export const GET: RequestHandler = async (event) => {
         if (oauthAction === 'link' && event.locals.session) {
             const userId = event.locals.session.userId;
 
-            await linkOAuthProviderToUser(
-                event.locals.DB,
-                providerUserId,
-                event.params.provider,
-                userId
-            );
+            await linkOAuthProviderToUser(providerUserId, event.params.provider, userId);
 
             console.log('redirecting');
 
@@ -95,7 +90,6 @@ export const GET: RequestHandler = async (event) => {
         }
 
         const localUserId = await lookupUserIdFromOAuthProvider(
-            event.locals.DB,
             providerUserId,
             event.params.provider
         );
@@ -107,20 +101,20 @@ export const GET: RequestHandler = async (event) => {
         }
 
         return await event.locals.DB.transaction(async (tx_db) => {
-            const userHasMFA = await userHasTOTP(tx_db, localUserId);
+            const userHasMFA = await userHasTOTP(localUserId, tx_db);
 
             const sessionFlags: SessionFlags = {
                 mfaVerified: userHasMFA ? OAUTH_SKIPS_MFA : null
             };
 
             // if session already exists, invalidate it first
-            if (event.locals.session) await invalidateSession(tx_db, event.locals.session.id);
+            if (event.locals.session) await invalidateSession(event.locals.session.id, tx_db);
 
             const sessionToken = generateSessionToken();
-            const session = await createSession(tx_db, sessionToken, localUserId, sessionFlags);
-            setSessionToken(event, sessionToken, session.expiresAt);
+            const session = await createSession(sessionToken, localUserId, sessionFlags, tx_db);
+            setSessionToken(sessionToken, session.expiresAt);
 
-            if (!userHasMFA) clearReturnPathCookie(event.cookies);
+            if (!userHasMFA) clearReturnPathCookie();
             const redirectPath = userHasMFA && !OAUTH_SKIPS_MFA ? route('/auth/mfa') : returnPath;
 
             return new Response(null, {
