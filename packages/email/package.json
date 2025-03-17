@@ -47,5 +47,8 @@
     },
     "dependencies": {
         "mustache": "^4.2.0"
+    },
+    "volta": {
+        "extends": "../../package.json"
     }
 }

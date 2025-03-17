@@ -5,7 +5,7 @@ import { setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import { AUTH_RETURN_PATH } from '$auth';
-import { verifyPasswordOfUser } from '$auth/password';
+import { assignPasswordToUser, verifyPasswordOfUser } from '$auth/password';
 import { unlinkOAuthProviderFromUser } from '$auth/user';
 
 import { resetPasswordAccountSettingsSchema } from '$client/forms';
@@ -77,6 +77,26 @@ export const actions: Actions = {
         ) {
             return setError(form, 'currentPassword', 'Password incorrect');
         }
+
+        if (
+            await verifyPasswordOfUser(
+                event.locals.DB,
+                event,
+                event.locals.user!.id,
+                form.data.newPassword
+            )
+        ) {
+            setError(form, 'newPassword', 'Password is the same as old password');
+            setError(form, 'confirmNewPassword', 'Password is the same as old password');
+
+            return fail(400, {
+                form
+            });
+        }
+
+        await event.locals.DB.transaction(async (tx_db) => {
+            await assignPasswordToUser(tx_db, event, event.locals.user!.id, form.data.newPassword);
+        });
     }
 };
 

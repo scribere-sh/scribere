@@ -12,12 +12,14 @@
         rpc,
         utils,
 
-        current
+        current,
+        isError
     }: {
         rpc: ReturnType<typeof trpc>;
         utils: ReturnType<ReturnType<typeof trpc>['createUtils']>;
 
         current: string;
+        isError: boolean;
     } = $props();
 
     const uid = $props.id();
@@ -41,6 +43,8 @@
     });
 
     const submitUpdates = (event: Event) => {
+        if (isError) return;
+
         if (event.target instanceof HTMLInputElement) {
             const value = event.target.value.trim();
             if (value === current || value.length === 0) return;
@@ -61,7 +65,7 @@
         &#64<Input
             id={uid}
             placeholder={current}
-            disabled={inputDisabled}
+            disabled={inputDisabled || isError}
             bind:value
             onkeyup={debounce(submitUpdates, 1000)}
         />

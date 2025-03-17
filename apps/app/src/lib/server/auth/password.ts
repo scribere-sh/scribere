@@ -46,6 +46,10 @@ export const assignPasswordToUser = async (
 ) => {
     const passwordHash = await createPasswordHash(event, password);
 
+    await db
+        .delete(authProviderTable)
+        .where(and(eq(authProviderTable.userId, userId), eq(authProviderTable.type, 'password')));
+
     await db.insert(authProviderTable).values({
         userId,
         type: 'password',
@@ -62,7 +66,7 @@ export const verifyPasswordOfUser = async (
     const [password] = await db
         .select({ hash: authProviderTable.hash })
         .from(authProviderTable)
-        .where(eq(authProviderTable.userId, userId));
+        .where(and(eq(authProviderTable.userId, userId), eq(authProviderTable.type, 'password')));
 
     if (!password || !password.hash) {
         return false;

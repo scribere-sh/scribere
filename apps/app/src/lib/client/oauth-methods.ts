@@ -13,7 +13,7 @@ export type OAuthProviderItem = {
     /**
      * Name to display in the button, will be placed in the template
      *
-     * "Log in with {platform}"
+     * "Sign in with {platform}"
      */
     name: string;
     /**

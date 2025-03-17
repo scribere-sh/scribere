@@ -35,6 +35,6 @@
         variant="link"
         href={route('/auth/sign-in')}
     >
-        Log In
+        Sign In
     </Button>
 </div>

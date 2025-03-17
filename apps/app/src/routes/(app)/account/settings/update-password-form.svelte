@@ -6,28 +6,40 @@
 
     import * as Form from '@scribere/ui/form';
     import { Input } from '@scribere/ui/input';
+    import { LoadingSpinner, type SpinnerState } from '@scribere/ui/loading-spinner';
 
     import { resetPasswordAccountSettingsSchema } from '$client/forms';
 
     const {
-        form: _form
+        form: _form,
+
+        isError
     }: {
         form: PageData['updatePasswordForm'];
+        isError: boolean;
     } = $props();
 
     let disabled = $state(false);
+    let status: SpinnerState | null = $state(null);
 
     const form = superForm(_form, {
-        validators: zodClient(resetPasswordAccountSettingsSchema)
+        validators: zodClient(resetPasswordAccountSettingsSchema),
+        onSubmit: () => {
+            status = 'loading';
+        },
+        onResult: ({ result }) => {
+            if (['error', 'failure'].includes(result.type)) status = 'error';
+            if (result.type === 'success') status = 'complete';
+        }
     });
 
-    const { form: formData, enhance, } = form;
+    const { form: formData, enhance } = form;
 </script>
 
 <span class="text-xl">Change Password</span>
 
 <form
-    class="mb-8 mr-12 mt-4 grid grid-cols-2 gap-x-8"
+    class="grid grid-cols-2 gap-x-8 pb-8 pr-12 pt-4"
     action="?/update-password"
     method="POST"
     use:enhance
@@ -38,7 +50,7 @@
                 <Form.Label>Current Password</Form.Label>
                 <Input
                     {...props}
-                    {disabled}
+                    disabled={disabled || isError}
                     placeholder="************"
                     type="password"
                     bind:value={$formData.currentPassword}
@@ -59,7 +71,7 @@
                 <Form.Label>New Password</Form.Label>
                 <Input
                     {...props}
-                    {disabled}
+                    disabled={disabled || isError}
                     placeholder="************"
                     type="password"
                     bind:value={$formData.newPassword}
@@ -75,7 +87,7 @@
                 <Form.Label>Confirm New Password</Form.Label>
                 <Input
                     {...props}
-                    {disabled}
+                    disabled={disabled || isError}
                     placeholder="************"
                     type="password"
                     bind:value={$formData.confirmNewPassword}
@@ -86,5 +98,12 @@
         <div class="mb-2 h-4"> <Form.FieldErrors /></div>
     </Form.Field>
 
-    <Form.Button {disabled} variant="secondary" class="mt-4 w-1/2">Change Password</Form.Button>
+    <div class="mt-4 grid grid-cols-2 place-items-center">
+        <Form.Button disabled={disabled || isError} variant="secondary">Change Password</Form.Button
+        >
+
+        {#if status}
+            <LoadingSpinner state={status} />
+        {/if}
+    </div>
 </form>

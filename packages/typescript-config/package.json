@@ -9,5 +9,8 @@
         "./svelte": {
             "default": "./svelte.json"
         }
+    },
+    "volta": {
+        "extends": "../../package.json"
     }
 }

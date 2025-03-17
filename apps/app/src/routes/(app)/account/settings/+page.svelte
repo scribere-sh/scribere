@@ -1,11 +1,12 @@
 <script lang="ts">
     import type { PageProps } from './$types';
 
+    import MFA from './mfa.svelte';
     import UpdateDisplayNameForm from './update-display-name.svelte';
     import UpdateHandle from './update-handle.svelte';
     import UpdatePasswordForm from './update-password-form.svelte';
-    import MFA from './mfa.svelte';
     import X from '@lucide/svelte/icons/x';
+    import { derived } from 'svelte/store';
 
     import * as Avatar from '@scribere/ui/avatar';
     import * as Card from '@scribere/ui/card';
@@ -28,6 +29,10 @@
     const settingsQuery = data.userOAuthSettings();
 
     const scrollspy = createScrollSpy({ rootMargin: '-50% 0px' });
+
+    const isError = derived([profileQuery, settingsQuery], (a) =>
+        a.map((q) => q.isError).reduce((prev, curr) => prev || curr, false)
+    );
 </script>
 
 {#snippet SectionTitle(title: string)}
@@ -92,7 +97,7 @@
             <h1 class="mb-12 text-3xl">Account Settings</h1>
 
             <section
-                class="[scroll-margin-top:calc(var(--header-height)+2rem)] mb-4"
+                class="mb-4 [scroll-margin-top:calc(var(--header-height)+2rem)]"
                 id="profile"
                 title="Profile"
                 use:scrollspy.spy
@@ -103,22 +108,37 @@
                     current={$profileQuery.data?.displayName ?? '...'}
                     {utils}
                     {rpc}
+                    isError={$isError}
                 />
 
-                <UpdateHandle current={$profileQuery.data?.handle ?? '...'} {utils} {rpc} />
+                <UpdateHandle
+                    current={$profileQuery.data?.handle ?? '...'}
+                    {utils}
+                    {rpc}
+                    isError={$isError}
+                />
             </section>
 
             <section
-                class="[scroll-margin-top:calc(var(--header-height)+2rem)] mb-4"
-                id="password-and-mfa"
-                title="Password & MFA"
+                class="mb-4 [scroll-margin-top:calc(var(--header-height)+2rem)]"
+                id="password"
+                title="Password"
                 use:scrollspy.spy
             >
-                {@render SectionTitle('Password & MFA')}
+                {@render SectionTitle('Password')}
 
-                <UpdatePasswordForm form={data.updatePasswordForm} />
+                <UpdatePasswordForm form={data.updatePasswordForm} isError={$isError} />
+            </section>
 
-                <MFA />
+            <section
+                class="mb-4 [scroll-margin-top:calc(var(--header-height)+2rem)]"
+                id="mfa"
+                title="Multi-Factor Authentication"
+                use:scrollspy.spy
+            >
+                {@render SectionTitle('Multi-Factor Authentication')}
+
+                <MFA {rpc} {utils} currentlyEnrolled={($settingsQuery.data?.mfaMethods ?? []).includes('totp')} isError={$isError} />
             </section>
 
             <section
@@ -155,7 +175,9 @@
                                 class="w-24"
                                 variant={isLinked ? 'destructive' : 'default'}
                                 type="submit"
-                                disabled={!(isActive || isLinked) || $settingsQuery.isLoading}
+                                disabled={!(isActive || isLinked) ||
+                                    $settingsQuery.isLoading ||
+                                    $isError}
                             >
                                 {$settingsQuery.isLoading ? '...' : isLinked ? 'Unlink' : 'Link'}
                             </Button>

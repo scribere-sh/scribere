@@ -37,7 +37,7 @@
     <Card.Root class="flex flex-row" id="main-content">
         <div class="w-96">
             <Card.Header>
-                <Card.Title>Log in</Card.Title>
+                <Card.Title>Sign in</Card.Title>
             </Card.Header>
             <Card.Content class="flex flex-row gap-6">
                 <LogInForm form={data.form} bind:disabled />
@@ -72,7 +72,7 @@
                     {:else}
                         <div class="w-[24px]"></div>
                     {/if}
-                    <span class="select-none">Log in with {method.name}</span>
+                    <span class="select-none">Sign in with {method.name}</span>
                 </Button>
             {/each}
         </div>

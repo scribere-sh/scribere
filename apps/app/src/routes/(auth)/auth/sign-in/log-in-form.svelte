@@ -69,5 +69,5 @@
         <Form.FieldErrors />
     </Form.Field>
 
-    <Form.Button {disabled} class="mt-4 w-full">Log In</Form.Button>
+    <Form.Button {disabled} class="mt-4 w-full">Sign In</Form.Button>
 </form>
