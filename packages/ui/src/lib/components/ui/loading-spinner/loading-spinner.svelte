@@ -36,7 +36,7 @@
             r="20.2"
             fill="none"
             stroke-width="3.2"
-            class="animate-spinner-stroke stroke-inherit [stroke-linecap:round] [stroke-dasharray:80px,200px] [stroke-dashoffset:0]"
+            class="animate-spinner-stroke stroke-inherit [stroke-dasharray:80px,200px] [stroke-dashoffset:0] [stroke-linecap:round]"
         ></circle>
     </svg>
 {:else if state === 'complete'}

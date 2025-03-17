@@ -14,6 +14,7 @@ import {
     userHasTOTP,
     verifyOTP
 } from '$auth/mfa';
+import { setSessionAsMFAVerified } from '$auth/session';
 
 import { displayNameSchema, handleSchema } from '$client/forms/parts';
 import {
@@ -181,6 +182,20 @@ const router = t.router({
                 await setRecoveryCodeForUser(ctx.session.userId, recoveryCode, tx_db);
 
                 await enrolUserWithTOTP(ctx.session.userId, input.key, input.initialCode, tx_db);
+
+                await tx_db
+                    .update(sessionsTable)
+                    .set({
+                        mfaVerified: false
+                    })
+                    .where(
+                        and(
+                            eq(sessionsTable.userId, ctx.session.userId),
+                            not(eq(sessionsTable.id, ctx.session.id))
+                        )
+                    );
+
+                await setSessionAsMFAVerified(ctx.session.id, tx_db);
 
                 return recoveryCode;
             });
