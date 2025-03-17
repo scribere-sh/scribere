@@ -18,7 +18,7 @@
     },
     "packageManager": "pnpm@10.5.0",
     "engines": {
-        "node": "23.8.0"
+        "node": "23.9.0"
     },
     "dependencies": {
         "@kitql/helpers": "~0.8.12",
@@ -74,8 +74,5 @@
         "vite-plugin-kit-routes": "~0.8.3",
         "vitest": "^3.0.9",
         "wrangler": "^4.0.0"
-    },
-    "volta": {
-        "extends": "../../package.json"
     }
 }
