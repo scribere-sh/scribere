@@ -49,13 +49,16 @@
                     maxlength={6}
                     {...props}
                     bind:value={$formData.mfa}
-                    bind:ref={mfaRef}
                 >
                     {#snippet children({ cells })}
                         <InputOTP.Group>
                             <!-- eslint-disable-next-line svelte/require-each-key -->
-                            {#each cells.slice(0, 3) as cell}
-                                <InputOTP.Slot {cell} />
+                            {#each cells.slice(0, 3) as cell, index}
+                                {#if index === 0}
+                                    <InputOTP.Slot {cell} bind:ref={mfaRef} />
+                                {:else}
+                                    <InputOTP.Slot {cell} />
+                                {/if}
                             {/each}
                         </InputOTP.Group>
                         <InputOTP.Separator />
