@@ -21,10 +21,7 @@
 
     $effect(() => {
         if (!mfaRef) return;
-
-        const inputElement = mfaRef?.querySelector<HTMLInputElement>('input[name="mfa"]')
-        console.log("Focussing?", { mfaRef, inputElement });
-        
+        const inputElement = mfaRef.querySelector<HTMLInputElement>('input[name="mfa"]');
         if (inputElement) inputElement.focus();
     });
 
@@ -41,7 +38,7 @@
         }
     });
 
-    const { form: formData, enhance } = form;
+    const { form: formData, enhance, submit } = form;
 </script>
 
 <form method="POST" use:enhance>
@@ -50,6 +47,7 @@
             {#snippet children({ props }: PropsObj)}
                 <InputOTP.Root
                     {disabled}
+                    onComplete={() => submit()}
                     maxlength={6}
                     {...props}
                     bind:value={$formData.mfa}

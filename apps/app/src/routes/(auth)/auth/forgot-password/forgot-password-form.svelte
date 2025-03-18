@@ -25,7 +25,7 @@
 
     $effect(() => {
         if (emailRef) emailRef.focus();
-    })
+    });
 
     const form = superForm(_form, {
         validators: zodClient(forgotPasswordFormSchema),

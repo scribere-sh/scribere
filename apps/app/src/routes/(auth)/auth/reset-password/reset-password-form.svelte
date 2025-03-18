@@ -25,7 +25,7 @@
 
     let pwInput: HTMLElement | null = $state(null);
 
-    $effect(() => { 
+    $effect(() => {
         if (pwInput) pwInput.focus();
     });
 
