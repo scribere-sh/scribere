@@ -3,6 +3,10 @@
     "ui": "tui",
     "globalDependencies": [
         ".env", "pnpm-lock.yaml"
+    ],    
+    "globalEnv": [
+        "TURSO_URL",
+        "TURSO_AUTH_TOKEN"
     ],
     "tasks": {
         "dev": {
@@ -31,6 +35,15 @@
         "db:migrate": {
             "cache": false,
             "dependsOn": ["@scribere/app#db:migrate"]
+        },
+        "test": {
+            "cache": false,
+            "dependsOn": ["^test"]
+        },
+        "test:dev": {
+            "cache": false,
+            "persistent": true,
+            "dependsOn": ["^test"]
         }
     }
 }

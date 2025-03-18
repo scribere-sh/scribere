@@ -9,36 +9,50 @@
  * PAGES
  */
 export const PAGES = {
-	'/': `/`,
-	'/auth': `/auth`,
-	'/debug': `/debug`,
-	'/debug/editor': `/debug/editor`
+    '/': `/`,
+    '/account/profile': `/account/profile`,
+    '/account/settings': `/account/settings`,
+    '/debug': `/debug`,
+    '/debug/editor': `/debug/editor`,
+    '/auth/forgot-password': `/auth/forgot-password`,
+    '/auth/mfa': `/auth/mfa`,
+    '/auth/reset-password': `/auth/reset-password`,
+    '/auth/sign-in': `/auth/sign-in`,
+    '/auth/sign-up': `/auth/sign-up`
 };
 
 /**
  * SERVERS
  */
 export const SERVERS = {
-	'POST /api/assets': `/api/assets`,
-	'PUT /api/assets': `/api/assets`,
-	'GET /api/assets': `/api/assets`,
-	'DELETE /api/assets': `/api/assets`,
-	'GET /oauth/[provider=oauth_provider]': (params: {
-		provider: ExtractParamType<typeof import('../params/oauth_provider.ts').match>;
-	}) => {
-		return `/oauth/${params['provider']}`;
-	},
-	'GET /oauth/[provider=oauth_provider]/callback': (params: {
-		provider: ExtractParamType<typeof import('../params/oauth_provider.ts').match>;
-	}) => {
-		return `/oauth/${params['provider']}/callback`;
-	}
+    'POST /api/assets': `/api/assets`,
+    'PUT /api/assets': `/api/assets`,
+    'GET /api/assets': `/api/assets`,
+    'DELETE /api/assets': `/api/assets`,
+    'GET /auth/sign-out': `/auth/sign-out`,
+    'GET /auth/verify-email': `/auth/verify-email`,
+    'GET /oauth/[provider]': (params: { provider: string | number }) => {
+        return `/oauth/${params['provider']}`;
+    },
+    'GET /oauth/[provider]/callback': (params: { provider: string | number }) => {
+        return `/oauth/${params['provider']}/callback`;
+    },
+    'GET /robots.txt': `/robots.txt`
 };
 
 /**
  * ACTIONS
  */
-export const ACTIONS = {};
+export const ACTIONS = {
+    'link-oauth /account/settings': `/account/settings?/link-oauth`,
+    'unlink-oauth /account/settings': `/account/settings?/unlink-oauth`,
+    'update-password /account/settings': `/account/settings?/update-password`,
+    'default /auth/forgot-password': `/auth/forgot-password`,
+    'default /auth/mfa': `/auth/mfa`,
+    'default /auth/reset-password': `/auth/reset-password`,
+    'default /auth/sign-in': `/auth/sign-in`,
+    'default /auth/sign-up': `/auth/sign-up`
+};
 
 /**
  * LINKS
@@ -51,38 +65,38 @@ type ParamValue = string | number | undefined;
  * Append search params to a string
  */
 export const appendSp = (
-	sp?: Record<string, ParamValue | ParamValue[]>,
-	prefix: '?' | '&' = '?'
+    sp?: Record<string, ParamValue | ParamValue[]>,
+    prefix: '?' | '&' = '?'
 ) => {
-	if (sp === undefined) return '';
+    if (sp === undefined) return '';
 
-	const params = new URLSearchParams();
-	const append = (n: string, v: ParamValue) => {
-		if (v !== undefined) {
-			params.append(n, String(v));
-		}
-	};
+    const params = new URLSearchParams();
+    const append = (n: string, v: ParamValue) => {
+        if (v !== undefined) {
+            params.append(n, String(v));
+        }
+    };
 
-	let anchor = '';
-	for (const [name, val] of Object.entries(sp)) {
-		if (name === '__KIT_ROUTES_ANCHOR__' && val !== undefined) {
-			anchor = `#${val}`;
-			continue;
-		}
-		if (Array.isArray(val)) {
-			for (const v of val) {
-				append(name, v);
-			}
-		} else {
-			append(name, val);
-		}
-	}
+    let anchor = '';
+    for (const [name, val] of Object.entries(sp)) {
+        if (name === '__KIT_ROUTES_ANCHOR__' && val !== undefined) {
+            anchor = `#${val}`;
+            continue;
+        }
+        if (Array.isArray(val)) {
+            for (const v of val) {
+                append(name, v);
+            }
+        } else {
+            append(name, val);
+        }
+    }
 
-	const formatted = params.toString();
-	if (formatted || anchor) {
-		return `${prefix}${formatted}${anchor}`.replace('?#', '#');
-	}
-	return '';
+    const formatted = params.toString();
+    if (formatted || anchor) {
+        return `${prefix}${formatted}${anchor}`.replace('?#', '#');
+    }
+    return '';
 };
 
 /**
@@ -94,12 +108,12 @@ export const appendSp = (
  * ```
  */
 export const currentSp = () => {
-	const params = new URLSearchParams(window.location.search);
-	const record: Record<string, string> = {};
-	for (const [key, value] of params.entries()) {
-		record[key] = value;
-	}
-	return record;
+    const params = new URLSearchParams(window.location.search);
+    const record: Record<string, string> = {};
+    for (const [key, value] of params.entries()) {
+        record[key] = value;
+    }
+    return record;
 };
 
 /* type helpers for route function */
@@ -111,10 +125,10 @@ const AllObjs = { ...PAGES, ...ACTIONS, ...SERVERS, ...LINKS };
 type AllTypes = typeof AllObjs;
 
 export type Routes = keyof AllTypes extends `${string}/${infer Route}`
-	? `/${Route}`
-	: keyof AllTypes;
+    ? `/${Route}`
+    : keyof AllTypes;
 export const routes = [
-	...new Set(Object.keys(AllObjs).map((route) => /^\/.*|[^ ]?\/.*$/.exec(route)?.[0] ?? route))
+    ...new Set(Object.keys(AllObjs).map((route) => /^\/.*|[^ ]?\/.*$/.exec(route)?.[0] ?? route))
 ] as Routes[];
 
 /**
@@ -126,23 +140,18 @@ export const routes = [
  * ```
  */
 export function route<T extends FunctionKeys<AllTypes>>(
-	key: T,
-	...params: FunctionParams<AllTypes[T]>
+    key: T,
+    ...params: FunctionParams<AllTypes[T]>
 ): string;
 export function route<T extends NonFunctionKeys<AllTypes>>(key: T): string;
 export function route<T extends keyof AllTypes>(key: T, ...params: any[]): string {
-	if ((AllObjs[key] as any) instanceof Function) {
-		const element = (AllObjs as any)[key] as (...args: any[]) => string;
-		return element(...params);
-	} else {
-		return AllObjs[key] as string;
-	}
+    if ((AllObjs[key] as any) instanceof Function) {
+        const element = (AllObjs as any)[key] as (...args: any[]) => string;
+        return element(...params);
+    } else {
+        return AllObjs[key] as string;
+    }
 }
-
-/* type helpers param & predicate */
-type ExtractFnPredicate<T> = T extends (param: any) => param is infer U ? U : never;
-type ExtractParamType<T extends (param: any) => any> =
-	ExtractFnPredicate<T> extends never ? Parameters<T>[0] : ExtractFnPredicate<T>;
 
 /**
  * Add this type as a generic of the vite plugin `kitRoutes<KIT_ROUTES>`.
@@ -160,16 +169,39 @@ type ExtractParamType<T extends (param: any) => any> =
  * ```
  */
 export type KIT_ROUTES = {
-	PAGES: { '/': never; '/auth': never; '/debug': never; '/debug/editor': never };
-	SERVERS: {
-		'POST /api/assets': never;
-		'PUT /api/assets': never;
-		'GET /api/assets': never;
-		'DELETE /api/assets': never;
-		'GET /oauth/[provider=oauth_provider]': 'provider';
-		'GET /oauth/[provider=oauth_provider]/callback': 'provider';
-	};
-	ACTIONS: Record<string, never>;
-	LINKS: Record<string, never>;
-	Params: { provider: never };
+    PAGES: {
+        '/': never;
+        '/account/profile': never;
+        '/account/settings': never;
+        '/debug': never;
+        '/debug/editor': never;
+        '/auth/forgot-password': never;
+        '/auth/mfa': never;
+        '/auth/reset-password': never;
+        '/auth/sign-in': never;
+        '/auth/sign-up': never;
+    };
+    SERVERS: {
+        'POST /api/assets': never;
+        'PUT /api/assets': never;
+        'GET /api/assets': never;
+        'DELETE /api/assets': never;
+        'GET /auth/sign-out': never;
+        'GET /auth/verify-email': never;
+        'GET /oauth/[provider]': 'provider';
+        'GET /oauth/[provider]/callback': 'provider';
+        'GET /robots.txt': never;
+    };
+    ACTIONS: {
+        'link-oauth /account/settings': never;
+        'unlink-oauth /account/settings': never;
+        'update-password /account/settings': never;
+        'default /auth/forgot-password': never;
+        'default /auth/mfa': never;
+        'default /auth/reset-password': never;
+        'default /auth/sign-in': never;
+        'default /auth/sign-up': never;
+    };
+    LINKS: Record<string, never>;
+    Params: { provider: never };
 };

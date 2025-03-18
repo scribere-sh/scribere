@@ -7,7 +7,7 @@ insert_final_newline = true
 [*.{js,ts,svelte}]
 charset = utf-8
 
-[*.{ts,js}]
+[*.{ts,js,mjs,mts}]
 indent_style = space
 indent_size = 4
 

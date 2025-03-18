@@ -4,13 +4,14 @@
     },
 
     "[svelte]": {
-        "editor.defaultFormatter": "svelte.svelte-vscode",
+        "editor.defaultFormatter": "svelte.svelte-vscode"
     },
     "[typescript]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features"
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
 
     "svelte.enable-ts-plugin": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
 
     "typescript.tsdk": "node_modules/typescript/lib",
     "typescript.enablePromptUseWorkspaceTsdk": true,
@@ -19,5 +20,14 @@
         "svelte": "html"
     },
     "tailwindCSS.emmetCompletions": true,
-    "tailwindCSS.experimental.configFile": "./packages/ui/tailwind.config.ts"
+    "tailwindCSS.experimental.configFile": "./packages/ui/tailwind.config.ts",
+
+    "eslint.useFlatConfig": true,
+    "eslint.validate": ["javascript", "typescript", "svelte"],
+    "eslint.workingDirectories": [
+        "./apps/app",
+        "./packages/ui",
+        "./packages/email",
+        "./packages/editor"
+    ]
 }

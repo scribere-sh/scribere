@@ -1,0 +1,50 @@
+name: 'Run Unit Tests'
+
+on:
+  push:
+
+env:
+  TURBO_TELEMETRY_DISABLED: 1
+
+permissions:
+  contents: read
+  actions: read
+  checks: write
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v4
+
+            - name: Setup node
+              uses: actions/setup-node@v4
+              with:
+                node-version: 23.9.0
+                cache: 'pnpm'
+
+            - name: Install Dependencies
+              run: pnpm install
+
+            - name: Run Tests
+              run: pnpm turbo test
+
+            - name: Upload Test Report Artifact
+              uses: actions/upload-artifact@v4
+              if: success() || failure()
+              with:
+                name: Test Reports
+                path: reports
+
+            - name: Test Report
+              uses: dorny/test-reporter@v1
+              if: success() || failure()
+              with:
+                name: Vitest Reports
+                path: reports/vitest-*.xml
+                reporter: jest-junit
+                token: ${{ github.token }}

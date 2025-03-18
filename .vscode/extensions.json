@@ -13,8 +13,6 @@
         "csstools.postcss",
         "kravets.vscode-publint",
         "svelte.svelte-vscode",
-        "hbenl.vscode-test-explorer",
-        "vitest.explorer",
-        "andrejunges.handlebars"
+        "vitest.explorer"
     ]
 }

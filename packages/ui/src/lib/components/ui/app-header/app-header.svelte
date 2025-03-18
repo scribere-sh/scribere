@@ -1,32 +1,24 @@
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
-	import type { HeaderVariant } from '.';
+    import type { HTMLAttributes } from 'svelte/elements';
 
-	import { cn } from '$lib/utils';
-	import { HEADER_VARIANTS } from '.';
+    import { cn } from '$lib/utils';
 
-	type HeaderProps = {
-		variant?: HeaderVariant;
-	} & HTMLAttributes<HTMLElement>;
+    type HeaderProps = HTMLAttributes<HTMLElement>;
 
-	const {
-		class: className,
-		variant = 'normal',
+    const {
+        class: className,
 
-		children,
-		...rest
-	}: HeaderProps = $props();
-
-	let heightClass = $state(HEADER_VARIANTS[variant]);
+        children,
+        ...rest
+    }: HeaderProps = $props();
 </script>
 
 <header
-	class={cn(
-		'sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur transition-[height] supports-[backdrop-blur]:bg-background/50',
-		heightClass,
-		className
-	)}
-	{...rest}
+    class={cn(
+        'sticky top-0 z-50 h-header w-screen border-b border-border/40 bg-background/95 backdrop-blur transition-[height] supports-[backdrop-blur]:bg-background/50',
+        className
+    )}
+    {...rest}
 >
-	{@render children?.()}
+    {@render children?.()}
 </header>

@@ -12,13 +12,13 @@
         }
     },
     "devDependencies": {
-        "@eslint/compat": "^1",
-        "@eslint/eslintrc": "^3",
-        "@eslint/js": "^9",
-        "eslint-config-prettier": "^10",
-        "eslint-config-turbo": "^2",
-        "eslint-plugin-svelte": "^2",
-        "globals": "^15",
-        "typescript-eslint": "^8"
+        "@eslint/compat": "^1.2.7",
+        "@eslint/eslintrc": "^3.3.0",
+        "@eslint/js": "^9.22.0",
+        "eslint-config-prettier": "^10.1.1",
+        "eslint-config-turbo": "^2.4.4",
+        "eslint-plugin-svelte": "^3.3.0",
+        "globals": "^16.0.0",
+        "typescript-eslint": "8.26.0"
     }
 }

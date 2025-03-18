@@ -1,13 +1,27 @@
 {
-	"version": "7",
-	"dialect": "sqlite",
-	"entries": [
-		{
-			"idx": 0,
-			"version": "6",
-			"when": 1740718402584,
-			"tag": "0000_sloppy_morbius",
-			"breakpoints": true
-		}
-	]
+    "version": "7",
+    "dialect": "sqlite",
+    "entries": [
+        {
+            "idx": 0,
+            "version": "6",
+            "when": 1741678238424,
+            "tag": "0000_demonic_callisto",
+            "breakpoints": true
+        },
+        {
+            "idx": 1,
+            "version": "6",
+            "when": 1741751688242,
+            "tag": "0001_typical_paladin",
+            "breakpoints": true
+        },
+        {
+            "idx": 2,
+            "version": "6",
+            "when": 1741931630896,
+            "tag": "0002_crazy_zaladane",
+            "breakpoints": true
+        }
+    ]
 }
