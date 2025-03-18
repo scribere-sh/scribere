@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { PageData } from './$types';
 
+    import { onMount } from 'svelte';
     import { toast } from 'svelte-sonner';
     import { superForm } from 'sveltekit-superforms';
     import { zodClient } from 'sveltekit-superforms/adapters';
@@ -18,6 +19,12 @@
         form: PageData['form'];
         disabled: boolean;
     } = $props();
+
+    let displayNameRef: HTMLElement | null = $state(null);
+
+    onMount(() => {
+        if (displayNameRef) displayNameRef.focus();
+    });
 
     const form = superForm(_form, {
         validators: zodClient(signupFormSchema),
@@ -48,6 +55,7 @@
                     placeholder="John Doe"
                     required
                     bind:value={$formData.displayName}
+                    bind:ref={displayNameRef}
                 />
             {/snippet}
         </Form.Control>

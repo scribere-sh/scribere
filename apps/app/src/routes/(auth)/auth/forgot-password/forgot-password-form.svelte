@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { PageData } from './$types';
 
+    import { onMount } from 'svelte';
     import { toast } from 'svelte-sonner';
     import { superForm } from 'sveltekit-superforms';
     import { zodClient } from 'sveltekit-superforms/adapters';
@@ -20,6 +21,12 @@
         success: boolean;
         disabled: boolean;
     } = $props();
+
+    let emailRef: HTMLElement | null = $state(null);
+
+    onMount(() => {
+        if (emailRef) emailRef.focus();
+    });
 
     const form = superForm(_form, {
         validators: zodClient(forgotPasswordFormSchema),
@@ -43,7 +50,7 @@
         <Form.Control>
             {#snippet children({ props }: PropsObj)}
                 <Form.Label>Email Address</Form.Label>
-                <Input bind:value={$formData.email} {disabled} {...props} />
+                <Input {disabled} {...props} bind:value={$formData.email} bind:ref={emailRef} />
             {/snippet}
         </Form.Control>
         <Form.FieldErrors />

@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { PageData } from './$types';
 
+    import { onMount } from 'svelte';
     import { toast } from 'svelte-sonner';
     import { superForm } from 'sveltekit-superforms';
     import { zodClient } from 'sveltekit-superforms/adapters';
@@ -16,6 +17,12 @@
     const { form: _form }: Pick<PageData, 'form'> = $props();
 
     let disabled = $state(false);
+
+    let mfaRef: HTMLElement | null = $state(null);
+
+    onMount(() => {
+        if (mfaRef) mfaRef.focus();
+    });
 
     const form = superForm(_form, {
         validators: zodClient(mfaFormSchema),
@@ -37,7 +44,13 @@
     <Form.Field {form} name="mfa">
         <Form.Control>
             {#snippet children({ props }: PropsObj)}
-                <InputOTP.Root {disabled} maxlength={6} {...props} bind:value={$formData.mfa}>
+                <InputOTP.Root
+                    {disabled}
+                    maxlength={6}
+                    {...props}
+                    bind:value={$formData.mfa}
+                    bind:ref={mfaRef}
+                >
                     {#snippet children({ cells })}
                         <InputOTP.Group>
                             <!-- eslint-disable-next-line svelte/require-each-key -->

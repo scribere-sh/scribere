@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { PageData } from './$types';
 
+    import { onMount } from 'svelte';
     import { toast } from 'svelte-sonner';
     import { superForm } from 'sveltekit-superforms';
     import { zodClient } from 'sveltekit-superforms/adapters';
@@ -18,6 +19,12 @@
         form: PageData['form'];
         disabled: boolean;
     } = $props();
+
+    let emailRef: HTMLElement | null = $state(null);
+
+    onMount(() => {
+        if (emailRef) emailRef.focus();
+    });
 
     const form = superForm(_form, {
         validators: zodClient(logInFormSchema),
@@ -46,6 +53,7 @@
                     placeholder="example@contoso.com / john.doe123"
                     required
                     bind:value={$formData.handleOrEmail}
+                    bind:ref={emailRef}
                 />
             {/snippet}
         </Form.Control>

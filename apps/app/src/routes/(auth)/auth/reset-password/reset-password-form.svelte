@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { PageData } from './$types';
 
+    import { onMount } from 'svelte';
     import { toast } from 'svelte-sonner';
     import { superForm } from 'sveltekit-superforms';
     import { zodClient } from 'sveltekit-superforms/adapters';
@@ -22,6 +23,12 @@
         challengeToken: PageData['challengeToken'];
         disabled: boolean;
     } = $props();
+
+    let pwInput: HTMLElement | null = $state(null);
+
+    onMount(() => {
+        if (pwInput) pwInput.focus();
+    });
 
     const form = superForm(_form, {
         validators: zodClient(resetPasswordFormSchema),
@@ -50,9 +57,10 @@
                 <Input
                     type="password"
                     placeholder="**********"
-                    bind:value={$formData.newPassword}
                     {disabled}
                     {...props}
+                    bind:value={$formData.newPassword}
+                    bind:ref={pwInput}
                 />
             {/snippet}
         </Form.Control>
