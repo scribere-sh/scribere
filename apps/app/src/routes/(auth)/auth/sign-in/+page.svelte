@@ -56,12 +56,12 @@
                 <Button
                     class={cn(
                         'w-full text-center',
-                        (methodDisabled || disabled) && 'pointer-events-none opacity-50'
+                        (methodDisabled || disabled || method.disabled) && 'pointer-events-none opacity-50'
                     )}
                     style="background-color: {method.bg_colour}; color: {method.text_colour}"
-                    aria-disabled={methodDisabled || disabled}
+                    aria-disabled={methodDisabled || disabled || method.disabled}
                     onclick={oauthDisableButton}
-                    href={methodDisabled || disabled
+                    href={methodDisabled || disabled || method.disabled
                         ? '#'
                         : route('GET /oauth/[provider]', {
                               provider: method.id

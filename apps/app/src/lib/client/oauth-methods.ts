@@ -1,6 +1,6 @@
 import type { Component } from 'svelte';
 
-import { GitHub, Google } from '@scribere/ui/logos';
+import { GitHub, Google, Atlassian } from '@scribere/ui/logos';
 
 export type OAuthProviderItem = {
     /**
@@ -35,6 +35,12 @@ export type OAuthProviderItem = {
      * The Icon will also be rendered in this colour.
      */
     text_colour: string;
+    /**
+     * Mark this method as disabled for the forseeable future
+     * 
+     * @default false
+     */
+    disabled?: boolean;
 };
 
 export const METHODS: OAuthProviderItem[] = [
@@ -45,13 +51,14 @@ export const METHODS: OAuthProviderItem[] = [
         bg_colour: '#181717',
         text_colour: '#FEFEFE'
     },
-    // {
-    //     icon: Atlassian,
-    //     name: 'Atlassian',
-    //     id: 'atlassian',
-    //     bg_colour: '#0050D4',
-    //     text_colour: '#FEFEFE'
-    // },
+    {
+        icon: Atlassian,
+        name: 'Atlassian',
+        id: 'atlassian',
+        bg_colour: '#0050D4',
+        text_colour: '#FEFEFE',
+        disabled: true
+    },
     {
         icon: Google,
         name: 'Google',

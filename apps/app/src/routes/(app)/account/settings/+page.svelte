@@ -97,7 +97,7 @@
             <h1 class="mb-12 text-3xl">Account Settings</h1>
 
             <section
-                class="mb-4 [scroll-margin-top:calc(var(--header-height)+2rem)]"
+                class="pb-4 mb-px [scroll-margin-top:calc(var(--header-height)+2rem)]"
                 id="profile"
                 title="Profile"
                 use:scrollspy.spy
@@ -122,7 +122,7 @@
             </section>
 
             <section
-                class="mb-4 [scroll-margin-top:calc(var(--header-height)+2rem)]"
+                class="pb-4 mb-px [scroll-margin-top:calc(var(--header-height)+2rem)]"
                 id="password"
                 title="Password"
                 use:scrollspy.spy
@@ -133,7 +133,7 @@
             </section>
 
             <section
-                class="mb-4 [scroll-margin-top:calc(var(--header-height)+2rem)]"
+                class="pb-4 mb-px [scroll-margin-top:calc(var(--header-height)+2rem)]"
                 id="mfa"
                 title="Multi-Factor Authentication"
                 use:scrollspy.spy
@@ -188,7 +188,14 @@
                                     $profileQuery.isLoading || 
                                     $isError}
                             >
-                                {$settingsQuery.isLoading ? '...' : isLinked ? 'Unlink' : 'Link'}
+                                {method.disabled 
+                                    ? "-" 
+                                    : $settingsQuery.isLoading 
+                                        ? '...' 
+                                        : isLinked 
+                                            ? 'Unlink' 
+                                            : 'Link'
+                                }
                             </Button>
                         </form>
                     </div>
