@@ -1,7 +1,6 @@
 <script lang="ts">
     import type { PageData } from './$types';
 
-    import { onMount, tick } from 'svelte';
     import { toast } from 'svelte-sonner';
     import { superForm } from 'sveltekit-superforms';
     import { zodClient } from 'sveltekit-superforms/adapters';
@@ -24,10 +23,9 @@
 
     let emailRef: HTMLElement | null = $state(null);
 
-    onMount(async () => {
-        await tick();
+    $effect(() => {
         if (emailRef) emailRef.focus();
-    });
+    })
 
     const form = superForm(_form, {
         validators: zodClient(forgotPasswordFormSchema),
