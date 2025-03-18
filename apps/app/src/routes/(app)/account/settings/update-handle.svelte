@@ -66,6 +66,7 @@
     <div class="mt-2 flex w-full flex-row items-center gap-2">
         &#64<Input
             id={uid}
+            autocomplete="username"
             placeholder={current}
             disabled={inputDisabled || isError || disabled}
             bind:value

@@ -48,6 +48,7 @@
             {#snippet children({ props }: PropsObj)}
                 <InputOTP.Root
                     {disabled}
+                    autocomplete="one-time-code"
                     onComplete={() => submit()}
                     maxlength={6}
                     {...props}
@@ -85,6 +86,7 @@
                             <Form.Label>Recovery Code</Form.Label>
                             <Input
                                 type="password"
+                                autocomplete="current-password"
                                 placeholder="**************************"
                                 bind:value={$formData.recoveryCode}
                                 {disabled}

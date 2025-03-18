@@ -50,6 +50,7 @@
                 <Input
                     {...props}
                     {disabled}
+                    autocomplete="username"
                     placeholder="example@contoso.com / john.doe123"
                     required
                     bind:value={$formData.handleOrEmail}
@@ -69,6 +70,7 @@
                     {disabled}
                     placeholder="***********"
                     type="password"
+                    autocomplete="current-password"
                     required
                     bind:value={$formData.password}
                 />

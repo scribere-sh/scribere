@@ -56,6 +56,7 @@
                 <Form.Label>New Password</Form.Label>
                 <Input
                     type="password"
+                    autocomplete="new-password"
                     placeholder="**********"
                     {disabled}
                     {...props}
@@ -72,6 +73,7 @@
                 <Form.Label>Confirm New Password</Form.Label>
                 <Input
                     type="password"
+                    autocomplete="new-password"
                     placeholder="**********"
                     bind:value={$formData.newPasswordConfirm}
                     {disabled}

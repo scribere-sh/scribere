@@ -52,6 +52,7 @@
                 <Input
                     {...props}
                     {disabled}
+                    autocomplete="nickname"
                     placeholder="John Doe"
                     required
                     bind:value={$formData.displayName}
@@ -69,6 +70,7 @@
                 <Input
                     {...props}
                     {disabled}
+                    autocomplete="username"
                     placeholder="john.doe202"
                     required
                     bind:value={$formData.handle}
@@ -85,6 +87,7 @@
                 <Input
                     {...props}
                     {disabled}
+                    autocomplete="email"
                     placeholder="example@contoso.com"
                     required
                     bind:value={$formData.emailAddress}
@@ -103,6 +106,7 @@
                     {disabled}
                     placeholder="********"
                     type="password"
+                    autocomplete="new-password"
                     required
                     bind:value={$formData.password}
                 />
@@ -118,6 +122,7 @@
                 <Input
                     {...props}
                     {disabled}
+                    autocomplete="new-password"
                     placeholder="********"
                     type="password"
                     required

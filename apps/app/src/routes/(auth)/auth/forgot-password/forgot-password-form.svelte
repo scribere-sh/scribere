@@ -50,7 +50,7 @@
         <Form.Control>
             {#snippet children({ props }: PropsObj)}
                 <Form.Label>Email Address</Form.Label>
-                <Input {disabled} {...props} bind:value={$formData.email} bind:ref={emailRef} />
+                <Input {disabled} autocomplete="email" {...props} bind:value={$formData.email} bind:ref={emailRef} />
             {/snippet}
         </Form.Control>
         <Form.FieldErrors />
