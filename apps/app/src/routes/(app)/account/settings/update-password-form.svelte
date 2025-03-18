@@ -52,6 +52,7 @@
                 <Form.Label>Current Password</Form.Label>
                 <Input
                     {...props}
+                    autocomplete="current-password"
                     disabled={disabled || isError || markedDisabled}
                     placeholder="************"
                     type="password"
@@ -73,6 +74,7 @@
                 <Form.Label>New Password</Form.Label>
                 <Input
                     {...props}
+                    autocomplete="new-password"
                     disabled={disabled || isError || markedDisabled}
                     placeholder="************"
                     type="password"
@@ -89,6 +91,7 @@
                 <Form.Label>Confirm New Password</Form.Label>
                 <Input
                     {...props}
+                    autocomplete="new-password"
                     disabled={disabled || isError || markedDisabled}
                     placeholder="************"
                     type="password"
