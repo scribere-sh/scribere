@@ -20,8 +20,12 @@
     let mfaRef: HTMLElement | null = $state(null);
 
     $effect(() => {
-        console.log("Focussing?", { mfaRef });
-        if (mfaRef) mfaRef.focus();
+        if (!mfaRef) return;
+
+        const inputElement = mfaRef?.querySelector<HTMLInputElement>('input[name="mfa"]')
+        console.log("Focussing?", { mfaRef, inputElement });
+        
+        if (inputElement) inputElement.focus();
     });
 
     const form = superForm(_form, {
