@@ -13,13 +13,15 @@
         utils,
 
         current,
-        isError
+        isError,
+        disabled = $bindable(false)
     }: {
         rpc: ReturnType<typeof trpc>;
         utils: ReturnType<ReturnType<typeof trpc>['createUtils']>;
 
         current: string;
         isError: boolean;
+        disabled: boolean;
     } = $props();
 
     const uid = $props.id();
@@ -66,7 +68,7 @@
             id={uid}
             placeholder={current}
             bind:value
-            disabled={inputDisabled || isError}
+            disabled={inputDisabled || isError || disabled}
             onkeyup={debounce(submitUpdates, 1000)}
         />
 

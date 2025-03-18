@@ -12,19 +12,22 @@
     import { Label } from '@scribere/ui/label';
 
     import type { trpc } from '$client/trpc';
+    import { LoadingSpinner } from '@scribere/ui/loading-spinner';
 
     const {
         rpc,
         utils,
 
         currentlyEnrolled,
-        isError
+        isError,
+        disabled = $bindable(false)
     }: {
         rpc: ReturnType<typeof trpc>;
         utils: ReturnType<ReturnType<typeof trpc>['createUtils']>;
 
         currentlyEnrolled: boolean;
         isError: boolean;
+        disabled: boolean;
     } = $props();
 
     const uid = $props.id();
@@ -32,6 +35,9 @@
     let dialogOpen = writable(false);
     let removeDialogOpen = $state(false);
     let recoveryCodeCopied = $state(false);
+
+    let enrolmentSubmitted = $state(false);
+    let unenrolmentSubmitted = $state(false);
 
     let initialCodeValue = $state('');
 
@@ -41,17 +47,19 @@
         undefined,
         derived([dialogOpen], ([$dialogOpen]) => ({
             enabled: $dialogOpen,
-            refetchOnMount: false
-        }))
+            refetchOnMount: false,
+        })),
     );
 
     const enrolmentMutation = rpc.account.settings.enrolUserInTOTP.createMutation({
         onSuccess: () => {
             utils.account.settings.loadAuthSettings.refetch();
             recoveryCodeCopied = false;
+            enrolmentSubmitted = false;
         },
         onError: () => {
             initialCodeValue = '';
+            enrolmentSubmitted = false;
         }
     });
 
@@ -59,6 +67,10 @@
         onSuccess: () => {
             utils.account.settings.loadAuthSettings.refetch();
             removeDialogOpen = false;
+            unenrolmentSubmitted = false;
+        },
+        onError: () => {
+            unenrolmentSubmitted = false;
         }
     });
 </script>
@@ -74,11 +86,11 @@
     </span>
 
     {#if currentlyEnrolled}
-        <Button disabled={isError} variant="destructive" onclick={() => (removeDialogOpen = true)}
-            >Remove</Button
-        >
+        <Button disabled={isError || disabled} variant="destructive" onclick={() => (removeDialogOpen = true)}>
+            Remove
+        </Button>
     {:else}
-        <Button disabled={isError} onclick={() => ($dialogOpen = true)}>Enrol</Button>
+        <Button disabled={isError || disabled} onclick={() => ($dialogOpen = true)}>Enrol</Button>
     {/if}
 </div>
 
@@ -132,15 +144,20 @@
 
                 <Button
                     class="w-full"
-                    disabled={initialCodeValue.length < 6}
+                    disabled={initialCodeValue.length < 6 || enrolmentSubmitted}
                     onclick={() => {
                         if (initialCodeValue.length !== 6) return;
                         $enrolmentMutation.mutate({
                             key: queryData.TOTPKey,
                             initialCode: initialCodeValue
                         });
-                    }}>Submit Code & Enrol</Button
-                >
+                    }}>
+                        {#if enrolmentSubmitted}
+                            <LoadingSpinner />
+                        {:else}
+                            Submit Code & Enrol
+                        {/if}
+                    </Button>
             {/if}
         {:else}
             {@const mutationData = $enrolmentMutation.data}
@@ -220,11 +237,16 @@
             <AlertDialog.Cancel>No, Keep it on</AlertDialog.Cancel>
             <AlertDialog.Action
                 class={buttonVariants({ variant: 'destructive' })}
+                disabled={unenrolmentSubmitted}
                 onclick={() => {
                     $unenrolmentMutation.mutate();
                 }}
             >
-                Yes, It's annoying
+                {#if unenrolmentSubmitted}
+                    <LoadingSpinner />
+                {:else}
+                    Yes, It's annoying
+                {/if}
             </AlertDialog.Action>
         </AlertDialog.Footer>
     </AlertDialog.Content>

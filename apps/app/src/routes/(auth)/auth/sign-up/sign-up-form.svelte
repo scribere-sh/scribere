@@ -10,6 +10,7 @@
 
     import { signupFormSchema } from '$client/forms';
     import type { PropsObj } from '$util';
+    import { LoadingSpinner } from '@scribere/ui/loading-spinner';
 
     let {
         form: _form,
@@ -127,5 +128,11 @@
         <Form.FieldErrors />
     </Form.Field>
 
-    <Form.Button {disabled} class="mt-4 w-full">Sign Up</Form.Button>
+    <Form.Button {disabled} class="mt-4 w-full">
+        {#if disabled}
+            <LoadingSpinner />
+        {:else}
+            Sign Up
+        {/if}
+    </Form.Button>
 </form>

@@ -12,6 +12,7 @@
 
     import { mfaFormSchema } from '$client/forms';
     import type { PropsObj } from '$util';
+    import { LoadingSpinner } from '@scribere/ui/loading-spinner';
 
     const { form: _form }: Pick<PageData, 'form'> = $props();
 
@@ -97,5 +98,11 @@
         </Accordion.Item>
     </Accordion.Root>
 
-    <Form.Button class="mt-4 w-full">Submit</Form.Button>
+    <Form.Button class="mt-4 w-full" {disabled}>
+        {#if disabled}
+            <LoadingSpinner />
+        {:else}
+            Submit
+        {/if}
+    </Form.Button>
 </form>

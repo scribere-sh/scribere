@@ -2,6 +2,7 @@
     import LogOut from '@lucide/svelte/icons/log-out';
     import Settings from '@lucide/svelte/icons/settings';
     import User from '@lucide/svelte/icons/user';
+    import X from '@lucide/svelte/icons/x';
 
     import * as Avatar from '@scribere/ui/avatar';
     import * as DropdownMenu from '@scribere/ui/dropdown-menu';
@@ -10,6 +11,8 @@
     import { page } from '$app/stores';
     import { trpc } from '$client/trpc';
     import { route } from '$routes';
+    import { LoadingSpinner } from '@scribere/ui/loading-spinner';
+    import { Skeleton } from '@scribere/ui/skeleton';
 
     const displayInitials = (s: string) => {
         return s
@@ -33,7 +36,13 @@
     <DropdownMenu.Trigger>
         <Avatar.Root>
             <Avatar.Fallback>
-                {displayInitials($currentUserProfile.data?.displayName ?? '. .')}
+                {#if $currentUserProfile.isSuccess}
+                    {displayInitials($currentUserProfile.data?.displayName ?? '. .')}
+                {:else if $currentUserProfile.isError}
+                    <X class="text-destructive-foreground" />
+                {:else}
+                    <LoadingSpinner />
+                {/if}
             </Avatar.Fallback>
         </Avatar.Root>
     </DropdownMenu.Trigger>
@@ -42,14 +51,25 @@
             <div class="flex flex-row justify-start">
                 <Avatar.Root class="mr-4 aspect-square">
                     <Avatar.Fallback>
-                        {displayInitials($currentUserProfile.data?.displayName ?? '. .')}
+                        {#if $currentUserProfile.isSuccess}
+                            {displayInitials($currentUserProfile.data?.displayName ?? '. .')}
+                        {:else if $currentUserProfile.isError}
+                            <X class="text-destructive-foreground" />
+                        {:else}
+                            <LoadingSpinner />
+                        {/if}
                     </Avatar.Fallback>
                 </Avatar.Root>
-                <div>
-                    <div>{$currentUserProfile.data?.displayName ?? 'Loading'}</div>
-                    <div class="text-sm text-muted-foreground"
-                        >@{$currentUserProfile.data?.handle ?? 'Loading'}</div
-                    >
+                <div class="w-full">
+                    {#if $currentUserProfile.isSuccess}
+                        <div>{$currentUserProfile.data?.displayName ?? 'Loading'}</div>
+                        <div class="text-sm text-muted-foreground">
+                            @{$currentUserProfile.data?.handle ?? 'Loading'}
+                        </div>
+                    {:else}
+                        <Skeleton class="h-4 w-[80%] mb-2" />
+                        <Skeleton class="h-3 w-1/3" />
+                    {/if}
                 </div>
             </div>
         </DropdownMenu.Label>

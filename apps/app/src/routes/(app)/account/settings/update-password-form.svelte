@@ -13,10 +13,12 @@
     const {
         form: _form,
 
-        isError
+        isError,
+        disabled: markedDisabled
     }: {
         form: PageData['updatePasswordForm'];
         isError: boolean;
+        disabled: boolean
     } = $props();
 
     let disabled = $state(false);
@@ -50,7 +52,7 @@
                 <Form.Label>Current Password</Form.Label>
                 <Input
                     {...props}
-                    disabled={disabled || isError}
+                    disabled={disabled || isError || markedDisabled}
                     placeholder="************"
                     type="password"
                     bind:value={$formData.currentPassword}
@@ -71,7 +73,7 @@
                 <Form.Label>New Password</Form.Label>
                 <Input
                     {...props}
-                    disabled={disabled || isError}
+                    disabled={disabled || isError || markedDisabled}
                     placeholder="************"
                     type="password"
                     bind:value={$formData.newPassword}
@@ -87,7 +89,7 @@
                 <Form.Label>Confirm New Password</Form.Label>
                 <Input
                     {...props}
-                    disabled={disabled || isError}
+                    disabled={disabled || isError || markedDisabled}
                     placeholder="************"
                     type="password"
                     bind:value={$formData.confirmNewPassword}
@@ -99,8 +101,9 @@
     </Form.Field>
 
     <div class="mt-4 grid grid-cols-2 place-items-center">
-        <Form.Button disabled={disabled || isError} variant="secondary">Change Password</Form.Button
-        >
+        <Form.Button disabled={disabled || isError || markedDisabled} variant="secondary">
+            Change Password
+        </Form.Button>
 
         {#if status}
             <LoadingSpinner state={status} />

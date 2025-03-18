@@ -108,6 +108,7 @@
                     current={$profileQuery.data?.displayName ?? '...'}
                     {utils}
                     {rpc}
+                    disabled={$settingsQuery.isLoading || $profileQuery.isLoading}
                     isError={$isError}
                 />
 
@@ -115,6 +116,7 @@
                     current={$profileQuery.data?.handle ?? '...'}
                     {utils}
                     {rpc}
+                    disabled={$settingsQuery.isLoading || $profileQuery.isLoading}
                     isError={$isError}
                 />
             </section>
@@ -127,7 +129,7 @@
             >
                 {@render SectionTitle('Password')}
 
-                <UpdatePasswordForm form={data.updatePasswordForm} isError={$isError} />
+                <UpdatePasswordForm form={data.updatePasswordForm} isError={$isError} disabled={$settingsQuery.isLoading || $profileQuery.isLoading} />
             </section>
 
             <section
@@ -141,6 +143,7 @@
                 <MFA
                     {rpc}
                     {utils}
+                    disabled={$settingsQuery.isLoading || $profileQuery.isLoading}
                     currentlyEnrolled={($settingsQuery.data?.mfaMethods ?? []).includes('totp')}
                     isError={$isError}
                 />
@@ -182,6 +185,7 @@
                                 type="submit"
                                 disabled={!(isActive || isLinked) ||
                                     $settingsQuery.isLoading ||
+                                    $profileQuery.isLoading || 
                                     $isError}
                             >
                                 {$settingsQuery.isLoading ? '...' : isLinked ? 'Unlink' : 'Link'}
