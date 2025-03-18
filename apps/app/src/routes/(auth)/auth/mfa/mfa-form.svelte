@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { PageData } from './$types';
 
-    import { onMount } from 'svelte';
+    import { onMount, tick } from 'svelte';
     import { toast } from 'svelte-sonner';
     import { superForm } from 'sveltekit-superforms';
     import { zodClient } from 'sveltekit-superforms/adapters';
@@ -20,7 +20,8 @@
 
     let mfaRef: HTMLElement | null = $state(null);
 
-    onMount(() => {
+    onMount(async () => {
+        await tick();
         if (mfaRef) mfaRef.focus();
     });
 
@@ -49,16 +50,13 @@
                     maxlength={6}
                     {...props}
                     bind:value={$formData.mfa}
+                    bind:ref={mfaRef}
                 >
                     {#snippet children({ cells })}
                         <InputOTP.Group>
                             <!-- eslint-disable-next-line svelte/require-each-key -->
-                            {#each cells.slice(0, 3) as cell, index}
-                                {#if index === 0}
-                                    <InputOTP.Slot {cell} bind:ref={mfaRef} />
-                                {:else}
-                                    <InputOTP.Slot {cell} />
-                                {/if}
+                            {#each cells.slice(0, 3) as cell}
+                                <InputOTP.Slot {cell} />
                             {/each}
                         </InputOTP.Group>
                         <InputOTP.Separator />

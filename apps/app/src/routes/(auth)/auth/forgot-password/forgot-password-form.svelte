@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { PageData } from './$types';
 
-    import { onMount } from 'svelte';
+    import { onMount, tick } from 'svelte';
     import { toast } from 'svelte-sonner';
     import { superForm } from 'sveltekit-superforms';
     import { zodClient } from 'sveltekit-superforms/adapters';
@@ -24,7 +24,8 @@
 
     let emailRef: HTMLElement | null = $state(null);
 
-    onMount(() => {
+    onMount(async () => {
+        await tick();
         if (emailRef) emailRef.focus();
     });
 
