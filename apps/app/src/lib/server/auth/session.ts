@@ -5,7 +5,7 @@ import { encodeHexLowerCase } from '@oslojs/encoding';
 import { eq, lte } from 'drizzle-orm';
 
 import { getRequestEvent } from '$app/server';
-import { type TX } from '$db';
+import { DB, type TX } from '$db';
 import { sessionsTable, usersTable } from '$db/tables';
 
 export const SESSION_TOKEN_NAME = 'session';
@@ -192,10 +192,7 @@ export const invalidateUserSessions = async (userId: string, tx_db?: TX) => {
     await db.delete(sessionsTable).where(eq(sessionsTable.userId, userId));
 };
 
-export const deleteExpiredSessions = async (tx_db?: TX) => {
-    const { locals } = getRequestEvent();
-    const db = tx_db ?? locals.DB;
-
+export const deleteExpiredSessions = async (db: DB | TX) => {
     await db.delete(sessionsTable).where(lte(sessionsTable.expiresAt, new Date()));
 };
 

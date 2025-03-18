@@ -4,7 +4,7 @@ import { eq, lte } from 'drizzle-orm';
 import { type ResetPasswordProps, sendResetPasswordEmail } from '@scribere/email/resetPassword';
 
 import { getRequestEvent } from '$app/server';
-import { type TX } from '$db';
+import { DB, type TX } from '$db';
 import { passwordResetChallengeTable } from '$db/tables';
 import { env } from '$env/dynamic/private';
 import { route } from '$routes';
@@ -106,10 +106,7 @@ export const sendPasswordResetEmail = async (
     }
 };
 
-export const deleteExpiredChallenges = async (tx_db?: TX) => {
-    const { locals } = getRequestEvent();
-    const db = tx_db ?? locals.DB;
-
+export const deleteExpiredChallenges = async (db: DB | TX) => {
     await db
         .delete(passwordResetChallengeTable)
         .where(lte(passwordResetChallengeTable.expiresAt, new Date()));
