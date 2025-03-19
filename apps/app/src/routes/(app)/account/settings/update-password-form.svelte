@@ -18,7 +18,7 @@
     }: {
         form: PageData['updatePasswordForm'];
         isError: boolean;
-        disabled: boolean
+        disabled: boolean;
     } = $props();
 
     let disabled = $state(false);

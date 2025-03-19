@@ -1,6 +1,6 @@
 import type { Component } from 'svelte';
 
-import { GitHub, Google, Atlassian } from '@scribere/ui/logos';
+import { Atlassian, GitHub, Google } from '@scribere/ui/logos';
 
 export type OAuthProviderItem = {
     /**
@@ -37,7 +37,7 @@ export type OAuthProviderItem = {
     text_colour: string;
     /**
      * Mark this method as disabled for the forseeable future
-     * 
+     *
      * @default false
      */
     disabled?: boolean;

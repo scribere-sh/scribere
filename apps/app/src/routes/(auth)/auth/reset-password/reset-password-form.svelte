@@ -7,10 +7,10 @@
 
     import * as Form from '@scribere/ui/form';
     import { Input } from '@scribere/ui/input';
+    import { LoadingSpinner } from '@scribere/ui/loading-spinner';
 
     import { resetPasswordFormSchema } from '$client/forms';
     import type { PropsObj } from '$util';
-    import { LoadingSpinner } from '@scribere/ui/loading-spinner';
 
     let {
         form: _form,

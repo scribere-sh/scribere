@@ -97,7 +97,7 @@
             <h1 class="mb-12 text-3xl">Account Settings</h1>
 
             <section
-                class="pb-4 mb-px [scroll-margin-top:calc(var(--header-height)+2rem)]"
+                class="mb-px pb-4 [scroll-margin-top:calc(var(--header-height)+2rem)]"
                 id="profile"
                 title="Profile"
                 use:scrollspy.spy
@@ -122,18 +122,22 @@
             </section>
 
             <section
-                class="pb-4 mb-px [scroll-margin-top:calc(var(--header-height)+2rem)]"
+                class="mb-px pb-4 [scroll-margin-top:calc(var(--header-height)+2rem)]"
                 id="password"
                 title="Password"
                 use:scrollspy.spy
             >
                 {@render SectionTitle('Password')}
 
-                <UpdatePasswordForm form={data.updatePasswordForm} isError={$isError} disabled={$settingsQuery.isLoading || $profileQuery.isLoading} />
+                <UpdatePasswordForm
+                    form={data.updatePasswordForm}
+                    isError={$isError}
+                    disabled={$settingsQuery.isLoading || $profileQuery.isLoading}
+                />
             </section>
 
             <section
-                class="pb-4 mb-px [scroll-margin-top:calc(var(--header-height)+2rem)]"
+                class="mb-px pb-4 [scroll-margin-top:calc(var(--header-height)+2rem)]"
                 id="mfa"
                 title="Multi-Factor Authentication"
                 use:scrollspy.spy
@@ -185,17 +189,16 @@
                                 type="submit"
                                 disabled={!(isActive || isLinked) ||
                                     $settingsQuery.isLoading ||
-                                    $profileQuery.isLoading || 
+                                    $profileQuery.isLoading ||
                                     $isError}
                             >
-                                {method.disabled 
-                                    ? "-" 
-                                    : $settingsQuery.isLoading 
-                                        ? '...' 
-                                        : isLinked 
-                                            ? 'Unlink' 
-                                            : 'Link'
-                                }
+                                {method.disabled
+                                    ? '-'
+                                    : $settingsQuery.isLoading
+                                      ? '...'
+                                      : isLinked
+                                        ? 'Unlink'
+                                        : 'Link'}
                             </Button>
                         </form>
                     </div>

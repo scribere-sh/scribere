@@ -1,0 +1,39 @@
+{
+    "$schema": "node_modules/wrangler/config-schema.json",
+    "name": "scribere-landing",
+    "compatibility_date": "2025-02-27",
+    "compatibility_flags": ["nodejs_compat"],
+    "pages_build_output_dir": ".svelte-kit/cloudflare",
+    "dev": {
+        "ip": "127.0.0.1",
+        "port": 8787
+    },
+    "placement": {
+        "mode": "smart",
+        // not AKL because the DB is in Sydney
+        "hint": "SYD"
+    },
+    "vars": {
+        // Private Secrets - Managed in CF UI
+        // - "RESEND_API_KEY"
+        // - "TURSO_URL"
+        // - "TURSO_API_KEY"
+
+        // Sender email and name
+        "SENDER_EMAIL": "noreply@scribere.sh",
+        "SENDER_NAME": "Scribere"
+    },
+    "services": [
+        {
+            "binding": "ARGON2",
+            "service": "scribere-argon2"
+        }
+    ],
+    "r2_buckets": [
+        {
+            "binding": "R2",
+            "bucket_name": "cdn-scribere-sh",
+            "preview_bucket_name": "cdn-scribere-sh-dev"
+        }
+    ]
+}

@@ -174,8 +174,6 @@ const router = t.router({
                 });
             }
 
-            generateMFARecoveryCode();
-
             const recoveryCode = await ctx.locals.DB.transaction(async (tx_db) => {
                 const recoveryCode = generateMFARecoveryCode();
 

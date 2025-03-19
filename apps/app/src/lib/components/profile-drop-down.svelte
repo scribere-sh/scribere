@@ -7,12 +7,12 @@
     import * as Avatar from '@scribere/ui/avatar';
     import * as DropdownMenu from '@scribere/ui/dropdown-menu';
     import { Button } from '@scribere/ui/button';
+    import { LoadingSpinner } from '@scribere/ui/loading-spinner';
+    import { Skeleton } from '@scribere/ui/skeleton';
 
     import { page } from '$app/stores';
     import { trpc } from '$client/trpc';
     import { route } from '$routes';
-    import { LoadingSpinner } from '@scribere/ui/loading-spinner';
-    import { Skeleton } from '@scribere/ui/skeleton';
 
     const displayInitials = (s: string) => {
         return s
@@ -67,7 +67,7 @@
                             @{$currentUserProfile.data?.handle ?? 'Loading'}
                         </div>
                     {:else}
-                        <Skeleton class="h-4 w-[80%] mb-2" />
+                        <Skeleton class="mb-2 h-4 w-[80%]" />
                         <Skeleton class="h-3 w-1/3" />
                     {/if}
                 </div>
