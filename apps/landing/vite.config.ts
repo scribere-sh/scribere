@@ -13,5 +13,9 @@ export default defineConfig({
     ],
     server: {
         port: 5169
+    },
+    test: {
+        outputFile: '../../reports/vitest-scribere-landing.xml',
+        include: ['./src/test/**/*.test.ts']
     }
 });
