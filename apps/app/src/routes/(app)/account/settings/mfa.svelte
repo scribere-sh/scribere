@@ -10,9 +10,9 @@
     import { Checkbox } from '@scribere/ui/checkbox';
     import { Input } from '@scribere/ui/input';
     import { Label } from '@scribere/ui/label';
+    import { LoadingSpinner } from '@scribere/ui/loading-spinner';
 
     import type { trpc } from '$client/trpc';
-    import { LoadingSpinner } from '@scribere/ui/loading-spinner';
 
     const {
         rpc,
@@ -47,8 +47,8 @@
         undefined,
         derived([dialogOpen], ([$dialogOpen]) => ({
             enabled: $dialogOpen,
-            refetchOnMount: false,
-        })),
+            refetchOnMount: false
+        }))
     );
 
     const enrolmentMutation = rpc.account.settings.enrolUserInTOTP.createMutation({
@@ -86,7 +86,11 @@
     </span>
 
     {#if currentlyEnrolled}
-        <Button disabled={isError || disabled} variant="destructive" onclick={() => (removeDialogOpen = true)}>
+        <Button
+            disabled={isError || disabled}
+            variant="destructive"
+            onclick={() => (removeDialogOpen = true)}
+        >
             Remove
         </Button>
     {:else}
@@ -151,13 +155,14 @@
                             key: queryData.TOTPKey,
                             initialCode: initialCodeValue
                         });
-                    }}>
-                        {#if enrolmentSubmitted}
-                            <LoadingSpinner />
-                        {:else}
-                            Submit Code & Enrol
-                        {/if}
-                    </Button>
+                    }}
+                >
+                    {#if enrolmentSubmitted}
+                        <LoadingSpinner />
+                    {:else}
+                        Submit Code & Enrol
+                    {/if}
+                </Button>
             {/if}
         {:else}
             {@const mutationData = $enrolmentMutation.data}

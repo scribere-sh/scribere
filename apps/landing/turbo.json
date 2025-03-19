@@ -1,0 +1,14 @@
+{
+    "$schema": "https://turbo.build/schema.json",
+    "extends": ["//"],
+    "tasks": {
+        "build": {
+            "outputs": [".svelte-kit", "build"]
+        },
+        "preview": {
+            "cache": false,
+            "persistent": true,
+            "interactive": true
+        }
+    }
+}

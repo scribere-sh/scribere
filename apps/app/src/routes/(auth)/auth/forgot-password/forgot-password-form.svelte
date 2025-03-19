@@ -7,10 +7,10 @@
 
     import * as Form from '@scribere/ui/form';
     import { Input } from '@scribere/ui/input';
+    import { LoadingSpinner } from '@scribere/ui/loading-spinner';
 
     import { forgotPasswordFormSchema } from '$client/forms';
     import type { PropsObj } from '$util';
-    import { LoadingSpinner } from '@scribere/ui/loading-spinner';
 
     let {
         form: _form,
@@ -50,7 +50,13 @@
         <Form.Control>
             {#snippet children({ props }: PropsObj)}
                 <Form.Label>Email Address</Form.Label>
-                <Input {disabled} autocomplete="email" {...props} bind:value={$formData.email} bind:ref={emailRef} />
+                <Input
+                    {disabled}
+                    autocomplete="email"
+                    {...props}
+                    bind:value={$formData.email}
+                    bind:ref={emailRef}
+                />
             {/snippet}
         </Form.Control>
         <Form.FieldErrors />

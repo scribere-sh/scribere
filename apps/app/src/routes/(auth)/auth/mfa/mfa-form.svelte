@@ -9,10 +9,10 @@
     import * as Form from '@scribere/ui/form';
     import * as InputOTP from '@scribere/ui/input-otp';
     import { Input } from '@scribere/ui/input';
+    import { LoadingSpinner } from '@scribere/ui/loading-spinner';
 
     import { mfaFormSchema } from '$client/forms';
     import type { PropsObj } from '$util';
-    import { LoadingSpinner } from '@scribere/ui/loading-spinner';
 
     const { form: _form }: Pick<PageData, 'form'> = $props();
 

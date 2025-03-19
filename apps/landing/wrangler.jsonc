@@ -1,0 +1,7 @@
+{
+    "$schema": "node_modules/wrangler/config-schema.json",
+    "name": "scribere-landing",
+    "compatibility_date": "2025-02-27",
+    "compatibility_flags": ["nodejs_compat"],
+    "pages_build_output_dir": ".svelte-kit/cloudflare"
+}

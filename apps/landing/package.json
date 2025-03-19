@@ -1,0 +1,53 @@
+{
+    "name": "@scribere/landing",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite dev",
+        "build": "vite build",
+        "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+        "fmt": "prettier --write .",
+        "lint": "prettier --check . && eslint .",
+        "prepare": "svelte-kit sync || echo ''",
+        "test": "vitest run --reporter=junit",
+        "test:dev": "vitest",
+        "preview": "vite preview",
+        "sync": "svelte-kit sync",
+        "db:generate": "drizzle-kit generate",
+        "db:migrate": "drizzle-kit migrate"
+    },
+    "packageManager": "pnpm@10.5.0",
+    "engines": {
+        "node": "23.9.0"
+    },
+    "dependencies": {
+        "@scribere/ui": "workspace:*",
+        "mode-watcher": "~0.5.1",
+        "svelte-sonner": "0.3.28"
+    },
+    "devDependencies": {
+        "@cloudflare/workers-types": "4.20250312.0",
+        "@lucide/svelte": "^0.479.0",
+        "@scribere/eslint-config": "workspace:*",
+        "@scribere/prettier-config": "workspace:*",
+        "@scribere/typescript-config": "workspace:*",
+        "@sveltejs/adapter-cloudflare": "^5.1.0",
+        "@sveltejs/kit": "^2.20.0",
+        "@sveltejs/vite-plugin-svelte": "^5.0.3",
+        "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+        "@types/node": "^22.13.10",
+        "autoprefixer": "^10.4.21",
+        "eslint": "^9.22.0",
+        "prettier": "^3.5.3",
+        "prettier-plugin-svelte": "^3.3.3",
+        "prettier-plugin-tailwindcss": "~0.6.11",
+        "svelte": "^5.23.1",
+        "svelte-check": "^4.1.5",
+        "tailwindcss": "^3.4.17",
+        "typescript": "^5.8.2",
+        "vite": "^6.2.2",
+        "vite-plugin-kit-routes": "~0.8.3",
+        "vitest": "^3.0.9",
+        "wrangler": "^4.0.0"
+    }
+}
