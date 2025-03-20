@@ -11,11 +11,14 @@ import {
     validateSessionToken
 } from '$auth/session';
 
-import { building } from '$app/environment';
+import { building, dev } from '$app/environment';
 import { DB } from '$db';
 import { TRPC_PATH } from '$trpc-client';
 import { createContext } from '$trpc/context';
 import router from '$trpc/router';
+
+// eslint-disable-next-line turbo/no-undeclared-env-vars
+if (dev) process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
 const apiRequireAuthHandle: Handle = async ({ event, resolve }) => {
     if (event.url.pathname.startsWith('/api')) {

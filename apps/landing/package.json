@@ -12,9 +12,7 @@
         "test": "vitest run --reporter=junit",
         "test:dev": "vitest",
         "preview": "vite preview",
-        "sync": "svelte-kit sync",
-        "db:generate": "drizzle-kit generate",
-        "db:migrate": "drizzle-kit migrate"
+        "sync": "svelte-kit sync"
     },
     "packageManager": "pnpm@10.5.0",
     "engines": {
