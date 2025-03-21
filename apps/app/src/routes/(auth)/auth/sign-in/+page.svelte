@@ -46,9 +46,9 @@
         </div>
 
         <div class="my-6 grid grid-cols-1 grid-rows-5 place-items-center">
-            <Separator orientation="vertical" class="row-span-2" />
+            <Separator orientation="vertical" class="row-span-2 bg-foreground/30" />
             <div class="text-sm italic">or</div>
-            <Separator orientation="vertical" class="row-span-2" />
+            <Separator orientation="vertical" class="row-span-2 bg-foreground/30" />
         </div>
 
         <div class="flex w-96 flex-col justify-center gap-4 p-6">
