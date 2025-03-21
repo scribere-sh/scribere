@@ -167,7 +167,7 @@
                     {@const isActive = data.activeMethods.includes(method.id)}
 
                     <div
-                        class="flex h-24 flex-row items-center border-b border-border px-6 last:border-b-0"
+                        class="flex h-24 flex-row items-center border-b border-border pl-6 last:border-b-0"
                     >
                         <div class="mr-6 grid h-full place-items-center">
                             <method.icon />

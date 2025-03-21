@@ -1,17 +1,19 @@
 <script lang="ts">
     import type { PageProps } from './$types';
 
+    import { cardBackround } from '../classes';
     import MfaForm from './mfa-form.svelte';
-    import { fly } from 'svelte/transition';
+    import { blur } from 'svelte/transition';
 
     import * as Card from '@scribere/ui/card';
+    import { cn } from '@scribere/ui/utils';
 
     const { data }: PageProps = $props();
     const { form } = data;
 </script>
 
-<div in:fly={{ y: 10, duration: 300 }}>
-    <Card.Root class="w-96" id="main-content">
+<div in:blur={{ duration: 200 }}>
+    <Card.Root class={cn('w-96', cardBackround)} id="main-content">
         <Card.Header>
             <Card.Title>Enter MFA Token</Card.Title>
             <Card.Description>

@@ -8,6 +8,8 @@
     import * as Header from '@scribere/ui/app-header';
     import { Toaster } from '@scribere/ui/sonner';
 
+    import Logo from "$lib/assets/logo.svg"
+
     import { openAppMessage } from '$client/messages';
     import ProfileDropDown from '$lib/components/profile-drop-down.svelte';
     import { route } from '$routes';
@@ -24,9 +26,9 @@
 <QueryClientProvider client={data.queryClient}>
     <Header.Root>
         <Header.Content>
-            <a class="text-3xl text-primary no-underline hover:underline" href={route('/')}
-                >Scribere</a
-            >
+            <a class="text-3xl text-primary no-underline hover:underline" href={route('/')}>
+                <img class="h-12 brightness-90 dark:filter-none" src={Logo} alt="Scribere Logo">
+            </a>
 
             <ProfileDropDown />
         </Header.Content>

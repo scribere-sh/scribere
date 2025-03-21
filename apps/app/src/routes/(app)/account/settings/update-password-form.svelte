@@ -104,7 +104,7 @@
     </Form.Field>
 
     <div class="mt-4 grid grid-cols-2 place-items-center">
-        <Form.Button disabled={disabled || isError || markedDisabled} variant="secondary">
+        <Form.Button disabled={disabled || isError || markedDisabled} variant="default">
             Change Password
         </Form.Button>
 
