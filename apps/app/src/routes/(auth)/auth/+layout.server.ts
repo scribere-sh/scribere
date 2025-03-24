@@ -28,6 +28,6 @@ export const load: LayoutServerLoad = ({ cookies, locals }) => {
 
     return {
         message: AUTH_MESSAGE_VARIANTS.includes(message ?? '') ? message : undefined,
-        wavyThingIndex: Math.floor(Math.random() * 3)
+        wavyThingIndex: 1
     };
 };

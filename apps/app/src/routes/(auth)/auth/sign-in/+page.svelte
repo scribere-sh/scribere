@@ -57,8 +57,9 @@
                 <Button
                     class={cn(
                         'w-full text-center',
-                        (methodDisabled || disabled || method.disabled) &&
-                            'pointer-events-none opacity-50'
+                        (methodDisabled || disabled || method.disabled) 
+                            ? 'pointer-events-none brightness-50'
+                            : 'hover:brightness-150 transition-all'
                     )}
                     style="background-color: {method.bg_colour}; color: {method.text_colour}"
                     aria-disabled={methodDisabled || disabled || method.disabled}
