@@ -18,6 +18,7 @@
 
         --card: 0 0% 100%;
         --card-foreground: 222.2 84% 4.9%;
+        --card-blend: 0 0 100%;
 
         --border: 214.3 31.8% 91.4%;
 
@@ -39,7 +40,7 @@
         --ring: 222.2 84% 4.9%;
 
         --radius: 0.5rem;
-        
+
         --sidebar-background: 0 0% 98%;
         --sidebar-foreground: 240 5.3% 26.1%;
         --sidebar-primary: 240 5.9% 10%;
@@ -62,6 +63,8 @@
 
         --card: 0 0% 15%;
         --card-foreground: 210 40% 98%;
+        --card-blend: 0 0 16%;
+
         --border: 0 0% 10%;
 
         --input: 0 0% 30%;
@@ -96,10 +99,14 @@
     * {
         @apply scroll-smooth border-border;
     }
-    /* html {
-        scrollbar-gutter: stable;
-    } */
+    html {
+        @apply overflow-hidden;
+    }
     body {
+        /* welcome to css */
+        /* i hate scrollbars so much */
+        margin-right: calc(-1 * (100vw - 100%));
+
         @apply bg-background text-foreground;
         @apply overflow-x-hidden;
     }

@@ -5,29 +5,29 @@
     import { Button } from '@scribere/ui/button';
     import { Toaster } from '@scribere/ui/sonner';
     import { ThemeToggle } from '@scribere/ui/theme-toggle';
+    import { cn } from '@scribere/ui/utils';
 
     import { openAuthMessage } from '$client/messages';
     import Logo from '$lib/assets/logo.svg';
-
+    
     import WavyThing1 from '$lib/assets/wavy-thing-1.svg';
     import WavyThing2 from '$lib/assets/wavy-thing-2.svg';
     import WavyThing3 from '$lib/assets/wavy-thing-3.svg';
-    import { cn } from '@scribere/ui/utils';
 
     const { data, children } = $props();
 
     const wavyThing = [
         {
             component: WavyThing1,
-            classes: "bg-fixed bg-no-repeat [background-position:right] [background-size:75vh]"
+            classes: 'bg-fixed bg-no-repeat [background-position:right] [background-size:75vh]'
         },
         {
             component: WavyThing2,
-            classes: "bg-fixed bg-no-repeat [background-position:center] [background-size:150vw]",
-        }, 
+            classes: 'bg-fixed bg-no-repeat [background-position:center] [background-size:150vw]'
+        },
         {
             component: WavyThing3,
-            classes: "bg-fixed bg-no-repeat [background-position:right] [background-size:90vw]"
+            classes: 'bg-fixed bg-no-repeat [background-position:right] [background-size:90vw]'
         }
     ][data.wavyThingIndex];
 
@@ -39,7 +39,7 @@
 <Toaster richColors position="top-center" />
 
 <div
-    class={cn("absolute h-screen w-screen overflow-hidden", wavyThing.classes)}
+    class={cn('absolute h-screen w-screen overflow-hidden', wavyThing.classes)}
     style:background-image={`url(${wavyThing.component})`}
 >
     <header class="absolute top-0 h-header w-screen">

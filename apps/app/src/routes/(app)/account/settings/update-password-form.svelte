@@ -38,7 +38,7 @@
     const { form: formData, enhance } = form;
 </script>
 
-<span class="text-xl">Change Password</span>
+<span class="select-none text-xl">Change Password</span>
 
 <form
     class="grid grid-cols-2 gap-x-8 pb-8 pr-12 pt-4"

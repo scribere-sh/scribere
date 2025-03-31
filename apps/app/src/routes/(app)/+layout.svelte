@@ -5,12 +5,13 @@
     import { SvelteQueryDevtools } from '@tanstack/svelte-query-devtools';
     import { onMount } from 'svelte';
 
-    import * as Header from '@scribere/ui/app-header';
+    import { Sidebar } from '@scribere/ui/app-header';
     import { Toaster } from '@scribere/ui/sonner';
-
-    import Logo from "$lib/assets/logo.svg"
+    import { ThemeToggle } from '@scribere/ui/theme-toggle';
+    import { TooltipProvider } from '@scribere/ui/tooltip';
 
     import { openAppMessage } from '$client/messages';
+    import Logo from '$lib/assets/logo.svg';
     import ProfileDropDown from '$lib/components/profile-drop-down.svelte';
     import { route } from '$routes';
 
@@ -24,16 +25,29 @@
 <Toaster richColors closeButton position="bottom-right" />
 
 <QueryClientProvider client={data.queryClient}>
-    <Header.Root>
-        <Header.Content>
-            <a class="text-3xl text-primary no-underline hover:underline" href={route('/')}>
-                <img class="h-12 brightness-90 dark:filter-none" src={Logo} alt="Scribere Logo">
-            </a>
+    <TooltipProvider>
+        <Sidebar>
+            <div class="w-full">
+                <a
+                    class="grid aspect-square w-full place-items-center text-3xl text-primary no-underline hover:underline"
+                    href={route('/')}
+                >
+                    <img class="h-12" src={Logo} alt="Scribere Logo" />
+                </a>
+            </div>
 
-            <ProfileDropDown />
-        </Header.Content>
-    </Header.Root>
+            <div class="w-full">
+                <div class="grid w-full place-items-center">
+                    <ThemeToggle align="center" side="right" />
+                </div>
 
-    {@render children()}
+                <ProfileDropDown />
+            </div>
+        </Sidebar>
+
+        <main class="h-screen w-full overflow-y-auto">
+            {@render children()}
+        </main>
+    </TooltipProvider>
     <SvelteQueryDevtools />
 </QueryClientProvider>

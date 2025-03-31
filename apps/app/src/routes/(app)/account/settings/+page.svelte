@@ -10,6 +10,7 @@
 
     import * as Avatar from '@scribere/ui/avatar';
     import * as Card from '@scribere/ui/card';
+    import * as Tooltip from '@scribere/ui/tooltip';
     import { Button } from '@scribere/ui/button';
     import { Separator } from '@scribere/ui/separator';
     import { Skeleton } from '@scribere/ui/skeleton';
@@ -36,7 +37,7 @@
 </script>
 
 {#snippet SectionTitle(title: string)}
-    <h1 class="mb-6 text-2xl">{title}</h1>
+    <h1 class="mb-6 select-none text-2xl">{title}</h1>
 {/snippet}
 
 <Card.Root class="max-w-screen mx-auto my-32 flex w-1/2 min-w-[60rem] flex-row">
@@ -75,7 +76,7 @@
 
         <Separator />
 
-        <nav class="sticky top-[var(--header-height)] w-full p-6">
+        <nav class="sticky top-0 w-full select-none p-6">
             {#each $scrollspy.targets as section (section.id)}
                 {@const isActive = $scrollspy.isActive(section)}
                 <Button
@@ -84,7 +85,7 @@
                     size="dropdown"
                     class={cn('w-full')}
                 >
-                    {section.getAttribute('title') ?? 'Untitled'}
+                    {section.getAttribute('data-title') ?? 'Untitled'}
                 </Button>
             {/each}
         </nav>
@@ -94,12 +95,12 @@
 
     <main class="w-full">
         <Card.Content>
-            <h1 class="mb-12 text-3xl">Account Settings</h1>
+            <h1 class="mb-12 select-none text-3xl">Account Settings</h1>
 
             <section
                 class="mb-px pb-4 [scroll-margin-top:calc(var(--header-height)+2rem)]"
                 id="profile"
-                title="Profile"
+                data-title="Profile"
                 use:scrollspy.spy
             >
                 {@render SectionTitle('Profile')}
@@ -124,7 +125,7 @@
             <section
                 class="mb-px pb-4 [scroll-margin-top:calc(var(--header-height)+2rem)]"
                 id="password"
-                title="Password"
+                data-title="Password"
                 use:scrollspy.spy
             >
                 {@render SectionTitle('Password')}
@@ -137,9 +138,9 @@
             </section>
 
             <section
-                class="mb-px pb-4 [scroll-margin-top:calc(var(--header-height)+2rem)]"
+                class="mb-px select-none pb-4 [scroll-margin-top:calc(var(--header-height)+2rem)]"
                 id="mfa"
-                title="Multi-Factor Authentication"
+                data-title="Multi-Factor Authentication"
                 use:scrollspy.spy
             >
                 {@render SectionTitle('Multi-Factor Authentication')}
@@ -154,9 +155,9 @@
             </section>
 
             <section
-                class="[scroll-margin-top:calc(var(--header-height)+2rem)]"
+                class="select-none [scroll-margin-top:calc(var(--header-height)+2rem)]"
                 id="oauth-connections"
-                title="OAuth Connections"
+                data-title="OAuth Connections"
                 use:scrollspy.spy
             >
                 {@render SectionTitle('OAuth Connections')}
@@ -165,6 +166,11 @@
                     {@const isLinked =
                         $settingsQuery.data?.oauthMethods.includes(method.id) ?? false}
                     {@const isActive = data.activeMethods.includes(method.id)}
+                    {@const disabled =
+                        !(isActive || isLinked) ||
+                        $settingsQuery.isLoading ||
+                        $profileQuery.isLoading ||
+                        $isError}
 
                     <div
                         class="flex h-24 flex-row items-center border-b border-border pl-6 last:border-b-0"
@@ -183,23 +189,33 @@
                             action={isLinked ? '?/unlink-oauth' : '?/link-oauth'}
                         >
                             <input type="hidden" name="provider" value={method.id} />
-                            <Button
-                                class="w-24"
-                                variant={isLinked ? 'destructive' : 'default'}
-                                type="submit"
-                                disabled={!(isActive || isLinked) ||
-                                    $settingsQuery.isLoading ||
-                                    $profileQuery.isLoading ||
-                                    $isError}
-                            >
-                                {method.disabled
-                                    ? '-'
-                                    : $settingsQuery.isLoading
-                                      ? '...'
-                                      : isLinked
-                                        ? 'Unlink'
-                                        : 'Link'}
-                            </Button>
+                            <Tooltip.Root>
+                                <Tooltip.Trigger class="cursor-default">
+                                    <Button
+                                        class={cn('w-24', disabled && 'cur brightness-50')}
+                                        variant={isLinked ? 'destructive' : 'default'}
+                                        {disabled}
+                                        type="submit"
+                                    >
+                                        {method.disabled
+                                            ? '-'
+                                            : $settingsQuery.isLoading
+                                              ? '...'
+                                              : isLinked
+                                                ? 'Unlink'
+                                                : 'Link'}
+                                    </Button>
+                                </Tooltip.Trigger>
+                                <Tooltip.Content>
+                                    <p>
+                                        {#if method.disabled || !isActive}
+                                            {method.name} is Disabled
+                                        {:else}
+                                            {isLinked ? 'Unlink' : 'Link'} {method.name} Provider
+                                        {/if}
+                                    </p>
+                                </Tooltip.Content>
+                            </Tooltip.Root>
                         </form>
                     </div>
                 {/each}
