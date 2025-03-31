@@ -6,6 +6,7 @@
 
     import * as AlertDialog from '@scribere/ui/alert-dialog';
     import * as InputOTP from '@scribere/ui/input-otp';
+    import * as Tooltip from '@scribere/ui/tooltip';
     import { Button, buttonVariants } from '@scribere/ui/button';
     import { Checkbox } from '@scribere/ui/checkbox';
     import { Input } from '@scribere/ui/input';
@@ -85,17 +86,28 @@
         {/if}
     </span>
 
-    {#if currentlyEnrolled}
-        <Button
-            disabled={isError || disabled}
-            variant="destructive"
-            onclick={() => (removeDialogOpen = true)}
-        >
-            Remove
-        </Button>
-    {:else}
-        <Button disabled={isError || disabled} onclick={() => ($dialogOpen = true)}>Enrol</Button>
-    {/if}
+    <Tooltip.Root>
+        <Tooltip.Trigger class="pointer-default">
+            {#if currentlyEnrolled}
+                <Button
+                    disabled={isError || disabled}
+                    variant="destructive"
+                    onclick={() => (removeDialogOpen = true)}
+                >
+                    Remove
+                </Button>
+            {:else}
+                <Button disabled={isError || disabled} onclick={() => ($dialogOpen = true)}
+                    >Enrol</Button
+                >
+            {/if}
+        </Tooltip.Trigger>
+        <Tooltip.Content>
+            <p class="select-none">
+                {currentlyEnrolled ? 'Unenroll' : 'Enroll'} MFA
+            </p>
+        </Tooltip.Content>
+    </Tooltip.Root>
 </div>
 
 <!-- Enrol Dialog -->

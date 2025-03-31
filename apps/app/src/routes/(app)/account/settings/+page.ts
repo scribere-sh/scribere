@@ -11,8 +11,18 @@ export const load: PageLoad = async (event) => {
     const rpc = trpc(event, queryClient);
 
     return {
-        userOAuthSettings: await rpc.account.settings.loadAuthSettings.createServerQuery(),
-        userProfileQuery: await rpc.account.profile.loadCurrentUserProfile.createServerQuery(),
+        userOAuthSettings: await rpc.account.settings.loadAuthSettings.createServerQuery(
+            undefined,
+            {
+                ssr: false
+            }
+        ),
+        userProfileQuery: await rpc.account.profile.loadCurrentUserProfile.createServerQuery(
+            undefined,
+            {
+                ssr: false
+            }
+        ),
 
         updatePasswordForm: await superValidate(zod(resetPasswordAccountSettingsSchema)),
 

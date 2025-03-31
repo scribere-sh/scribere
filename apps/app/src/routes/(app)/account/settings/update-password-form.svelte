@@ -38,7 +38,7 @@
     const { form: formData, enhance } = form;
 </script>
 
-<span class="text-xl">Change Password</span>
+<span class="select-none text-xl">Change Password</span>
 
 <form
     class="grid grid-cols-2 gap-x-8 pb-8 pr-12 pt-4"
@@ -104,7 +104,7 @@
     </Form.Field>
 
     <div class="mt-4 grid grid-cols-2 place-items-center">
-        <Form.Button disabled={disabled || isError || markedDisabled} variant="secondary">
+        <Form.Button disabled={disabled || isError || markedDisabled} variant="default">
             Change Password
         </Form.Button>
 

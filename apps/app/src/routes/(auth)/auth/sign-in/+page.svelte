@@ -1,8 +1,9 @@
 <script lang="ts">
     import type { PageProps } from './$types';
 
-    import LogInForm from './log-in-form.svelte';
-    import { fly } from 'svelte/transition';
+    import { buttonBackground, cardBackround } from '../classes';
+    import SignInForm from './sign-in-form.svelte';
+    import { blur } from 'svelte/transition';
 
     import * as Card from '@scribere/ui/card';
     import { Button } from '@scribere/ui/button';
@@ -33,21 +34,21 @@
     };
 </script>
 
-<div in:fly={{ y: 10, duration: 300 }}>
-    <Card.Root class="flex flex-row" id="main-content">
+<div in:blur={{ duration: 200 }}>
+    <Card.Root class={cn('flex flex-row', cardBackround)} id="main-content">
         <div class="w-96">
             <Card.Header>
                 <Card.Title>Sign in</Card.Title>
             </Card.Header>
             <Card.Content class="flex flex-row gap-6">
-                <LogInForm form={data.form} bind:disabled />
+                <SignInForm form={data.form} bind:disabled />
             </Card.Content>
         </div>
 
         <div class="my-6 grid grid-cols-1 grid-rows-5 place-items-center">
-            <Separator orientation="vertical" class="row-span-2" />
+            <Separator orientation="vertical" class="row-span-2 bg-foreground/30" />
             <div class="text-sm italic">or</div>
-            <Separator orientation="vertical" class="row-span-2" />
+            <Separator orientation="vertical" class="row-span-2 bg-foreground/30" />
         </div>
 
         <div class="flex w-96 flex-col justify-center gap-4 p-6">
@@ -56,8 +57,9 @@
                 <Button
                     class={cn(
                         'w-full text-center',
-                        (methodDisabled || disabled || method.disabled) &&
-                            'pointer-events-none opacity-50'
+                        methodDisabled || disabled || method.disabled
+                            ? 'pointer-events-none brightness-50'
+                            : 'transition-all hover:brightness-150'
                     )}
                     style="background-color: {method.bg_colour}; color: {method.text_colour}"
                     aria-disabled={methodDisabled || disabled || method.disabled}
@@ -80,10 +82,10 @@
     </Card.Root>
 </div>
 
-<div class="mt-6 flex flex-col gap-3" in:fly={{ y: 10, duration: 300, delay: 50 }}>
+<div class="mt-6 flex flex-col gap-3" in:blur={{ duration: 200, delay: 50 }}>
     <Button
         onclick={() => (disabled = true)}
-        class={cn(disabled && 'pointer-events-none')}
+        class={cn(disabled && 'pointer-events-none', buttonBackground)}
         variant="link"
         href={route('/auth/forgot-password')}
     >
@@ -92,7 +94,7 @@
 
     <Button
         onclick={() => (disabled = true)}
-        class={cn(disabled && 'pointer-events-none')}
+        class={cn(disabled && 'pointer-events-none', buttonBackground)}
         variant="link"
         href={route('/auth/sign-up')}
     >

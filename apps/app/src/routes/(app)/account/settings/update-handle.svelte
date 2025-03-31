@@ -64,7 +64,8 @@
     <Label for={uid}>Handle</Label>
 
     <div class="mt-2 flex w-full flex-row items-center gap-2">
-        &#64<Input
+        <span class="select-none">&#64</span>
+        <Input
             id={uid}
             autocomplete="username"
             placeholder={current}
