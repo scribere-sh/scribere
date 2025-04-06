@@ -27,6 +27,7 @@ export const load: LayoutServerLoad = ({ cookies, locals }) => {
     }
 
     return {
-        message: AUTH_MESSAGE_VARIANTS.includes(message ?? '') ? message : undefined
+        message: AUTH_MESSAGE_VARIANTS.includes(message ?? '') ? message : undefined,
+        wavyThingIndex: 1
     };
 };

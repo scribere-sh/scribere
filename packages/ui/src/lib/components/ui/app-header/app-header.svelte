@@ -15,7 +15,7 @@
 
 <header
     class={cn(
-        'sticky top-0 z-50 h-header w-screen border-b border-border/40 bg-background/95 backdrop-blur transition-[height] supports-[backdrop-blur]:bg-background/50',
+        'sticky top-0 z-50 h-header w-screen border-b border-border/40 bg-card/80 backdrop-blur transition-[height] supports-[backdrop-blur]:bg-card/50',
         className
     )}
     {...rest}

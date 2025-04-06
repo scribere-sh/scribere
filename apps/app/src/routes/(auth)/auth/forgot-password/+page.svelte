@@ -1,9 +1,10 @@
 <script lang="ts">
     import type { PageProps } from './$types';
 
+    import { cardBackround } from '../classes';
     import ForgotPasswordForm from './forgot-password-form.svelte';
     import Check from '@lucide/svelte/icons/check';
-    import { fly } from 'svelte/transition';
+    import { blur } from 'svelte/transition';
 
     import * as Card from '@scribere/ui/card';
     import { Button } from '@scribere/ui/button';
@@ -17,8 +18,8 @@
     let disabled = $state(false);
 </script>
 
-<div in:fly={{ y: 10, duration: 300 }}>
-    <Card.Root class="h-80 w-96">
+<div in:blur={{ duration: 200 }}>
+    <Card.Root class={cn('h-80 w-96', cardBackround)}>
         {#if success}
             <Card.Header>
                 <Card.Title>Success</Card.Title>
@@ -27,7 +28,7 @@
                 </Card.Description>
             </Card.Header>
             <Card.Content class="grid h-56 place-items-center">
-                <div in:fly={{ y: 10, duration: 300 }}>
+                <div in:blur={{ duration: 200 }}>
                     <Check class="size-8 text-green-500" />
                 </div>
             </Card.Content>
@@ -45,7 +46,7 @@
     </Card.Root>
 </div>
 
-<div class="mt-6 flex flex-col gap-3" in:fly={{ y: 10, delay: 50 }}>
+<div class="mt-6 flex flex-col gap-3" in:blur={{ duration: 200, delay: 50 }}>
     <Button
         onclick={() => (disabled = true)}
         class={cn(disabled && 'pointer-events-none')}

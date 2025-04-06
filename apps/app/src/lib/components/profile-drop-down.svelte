@@ -33,7 +33,7 @@
 </script>
 
 <DropdownMenu.Root bind:open>
-    <DropdownMenu.Trigger>
+    <DropdownMenu.Trigger class="grid aspect-square w-full place-items-center">
         <Avatar.Root>
             <Avatar.Fallback>
                 {#if $currentUserProfile.isSuccess}
@@ -46,7 +46,7 @@
             </Avatar.Fallback>
         </Avatar.Root>
     </DropdownMenu.Trigger>
-    <DropdownMenu.Content align="end" class="w-[350px]">
+    <DropdownMenu.Content side="right" align="end" alignOffset={3} class="w-[350px]">
         <DropdownMenu.Label>
             <div class="flex flex-row justify-start">
                 <Avatar.Root class="mr-4 aspect-square">

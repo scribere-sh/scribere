@@ -10,7 +10,7 @@ export const load = (async (event) => {
 
     return {
         name,
-        nameQuery: await rpc.hello_world.createServerQuery({ name }),
+        nameQuery: await rpc.hello_world.createServerQuery({ name }, { ssr: false }),
         rpc
     };
 }) satisfies PageLoad;

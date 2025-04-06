@@ -1,8 +1,9 @@
 <script lang="ts">
     import type { PageProps } from './$types';
 
+    import { cardBackround } from '../classes';
     import SignUpForm from './sign-up-form.svelte';
-    import { fly } from 'svelte/transition';
+    import { blur } from 'svelte/transition';
 
     import * as Card from '@scribere/ui/card';
     import { Button } from '@scribere/ui/button';
@@ -15,8 +16,8 @@
     let disabled = $state(false);
 </script>
 
-<div in:fly={{ y: 10, duration: 300 }}>
-    <Card.Root class="flex w-96 flex-row" id="main-content">
+<div in:blur={{ duration: 200 }}>
+    <Card.Root class={cn('flex w-96 flex-row', cardBackround)} id="main-content">
         <div class="w-full">
             <Card.Header>
                 <Card.Title>Sign Up</Card.Title>
@@ -28,7 +29,7 @@
     </Card.Root>
 </div>
 
-<div class="mt-6 flex flex-col gap-3" in:fly={{ y: 10, duration: 300, delay: 50 }}>
+<div class="mt-6 flex flex-col gap-3" in:blur={{ duration: 200, delay: 50 }}>
     <Button
         onclick={() => (disabled = true)}
         class={cn(disabled && 'pointer-events-none')}
