@@ -1,9 +1,9 @@
 import { cn } from '@scribere/ui/utils';
 
 export const cardBackround = cn(
-    'border-foreground/30 bg-card/70 backdrop-blur transition-[height] supports-[backdrop-blur]:bg-card/50'
+    'bg-card/80 backdrop-blur transition-[height] supports-[backdrop-filter]:bg-card/70'
 );
 
 export const buttonBackground = cn(
-    'bg-background/70 backdrop-blur transition-[height] supports-[backdrop-blur]:bg-background/50'
+    'bg-background/80 backdrop-blur transition-[height] supports-[backdrop-filter]:bg-background/70'
 );

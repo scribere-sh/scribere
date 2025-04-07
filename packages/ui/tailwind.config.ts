@@ -110,13 +110,28 @@ const config: Config = {
                         'stroke-dasharray': '1px, 200px',
                         'stroke-dashoffset': '-126px'
                     }
+                },
+                'loading-bar': {
+                    '0%': {
+                        'margin-left': '0%',
+                        width: '0%'
+                    },
+                    '50%': {
+                        'margin-left': '0%',
+                        width: '100%'
+                    },
+                    '100%': {
+                        'margin-left': '100%',
+                        width: '0%'
+                    }
                 }
             },
             animation: {
                 'accordion-down': 'accordion-down 0.2s ease-out',
                 'accordion-up': 'accordion-up 0.2s ease-out',
                 'caret-blink': 'caret-blink 1.25s ease-out infinite',
-                'spinner-stroke': 'spinner-stroke 1.5s 0s linear infinite normal running'
+                'spinner-stroke': 'spinner-stroke 1.5s 0s linear infinite normal running',
+                'loading-bar': 'loading-bar 1.5s 0s ease-in-out infinite normal running'
             }
         }
     },

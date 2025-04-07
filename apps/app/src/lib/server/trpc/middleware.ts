@@ -9,6 +9,8 @@ export const authMiddleware = t.middleware(async ({ ctx, next }) => {
         });
     }
 
+    await new Promise((res) => setTimeout(res, 1000));
+
     return await next({
         ctx: {
             user: ctx.user!,

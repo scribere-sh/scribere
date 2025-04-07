@@ -9,13 +9,17 @@
     import { Toaster } from '@scribere/ui/sonner';
     import { ThemeToggle } from '@scribere/ui/theme-toggle';
     import { TooltipProvider } from '@scribere/ui/tooltip';
+    import { cn } from '@scribere/ui/utils';
 
+    import { navigating } from '$app/state';
     import { openAppMessage } from '$client/messages';
     import Logo from '$lib/assets/logo.svg';
+    import WavyThing from '$lib/assets/wavy-thing-3.svg';
     import ProfileDropDown from '$lib/components/profile-drop-down.svelte';
     import { route } from '$routes';
 
     let { children, data }: LayoutProps = $props();
+    const isNavigating = $derived(navigating.to !== null);
 
     onMount(() => {
         openAppMessage(data.message);
@@ -45,9 +49,23 @@
             </div>
         </Sidebar>
 
-        <main class="h-screen w-full overflow-y-auto">
+        <main
+            class="h-screen w-full overflow-y-auto bg-[length:98%] bg-center bg-no-repeat bg-blend-lighten"
+            style:background-image={`url(${WavyThing})`}
+        >
             {@render children()}
         </main>
     </TooltipProvider>
     <SvelteQueryDevtools />
 </QueryClientProvider>
+
+<div
+    class={cn(
+        'fixed left-0 top-0 z-50 h-1 w-screen -translate-y-1 transition-transform',
+        isNavigating && 'translate-y-0'
+    )}
+>
+    {#if isNavigating}
+        <div class="h-full animate-loading-bar rounded bg-primary"></div>
+    {/if}
+</div>

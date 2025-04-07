@@ -9,7 +9,6 @@
 
     import { openAuthMessage } from '$client/messages';
     import Logo from '$lib/assets/logo.svg';
-    
     import WavyThing1 from '$lib/assets/wavy-thing-1.svg';
     import WavyThing2 from '$lib/assets/wavy-thing-2.svg';
     import WavyThing3 from '$lib/assets/wavy-thing-3.svg';
