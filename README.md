@@ -1,3 +1,7 @@
+# ARCHIVED
+
+## This project is being archived because it's a piece of crap, it is being recreated, keep an eye on the organisation :D
+
 <div align="center">
     <picture>
         <source media="(prefers-color-scheme: dark)" srcset="https://placehold.co/600x100/transparent/FFF.png?text=Scribere&font=Open%20Sans">
